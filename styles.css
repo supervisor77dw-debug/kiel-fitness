@@ -272,3 +272,29 @@ body{background:#1b2a3b}
 .fitness-cta{padding:80px 24px 100px}.fitness-cta h2{font-size:28px;color:#f4b720}.fitness-cta .fitness-button{background:#d6d3cf;color:#454545}
 .fitness-page .footer{max-width:700px;margin:0 auto;padding-top:25px;padding-bottom:75px}
 @media(max-width:800px){.fitness-quote{grid-template-columns:1fr;padding:45px 24px}.fq{display:none}.fitness-intro{grid-template-columns:1fr;padding:20px 22px 55px;gap:30px}.fitness-area-box{border-left:2px solid #f2eee5;border-radius:32px;height:190px}.fitness-care>img{width:100%}.fitness-care-copy{left:20px}.fitness-three{padding:10px 22px 60px;gap:10px}.fitness-company-shot,.fitness-circle-shot{grid-template-columns:1fr;grid-template-areas:none;padding:55px 22px}.fitness-company-shot>* ,.fitness-circle-shot>*{grid-area:auto}.fitness-slogan,.circle-slogan{font-size:48px;justify-self:start}.circle-bottom{grid-area:auto;grid-template-columns:1fr;gap:25px}.circle-note{min-height:140px}}
+
+/* 2026-10-01 — Fitness geometry + typography correction from direct output comparison */
+.fitness-page{font-family:"Poppins","Arial",sans-serif;font-weight:400}
+.fitness-page p,.fitness-page li{font-weight:400!important}
+.fitness-quote{max-width:1060px;min-height:405px;padding:70px 55px;grid-template-columns:70px 1fr 70px}
+.fitness-quote p{font-size:14px!important;line-height:1.45;font-weight:400!important}
+.fq{font-size:38px}.fq-left{margin-top:20px}.fq-right{margin-bottom:20px}
+.fitness-intro{max-width:1100px;grid-template-columns:48% 52%;gap:70px;padding:15px 0 85px}
+.fitness-area-box{height:250px;font-size:23px;font-weight:600;justify-content:center}
+.fitness-care>img{width:86%;height:260px}.fitness-care-copy{left:8%;right:0;padding:24px 32px 28px}.fitness-care-copy h1{font-size:18px;font-weight:400}.fitness-care-copy p{font-size:12px!important;line-height:1.55}
+.fitness-three{max-width:850px;padding-bottom:105px}.fitness-three article{min-height:285px;padding:38px 25px}.fitness-three h2{font-size:25px;font-weight:400}.fitness-three h2 span{font-weight:600}.fitness-three p{font-size:13px!important;line-height:1.5}
+.fitness-company-shot{max-width:1080px;grid-template-columns:330px 1fr;gap:46px 62px;padding:70px 20px 120px}
+.fitness-slogan{font-size:61px;font-weight:300}
+.fitness-company-top{padding-top:18px}.fitness-company-top h2{font-size:17px;font-weight:600}
+.fitness-company-top p,.fitness-company-main,.fitness-company-request{font-size:13px!important;line-height:1.5;font-weight:400!important}
+.fitness-company-main{max-width:410px}.fitness-company-main h3{font-size:17px;font-weight:600}.fitness-company-main ul{padding-left:18px}
+.fitness-company-request{max-width:520px;padding:27px 32px;border-radius:34px;margin-top:10px}.fitness-company-request a{font-size:13px}
+.fitness-circle-shot{max-width:1080px;grid-template-columns:420px 1fr;grid-template-areas:"note slogan" "copy copy" "bottom bottom";column-gap:70px;row-gap:45px;padding:90px 20px 100px}
+.circle-note{min-height:150px;font-size:14px;font-weight:600;line-height:1.5}
+.circle-slogan{font-size:58px;font-weight:300;justify-self:end;align-self:center}
+.circle-copy{grid-area:copy;display:grid;grid-template-columns:420px 1fr;column-gap:70px;font-size:12px;line-height:1.5;font-weight:400}
+.circle-copy h2{grid-column:2;font-size:17px;font-weight:600;margin:0 0 -28px}
+.circle-copy p:first-of-type{grid-column:2}.circle-copy p:last-of-type{grid-column:2;margin-top:-18px}
+.circle-bottom{grid-area:bottom;display:grid;grid-template-columns:1.55fr .55fr;gap:70px;font-size:12px;line-height:1.5;font-weight:400}
+.circle-bottom p{margin:0}.circle-bottom h3{font-size:17px;font-weight:600}.circle-bottom ul{margin:0;padding-left:18px}
+@media(max-width:800px){.fitness-circle-shot{grid-template-areas:none}.circle-copy{grid-area:auto;display:block}.circle-copy h2,.circle-copy p:first-of-type,.circle-copy p:last-of-type{grid-column:auto;margin-top:0}.circle-bottom{grid-area:auto}}
