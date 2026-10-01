@@ -14,6 +14,8 @@ jobs:
         run: |
           mkdir -p assets
           curl -L --fail -o assets/logo.png 'https://static.wixstatic.com/media/795096_ec6ba848000d47f7b22229c166016bee~mv2.png'
+          curl -L --fail -o assets/ellipse-12.png 'https://static.wixstatic.com/media/795096_6d0e94677fae4dae9c78bed3071b7540~mv2.png'
+          curl -L --fail -o assets/yellow-box.png 'https://static.wixstatic.com/media/795096_f04901b5df464ac48486c08aa0636f63~mv2.png'
           curl -L --fail -o assets/pexels-victor-freitas-703014.jpg 'https://static.wixstatic.com/media/795096_80daf5942cd2488da37c5087046ff8de~mv2.jpg'
           curl -L --fail -o assets/pexels-pixabay-260352.jpg 'https://static.wixstatic.com/media/795096_7ac1f11457df49fd9b2810f4da668fc7~mv2.jpg'
           curl -L --fail -o assets/pexels-miriam-alonso-7593001.jpg 'https://static.wixstatic.com/media/795096_d1468026237a4bb29c39768aa299a7a4~mv2.jpg'
