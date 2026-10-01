@@ -164,3 +164,48 @@ body{background:#1b2a3b}
  .home-dark .service,.home-dark .service-fitness,.home-dark .service-courses,.home-dark .service-wellness,.home-dark .service-health,.home-dark .bistro-tile,.home-dark .company-tile,.home-dark .kids-tile{height:260px}
  .home-dark .video-grid{grid-template-columns:1fr}
 }
+
+/* 2026-10-01 — homepage final desktop proportion pass from Wix photo references */
+@media(min-width:1000px){
+ .nav-toggle{display:none!important}
+ .site-header{height:72px;padding:7px 6.2vw}
+ .logo-image img{width:126px;height:auto}
+ .site-header nav{gap:30px}
+ .site-header nav a{font-size:13px}
+ .home-hero{height:620px;min-height:0;background-size:contain;background-position:center top}
+ .home-dark .virtual-intro{max-width:980px;padding:76px 0 58px;grid-template-columns:1.06fr .94fr;gap:58px}
+ .home-dark .virtual-card{border-radius:16px}
+ .home-dark .quote-section{padding-top:32px;padding-bottom:68px}
+ .home-dark .opening{padding-top:48px;padding-bottom:72px}
+ .home-dark .services{padding-top:58px;padding-bottom:82px}
+ .home-dark .service-mosaic{
+   max-width:960px;
+   grid-template-columns:repeat(12,1fr);
+   grid-template-areas:
+    "fitness fitness fitness fitness fitness fitness fitness courses courses courses courses courses"
+    "wellness wellness wellness wellness wellness health health health health health health health"
+    "bistro bistro bistro bistro company company company company company kids kids kids";
+   gap:14px 16px
+ }
+ .home-dark .service-fitness{height:258px}
+ .home-dark .service-courses{height:258px}
+ .home-dark .service-wellness{height:230px}
+ .home-dark .service-health{height:230px}
+ .home-dark .bistro-tile,.home-dark .company-tile,.home-dark .kids-tile{height:205px}
+ .home-dark .service>div{padding:17px 18px}
+ .home-dark .service h3{font-size:23px}
+ .home-dark .service p{font-size:12px;line-height:1.28}
+ .home-dark .service span{font-size:9px;padding:8px 18px}
+ .home-dark .service-fitness img{object-position:center 45%}
+ .home-dark .service-courses img{object-position:center 48%}
+ .home-dark .service-wellness img{object-position:center 50%}
+ .home-dark .service-health img{object-position:center 50%}
+ .home-dark .membership{padding-top:62px}
+ .home-dark .videos{padding-top:78px;padding-bottom:54px}
+ .home-dark .video-grid{max-width:860px;gap:28px}
+ .home-dark .video-grid article{min-height:340px;padding:14px 13px 20px}
+ .home-dark .video-preview{aspect-ratio:16/10;object-fit:cover}
+ .home-dark .video-grid h3{font-size:17px;margin:17px 0 15px}
+ .home-dark .video-watch{min-width:165px;padding:10px 22px}
+ .home-dark .final-cta{padding:58px 6vw 84px}
+}
