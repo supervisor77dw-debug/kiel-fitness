@@ -96,3 +96,71 @@ body{background:#1b2a3b}
  .home-dark .virtual-intro{padding:45px 22px}
  .home-dark .service-mosaic{grid-template-columns:1fr;grid-template-areas:"fitness" "courses" "wellness" "health" "bistro" "company" "kids"}
 }
+
+/* 2026-10-01 — exact staggered homepage service mosaic + Wix-style video cards */
+.home-dark .services{padding-top:62px}
+.home-dark .service-mosaic{
+  max-width:1040px;
+  display:grid;
+  grid-template-columns:repeat(12,1fr);
+  grid-template-areas:
+    "fitness fitness fitness fitness fitness fitness fitness courses courses courses courses courses"
+    "wellness wellness wellness wellness wellness health health health health health health health"
+    "bistro bistro bistro bistro company company company company company kids kids kids";
+  gap:16px;
+  align-items:stretch
+}
+.home-dark .service{min-height:0;height:238px;border-radius:18px}
+.home-dark .service-fitness{grid-area:fitness;height:276px}
+.home-dark .service-courses{grid-area:courses;height:276px}
+.home-dark .service-wellness{grid-area:wellness;height:242px}
+.home-dark .service-health{grid-area:health;height:242px}
+.home-dark .bistro-tile{grid-area:bistro;height:210px}
+.home-dark .company-tile{grid-area:company;height:210px}
+.home-dark .kids-tile{grid-area:kids;height:210px}
+.home-dark .service>img{width:100%;height:100%;object-fit:cover}
+.home-dark .service>div{padding:18px 20px;bottom:0}
+.home-dark .service-fitness>div{bottom:0}
+.home-dark .service h3{font-size:24px;line-height:1.05}
+.home-dark .service p{max-width:95%;font-size:12.5px;line-height:1.3}
+.home-dark .service span{display:inline-block;margin-top:4px}
+.home-dark .service-fitness p{max-width:92%}
+.home-dark .videos{padding-top:72px}
+.home-dark .video-grid{max-width:920px;grid-template-columns:repeat(3,1fr);gap:30px}
+.home-dark .video-grid article{
+  min-height:365px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  border:2px solid #d8c37f;
+  border-radius:9px;
+  padding:15px 14px 22px;
+  background:#223346
+}
+.home-dark .video-preview{
+  display:block;
+  width:100%;
+  aspect-ratio:16/9;
+  object-fit:cover;
+  border-radius:2px;
+  background:#eee
+}
+.home-dark .video-grid h3{margin:20px 0 18px;font-size:18px;line-height:1.2;color:#fff;min-height:44px;display:flex;align-items:center;justify-content:center}
+.home-dark .video-watch{
+  margin-top:auto;
+  display:inline-flex;
+  min-width:170px;
+  justify-content:center;
+  align-items:center;
+  padding:11px 24px;
+  border-radius:28px;
+  background:#d8d8d8;
+  color:#3d3d3d;
+  font-weight:700;
+  text-decoration:none
+}
+@media(max-width:800px){
+ .home-dark .service-mosaic{grid-template-columns:1fr;grid-template-areas:"fitness" "courses" "wellness" "health" "bistro" "company" "kids"}
+ .home-dark .service,.home-dark .service-fitness,.home-dark .service-courses,.home-dark .service-wellness,.home-dark .service-health,.home-dark .bistro-tile,.home-dark .company-tile,.home-dark .kids-tile{height:260px}
+ .home-dark .video-grid{grid-template-columns:1fr}
+}
