@@ -209,3 +209,49 @@ body{background:#1b2a3b}
  .home-dark .video-watch{min-width:165px;padding:10px 22px}
  .home-dark .final-cta{padding:58px 6vw 84px}
 }
+
+/* 2026-10-01 — FITNESS 1:1 reconstruction from live Wix reference */
+.fitness-page{margin:0;background:#1a2033;color:#fff;font-family:Arial,Helvetica,sans-serif}
+.fitness-page .site-header{background:#1a2033;color:#fff;position:sticky;top:0;z-index:20}
+.fitness-page .site-header nav a{color:#fff}
+.fitness-page .site-header nav a.active{color:#ffda00}
+.fitness-hero{height:min(643px,45vw);min-height:460px;background:#1a2033 url('assets/fitness_header.png') center/cover no-repeat}
+.fitness-quote{max-width:1040px;min-height:430px;margin:auto;position:relative;display:flex;align-items:center;justify-content:center;padding:70px 9vw;text-align:center;overflow:hidden}
+.fitness-quote img{position:absolute;width:460px;opacity:.72;z-index:0}
+.fitness-quote p{position:relative;z-index:1;max-width:820px;font-size:20px;font-weight:700;line-height:1.5}
+.fitness-intro{max-width:1040px;margin:auto;padding:60px 24px 90px;display:grid;grid-template-columns:1fr 1fr;gap:70px;align-items:center}
+.fitness-photo img{display:block;width:100%;border-radius:16px}
+.fitness-kicker,.fitness-detail-title>p{color:#ffda00;font-size:13px;font-weight:800;letter-spacing:.13em}
+.fitness-intro-copy h1{font-size:44px;line-height:1;margin:8px 0 24px;color:#fff}
+.fitness-intro-copy p{font-size:15px;line-height:1.6}
+.fitness-three{max-width:1040px;margin:auto;padding:20px 24px 100px;display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+.fitness-three article{background:#e6e6e4;color:#1d2430;border-radius:12px;padding:36px 30px;min-height:300px}
+.fitness-three article:nth-child(2){background:#d6d7d7}
+.fitness-three h2{font-size:34px;line-height:.95;margin:0 0 28px;text-transform:uppercase}
+.fitness-three h2 span{color:#d4a900}
+.fitness-three p{font-size:14px;line-height:1.55}
+.fitness-detail{max-width:1040px;margin:auto;padding:100px 24px;display:grid;grid-template-columns:.72fr 1.28fr;gap:85px;position:relative}
+.fitness-detail-title{position:relative}
+.fitness-detail-title h2{font-size:54px;line-height:.95;margin:8px 0;color:#fff}
+.fitness-detail-title img{width:300px;max-width:100%;margin-top:35px}
+.fitness-detail-copy{font-size:14px;line-height:1.62}
+.fitness-detail-copy .lead{font-size:17px;font-weight:700;color:#ffda00}
+.fitness-detail-copy p{margin:0 0 18px}
+.fitness-detail-copy ul{margin:24px 0;padding-left:20px}
+.fitness-detail-copy li{margin:8px 0}
+.fitness-circle{border-top:1px solid rgba(255,255,255,.08)}
+.fitness-company{max-width:none;padding-left:max(24px,calc((100vw - 992px)/2));padding-right:max(24px,calc((100vw - 992px)/2));background:#e1e1df;color:#1c2430}
+.fitness-company .fitness-detail-title h2{color:#1c2430}
+.fitness-company .fitness-detail-copy{color:#1c2430}
+.fitness-button{display:inline-flex;align-items:center;justify-content:center;background:#ffda00;color:#1a2033;text-decoration:none;font-weight:800;border-radius:22px;padding:12px 24px;margin-top:10px}
+.fitness-cta{text-align:center;background:#1a2033;padding:90px 24px 110px}
+.fitness-cta h2{color:#ffda00;font-size:32px;margin:0 0 10px}
+.fitness-cta p{margin:0 0 22px}
+.fitness-page .footer{background:#1a2033}
+@media(max-width:800px){
+ .fitness-hero{height:440px;min-height:0;background-image:url('assets/fitnessmobile.png');background-size:cover}
+ .fitness-quote{min-height:330px;padding:50px 24px}.fitness-quote img{width:330px}.fitness-quote p{font-size:17px}
+ .fitness-intro,.fitness-detail{grid-template-columns:1fr;gap:32px;padding:55px 22px}
+ .fitness-three{grid-template-columns:1fr;padding:10px 22px 60px}
+ .fitness-detail-title h2{font-size:42px}.fitness-company{padding:55px 22px}
+}
