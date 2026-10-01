@@ -58,3 +58,41 @@ body.wix-dark-page .course-item[data-course-category="entspannung"] p,
 body.wix-dark-page .course-item[data-course-category="beweglichkeit"] p,
 body.wix-dark-page .course-item[data-course-category="andere"] p{color:#333}
 @media(max-width:720px){body.wix-dark-page .course-item,body.wix-dark-page .course-item.reverse{grid-template-columns:1fr}body.wix-dark-page .course-item img{width:100%;height:280px}body.wix-dark-page .course-item.reverse img{order:0}body.wix-dark-page .course-item>div{padding:30px 24px}}
+
+/* 2026-10-01 — homepage screenshot alignment */
+body{background:#1b2a3b}
+.site-header{max-width:none}
+.home-hero{background-color:#1b2a3b;background-size:contain;background-position:center center;height:min(690px,calc(100vh - 65px));min-height:520px}
+.home-dark .virtual-intro{max-width:1040px;margin:0 auto;padding:70px 0 50px;grid-template-columns:1.08fr .92fr;gap:62px}
+.home-dark .virtual-card{border-radius:18px;overflow:hidden;aspect-ratio:1.65/1}
+.home-dark .virtual-copy .eyebrow{display:block;color:#f1c52d;text-transform:none;letter-spacing:0;font-size:22px;margin:0 0 2px;font-weight:800}
+.home-dark .virtual-copy h1{font-size:27px;margin:0 0 14px}
+.home-dark .virtual-copy p{font-size:14px;line-height:1.45}
+.home-dark .services{padding-top:40px}
+.home-dark .services .section-title{max-width:820px;margin-bottom:40px}
+.home-dark .service-mosaic{max-width:1040px;grid-template-columns:1fr 1fr;grid-template-areas:"fitness courses" "wellness health" "bistro company" "kids .";gap:18px}
+.home-dark .service{min-height:240px;border-radius:18px}
+.home-dark .service-fitness{grid-area:fitness}
+.home-dark .service-courses{grid-area:courses}
+.home-dark .service-wellness{grid-area:wellness}
+.home-dark .service-health{grid-area:health}
+.home-dark .bistro-tile{grid-area:bistro}
+.home-dark .company-tile{grid-area:company}
+.home-dark .kids-tile{grid-area:kids}
+.home-dark .service-fitness,.home-dark .service-health{min-height:260px}
+.home-dark .service-wellness,.home-dark .service-courses{min-height:240px}
+.home-dark .service>div{padding:20px 24px}
+.home-dark .service h3{font-size:25px;margin-bottom:5px}
+.home-dark .service p{font-size:13px;line-height:1.38;margin-bottom:9px}
+.home-dark .service span{padding:8px 18px;font-size:10px}
+.home-dark .service-fitness>div{bottom:8px}
+.home-dark .membership .section-title{max-width:900px}
+.home-dark .membership .section-title p{font-size:15px;line-height:1.45}
+.home-dark .videos .section-title p{color:#fff}
+.home-dark .video-grid article{border-color:#d8c37f}
+@media(max-width:800px){
+ body{background:#1b2a3b}
+ .home-hero{background-size:cover;min-height:520px}
+ .home-dark .virtual-intro{padding:45px 22px}
+ .home-dark .service-mosaic{grid-template-columns:1fr;grid-template-areas:"fitness" "courses" "wellness" "health" "bistro" "company" "kids"}
+}
