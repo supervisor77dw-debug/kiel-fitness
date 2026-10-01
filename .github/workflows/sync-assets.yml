@@ -1,0 +1,43 @@
+name: Sync KIELS assets
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/sync-assets.yml']
+permissions:
+  contents: write
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Download original Wix assets
+        run: |
+          mkdir -p assets
+          curl -L --fail -o assets/logo.png 'https://static.wixstatic.com/media/795096_ec6ba848000d47f7b22229c166016bee~mv2.png'
+          curl -L --fail -o assets/pexels-victor-freitas-703014.jpg 'https://static.wixstatic.com/media/795096_80daf5942cd2488da37c5087046ff8de~mv2.jpg'
+          curl -L --fail -o assets/pexels-pixabay-260352.jpg 'https://static.wixstatic.com/media/795096_7ac1f11457df49fd9b2810f4da668fc7~mv2.jpg'
+          curl -L --fail -o assets/pexels-miriam-alonso-7593001.jpg 'https://static.wixstatic.com/media/795096_d1468026237a4bb29c39768aa299a7a4~mv2.jpg'
+          curl -L --fail -o assets/pexels-cottonbro-studio-4324051_edited.jpg 'https://static.wixstatic.com/media/795096_9dda10d930994888b6c0ef73bde16bfc~mv2.jpg'
+          curl -L --fail -o assets/fitness-4925664_1280.jpg 'https://static.wixstatic.com/media/795096_1cd9aeee789c46b3b52a33de47f19db7~mv2.jpg'
+          curl -L --fail -o assets/pexels-karl-solano-2780762.jpg 'https://static.wixstatic.com/media/795096_72439fcd26bb476c893db5d2fc1cacda~mv2.jpg'
+          curl -L --fail -o assets/pexels-munbaik-cycling-clothing-5851033.jpg 'https://static.wixstatic.com/media/795096_ee3dc6cc7ec14a8c9272e6517bd519fc~mv2.jpg'
+          curl -L --fail -o assets/pexels-pixabay-416747.jpg 'https://static.wixstatic.com/media/795096_4ba6b681b59e4f76811d4908994286fd~mv2.jpg'
+          curl -L --fail -o assets/pexels-clem-onojeghuo-175708.jpg 'https://static.wixstatic.com/media/795096_102363d9551040d5834695e94e030ca1~mv2.jpg'
+          curl -L --fail -o assets/pexels-cottonbro-studio-4753923.jpg 'https://static.wixstatic.com/media/795096_5291e9a6fb6d419f8640fee3a45eabfa~mv2.jpg'
+          curl -L --fail -o assets/stairs-1627424_1280.jpg 'https://static.wixstatic.com/media/795096_8045facc87a74c6eb0f44ffaa8fc8969~mv2.jpg'
+          curl -L --fail -o assets/pexels-andrea-piacquadio-863926.jpg 'https://static.wixstatic.com/media/795096_3868abc2410b444c86738e465ec51a48~mv2.jpg'
+          curl -L --fail -o assets/pexels-cliff-booth-4056723.jpg 'https://static.wixstatic.com/media/795096_e9d495a2c98f4e7c8c5f779596ce4400~mv2.jpg'
+          curl -L --fail -o assets/pexels-elina-fairytale-3823076.jpg 'https://static.wixstatic.com/media/795096_650ff1ce316641adbcad70850f016b8a~mv2.jpg'
+          curl -L --fail -o assets/pexels-valeria-ushakova-3094215.jpg 'https://static.wixstatic.com/media/795096_ef3d2342544b407cb6964e926215f008~mv2.jpg'
+          curl -L --fail -o assets/pexels-andrea-piacquadio-3775566.jpg 'https://static.wixstatic.com/media/795096_4edcaa2b350b44028698ba3f9523afb1~mv2.jpg'
+          curl -L --fail -o assets/pexels-mart-production-7894439.jpg 'https://static.wixstatic.com/media/795096_cf795b728070481682a6a8a348a81301~mv2.jpg'
+          curl -L --fail -o assets/pexels-karolina-grabowska-4498240.jpg 'https://static.wixstatic.com/media/795096_cbdfceaebf7449a98c62e4da403c8b62~mv2.jpg'
+          curl -L --fail -o assets/pexels-elina-fairytale-3823207.jpg 'https://static.wixstatic.com/media/795096_55790c6ae86c46839d6d86853752a779~mv2.jpg'
+          curl -L --fail -o assets/pexels-andrea-piacquadio-3768722.jpg 'https://static.wixstatic.com/media/795096_d5858c1e2e664f67a098475db945c739~mv2.jpg'
+      - name: Commit assets
+        run: |
+          git config user.name "KIELS Asset Sync"
+          git config user.email "actions@github.com"
+          git add assets
+          git diff --cached --quiet || git commit -m "Add original KIELS Wix assets"
+          git push
