@@ -1,9 +1,93 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Fitnessstudio mit Sauna Kiel</title><meta name="description" content="Sauna und Wellness bei KIELS in Kiel: finnische Sauna, separate Damensauna, Ruheraum, Eisbrunnen und Lounge."><link rel="stylesheet" href="styles.css"></head><body class="wellness-page"><header class="site-header"><a class="brand-logo" href="index.html"><img src="assets/logo.png" alt="KIELS Fitness Health & Wellness"></a><button class="nav-toggle" aria-label="Menü">☰</button><nav><a href="index.html">Home</a><a href="fitness.html">Fitness</a><a class="active" href="wellness.html">Wellness</a><a href="health.html">Health</a><a href="kurse.html">Kurse</a><a href="kontakt.html">Kontakt</a></nav></header><main>
-<section class="wellness-hero"><div><p class="kicker">ENTSPANNUNG</p><h1>WELLNESS</h1></div></section>
-<section class="quote-section"><span class="quote-mark">“</span><p>Im KIELS findest du die besten Voraussetzungen vor, um Dich zu entspannen. Besuche unsere Saunen oder das Römische Dampfbad und gönn Dir eine kleine Auszeit.</p></section>
-<section class="feature-three wellness-features"><article><h2>Finnische Sauna</h2><p>Im gemischten Wellnessbereich steht eine klassische finnische Sauna zur Verfügung. Für unsere Damen gibt es einen separaten Wellnessbereich mit eigener finnischer Sauna.</p></article><article><h2>Damensauna</h2><p>Die Damensauna ist direkt mit dem Umkleideraum verbunden und bietet einen eigenen Rückzugsbereich.</p></article><article><h2>Ruheraum</h2><p>Meditative Klänge und Ruhe schaffen den passenden Rahmen, um nach einer intensiven Trainingseinheit mit der Regeneration zu starten.</p></article></section>
-<section class="split"><div class="split-image"><img src="assets/Lounge2.png" alt="KIELS Lounge"></div><div class="split-copy"><p class="kicker">LOUNGE AREA</p><h2>KIELS Lounge</h2><p>Wenn du zwischen Deinen Saunagängen eine kurze Auszeit brauchst, bist du in unserem Loungebereich genau richtig. Nimm Platz und lausche der Musik und den Wasserfällen.</p></div></section>
-<section class="content-band"><div><p class="kicker">ABKÜHLUNG</p><h2>Eisbrunnen, Erlebnis- & Schwalldusche</h2></div><div><p>Für die perfekte Abkühlung nach der Sauna oder zwischen Deinen Saunagängen sorgen die Schwalldusche und der Eisbrunnen. Die Erlebnisdusche sorgt zusätzlich für Erfrischung.</p></div></section>
-<section class="content-band dark"><div><p class="kicker">REGELMÄSSIG JEDEN MONAT</p><h2>Sauna-Samstag</h2></div><div><p>An unserem Sauna-Samstag erwarten dich Specials, klassische und fruchtige Aufgüsse sowie frisches Obst.</p><p class="preview-note light-note">Migrationsreferenz: Verfügbarkeit und Termine werden vor Liveschaltung mit dem aktuellen Sanierungs- und Betriebsstatus abgeglichen.</p></div></section>
-<section class="split reverse"><div class="split-image"><img src="assets/biosauna.png" alt="Wellness im KIELS"></div><div class="split-copy"><p class="kicker">BISTRO & LOUNGE</p><h2>Nimm Dir eine Kaffeepause</h2><p>Zum Wohlfühlen gehört auch das Essen und Trinken. In unserem Bistro & Lounge-Bereich bekommst Du erfrischende Getränke, Kaffee, Proteinshakes und -riegel.</p></div></section>
-</main><footer class="footer"><div><img class="footer-brand-logo" src="assets/logo.png" alt="KIELS Fitness Health & Wellness"><p>Grasweg 48 · 24118 Kiel<br>+49 (0)431 – 540 20 · mail@kiel-fitness.de</p></div><div class="footer-links"><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="agbs.html">AGB</a></div></footer><script src="script.js"></script></body></html>
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Wellness | KIELS Fitness</title>
+<style>
+:root{--gold:#d7a900;--taupe:#b4a89c;--cream:#f6f2ec;--navy:#0d1d28;--text:#252525}
+*{box-sizing:border-box}html{scroll-behavior:smooth}body{margin:0;font-family:Arial,Helvetica,sans-serif;color:var(--text);background:var(--cream);line-height:1.55}
+header{height:82px;background:var(--taupe);display:flex;align-items:center;justify-content:space-between;padding:0 clamp(24px,7vw,110px);position:relative;z-index:5}
+.logo{width:124px;height:auto}.nav{display:flex;gap:31px;align-items:center}.nav a{color:#fff;text-decoration:none;font-size:15px}.nav a.active{color:#ffd21a;font-weight:700}
+.hero{height:min(33vw,430px);min-height:270px;overflow:hidden;background:#ddd}.hero img{width:100%;height:100%;object-fit:cover;display:block}
+.quote{max-width:650px;margin:0 auto;padding:62px 30px 72px;text-align:center;font-size:15px;line-height:1.65;position:relative}.quote:before,.quote:after{color:var(--gold);font-size:48px;line-height:0;vertical-align:-17px}.quote:before{content:"“";margin-right:12px}.quote:after{content:"”";margin-left:12px}
+.sauna-carousel{max-width:930px;margin:0 auto;padding:0 42px 88px;position:relative}
+.carousel-viewport{overflow:hidden}
+.carousel-track{display:flex;transition:transform .35s ease}
+.card{flex:0 0 calc(50% - 18px);margin:0 9px}
+.carousel-arrow{position:absolute;top:42%;transform:translateY(-50%);border:0;background:transparent;font-size:46px;line-height:1;color:#777;cursor:pointer;padding:8px;z-index:2}
+.carousel-arrow.prev{left:0}.carousel-arrow.next{right:0}
+.carousel-dots{display:flex;justify-content:center;gap:9px;margin-top:22px}
+.carousel-dot{width:8px;height:8px;border:0;border-radius:50%;background:#c9c9c9;padding:0;cursor:pointer}
+.carousel-dot.active{background:#111}.card{background:#fff;border-radius:28px;overflow:hidden;box-shadow:0 3px 15px #00000012}.card img{width:100%;height:205px;object-fit:cover;display:block}.card .copy{padding:22px 28px 30px;text-align:center}.card h2{margin:0 0 14px;color:#151515;font-size:22px}.card p{margin:0;font-size:14px;line-height:1.55}
+.alt{max-width:1160px;margin:0 auto;padding:25px 35px 90px}.row{display:grid;grid-template-columns:1.05fr .95fr;align-items:center;gap:68px;margin:0 0 82px}.row.reverse{grid-template-columns:.95fr 1.05fr}.row.reverse .pic{order:2}.pic img{width:100%;aspect-ratio:2/1;object-fit:cover;display:block;border-radius:0}.copyblock h2{font-size:30px;line-height:1.08;margin:0 0 24px;font-weight:400}.gold{color:var(--gold)}.dark{color:#202020;margin-left:2px}.copyblock p{font-size:18px;margin:0;line-height:1.7}
+.saturday{background:#b6aa9e;padding:72px 0}.saturday .inner{max-width:980px;margin:auto;padding:0 35px;display:grid;grid-template-columns:.95fr 1.05fr;gap:72px;align-items:center}.saturday h2{font-size:30px;line-height:1.12;margin:0 0 14px}.saturday h3{font-size:17px;margin:0 0 20px}.saturday p{font-size:15px;line-height:1.55}.saturday img{width:100%;border-radius:20px;display:block}
+.bistro{background:#101a2c;color:#fff;padding:42px 0 0}.bistro .inner{max-width:1040px;margin:auto;padding:0 35px;position:relative;display:grid;grid-template-columns:.78fr 1.22fr;align-items:start;gap:0}.coffee-title{border:2px solid #fff;padding:47px 25px;text-align:center;font-size:21px;line-height:1.25;margin-top:18px;position:relative;z-index:2}.coffee-title strong{display:block;font-size:27px}.coffee-img{width:100%;border-radius:0;display:block}.yellowbox{background:#e0b600;color:#151515;border-radius:24px;padding:24px 28px;margin:-36px -55px 0 auto;position:relative;width:72%;font-size:14px;z-index:3}.yellowbox h3{margin:0 0 13px;font-size:18px;line-height:1.2}
+footer{max-width:1040px;margin:52px auto 0;padding:0 35px 48px;display:grid;grid-template-columns:2.1fr .65fr .65fr;gap:65px;font-size:12px}.flogo{width:155px;margin-bottom:12px}footer a{display:block;color:#fff;text-decoration:none;margin:6px 0;font-weight:600}.social{margin-top:15px;display:flex;gap:18px;align-items:center}.social a{display:inline-flex;margin:0;color:#fff}.social svg{width:20px;height:20px;display:block;fill:currentColor}
+@media(max-width:760px){header{height:auto;padding:18px 20px;align-items:flex-start}.nav{gap:10px;flex-wrap:wrap;justify-content:flex-end}.hero{height:260px}.quote{padding:50px 24px 35px;font-size:18px}.row,.row.reverse,.saturday .inner,.bistro .inner,footer{grid-template-columns:1fr}.sauna-carousel{padding:0 34px 55px}.card{flex-basis:calc(100% - 18px)}.row,.row.reverse{gap:25px;margin-bottom:55px}.row.reverse .pic{order:0}.alt{padding:10px 20px 50px}.saturday .inner,.bistro .inner{padding-left:20px;padding-right:20px}.yellowbox{width:92%;margin:-25px auto 0}.copyblock h2,.saturday h2{font-size:30px}footer{padding:0 20px 40px}.card img{height:220px}}
+</style>
+</head>
+<body>
+<header>
+  <a href="index.html"><img class="logo" src="assets/logo.png" alt="KIELS Fitness"></a>
+  <nav class="nav"><a href="index.html">Home</a><a href="fitness.html">Fitness</a><a class="active" href="wellness.html">Wellness</a><a href="health.html">Health</a><a href="kurse.html">Kurse</a><a href="kontakt.html">Kontakt</a></nav>
+</header>
+
+<section class="hero"><img src="assets/wellness-hero.png" alt="Wellness im KIELS"></section>
+
+<section class="quote">Im KIELS findest du die besten Voraussetzungen vor, um Dich zu entspannen. Besuche unsere Saunen oder das Römische Dampfbad und gönn Dir eine kleine Auszeit.</section>
+
+<section class="sauna-carousel" aria-label="Saunen und Dampfbad">
+  <button class="carousel-arrow prev" type="button" aria-label="Vorherige Saunen">‹</button>
+  <div class="carousel-viewport">
+    <div class="carousel-track">
+      <article class="card"><img src="assets/biosauna.png" alt="Biosauna"><div class="copy"><h2>Biosauna</h2><p>Dir wird auch unsere kreislaufschonende Biosauna gut gefallen. Diese unterscheidet sich von den anderen Saunen in der Temperatur, trainiert den Herzschlag und regt so den Stoffwechsel an.</p></div></article>
+      <article class="card"><img src="assets/wellness-finnische-sauna.png" alt="Finnische Sauna"><div class="copy"><h2>Finnische Sauna</h2><p>Im gemischten Wellnessbereich steht dir während der gesamten Öffnungszeit eine klassische finnische Sauna zur Verfügung. Für unsere Damen gibt es einen separaten Wellnessbereich ebenfalls mit einer klassischen, finnischen Sauna ausgestattet.</p></div></article>
+      <article class="card"><img src="assets/wellness-sauna-card.png" alt="Damensauna"><div class="copy"><h2>Damensauna</h2><p>Die Damensauna ist direkt mit dem Umkleideraum verbunden. Auch hier wird dir ordentlich eingeheizt und Du hast täglich wechselnde Saunaaufgüsse, die auf Dich warten.</p></div></article>
+      <article class="card"><img src="assets/wellness-dampfbad.png" alt="Römisches Dampfbad"><div class="copy"><h2>Römisches Dampfbad</h2><p>Eine Variante der Sauna ist das römische Dampfbad. Es bietet Dir bei niedrigerer Temperatur und hoher Luftfeuchtigkeit die Möglichkeit, Deine Atemwege zu befeuchten und evtl. vorhandene Atemwegsprobleme zu lindern.</p></div></article>
+    </div>
+  </div>
+  <button class="carousel-arrow next" type="button" aria-label="Nächste Saunen">›</button>
+  <div class="carousel-dots" aria-label="Karussell-Navigation"></div>
+</section>
+
+<section class="alt">
+  <div class="row"><div class="pic"><img src="assets/lounge.png" alt="Lounge Area"></div><div class="copyblock"><h2><span class="gold">LOUNGE</span><span class="dark">AREA</span></h2><p>Wenn du zwischen Deinen Saunagängen eine kurze Auszeit brauchst, bist du in unserem Loungebereich genau richtig! Nimm Platz und lausche der Musik und den Wasserfällen.</p></div></div>
+  <div class="row reverse"><div class="pic"><img src="assets/ruheraum.png" alt="Ruheraum"></div><div class="copyblock"><h2><span class="gold">RUHE</span><span class="dark">RAUM</span></h2><p>Um richtig runterzukommen und sich zu entspannen, wartet der Ruheraum auf Dich! Hier sorgen meditative Klänge für einen ruhigen Puls und Du kannst nach einer intensiven Trainingseinheit direkt mit der Regeneration starten.</p></div></div>
+  <div class="row"><div class="pic"><img src="assets/brunnen.png" alt="Eisbrunnen und Erlebnisdusche"></div><div class="copyblock"><h2>EISBRUNNEN, ERLEBNIS- &amp; SCHWALLDUSCHE</h2><p>Für die perfekte Abkühlung nach der Sauna oder zwischen Deinen Saunagängen sorgen die Schwalldusche und der Eisbrunnen.<br><br>Lass Dich von der Erlebnisdusche angenehm massieren und Deine Durchblutung anregen.</p></div></div>
+</section>
+
+<section class="saturday"><div class="inner"><div><h2>Unser<br><span class="gold">SAUNA-SAMSTAG</span></h2><h3>Regelmäßig jeden Monat</h3><p>An unserem Sauna-Samstag kannst Du Dich auf Überraschungen, Specials, klassische und fruchtige Aufgüsse, sowie auf frisches Obst freuen.</p></div><img src="assets/wellness-bistro-coffee.png" alt="Sauna-Samstag"></div></section>
+
+<section class="bistro"><div class="inner"><div class="coffee-title">Nimm Dir eine<strong>Kaffeepause</strong></div><div><img class="coffee-img" src="assets/wellness-sauna-samstag.png" alt="Kaffee im KIELS Bistro"><div class="yellowbox"><h3>GENIEßE DIE VIELFALT UNSERES BISTRO-ANGEBOTES</h3>Zum Wohlfühlen gehört auch das Essen und Trinken! In unserem Bistro &amp; Lounge-Bereich bekommst Du erfrischende Getränke, leckeren Kaffee, Proteinshakes &amp; -riegel, um Deine Speicher wieder aufzufüllen.</div></div></div>
+<footer><div><img class="flogo" src="assets/logo.png" alt="KIELS"><div>Folge uns auf Social Media und sei immer auf dem neusten Stand über aktuelle Themen und Specials</div><div class="social">
+<a href="https://www.facebook.com/kielsfitness/?locale=de_DE" aria-label="KIELS Fitness auf Facebook">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M13.5 22v-9h3l.45-3.5H13.5V7.26c0-1.01.28-1.7 1.73-1.7H17V2.43c-.31-.04-1.38-.13-2.63-.13-2.6 0-4.37 1.58-4.37 4.5v2.7H7V13h3v9h3.5z"/></svg>
+</a>
+<a href="https://www.instagram.com/kielsfitness/?hl=de" aria-label="KIELS Fitness auf Instagram">
+<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7.5 2h9A5.5 5.5 0 0 1 22 7.5v9a5.5 5.5 0 0 1-5.5 5.5h-9A5.5 5.5 0 0 1 2 16.5v-9A5.5 5.5 0 0 1 7.5 2zm0 2A3.5 3.5 0 0 0 4 7.5v9A3.5 3.5 0 0 0 7.5 20h9a3.5 3.5 0 0 0 3.5-3.5v-9A3.5 3.5 0 0 0 16.5 4h-9zm9.75 1.5a1.25 1.25 0 1 1 0 2.5 1.25 1.25 0 0 1 0-2.5zM12 7a5 5 0 1 1 0 10 5 5 0 0 1 0-10zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6z"/></svg>
+</a>
+</div></div><div><a href="index.html">Home</a><a href="fitness.html">Fitness</a><a href="wellness.html">Wellness</a><a href="health.html">Health</a><a href="kurse.html">Kurse</a></div><div><a href="#">AGB</a><a href="#">Impressum</a><a href="#">Datenschutz</a><a href="kontakt.html">Kontakt</a></div></footer>
+</section>
+<script>
+(() => {
+  const root=document.querySelector('.sauna-carousel');
+  if(!root) return;
+  const track=root.querySelector('.carousel-track');
+  const cards=[...track.children];
+  const dots=root.querySelector('.carousel-dots');
+  let index=0;
+  const perView=()=>window.innerWidth<=760?1:2;
+  const maxIndex=()=>Math.max(0,cards.length-perView());
+  cards.forEach((_,i)=>{const b=document.createElement('button');b.className='carousel-dot';b.type='button';b.setAttribute('aria-label','Karussell Position '+(i+1));b.onclick=()=>{index=Math.min(i,maxIndex());render()};dots.appendChild(b)});
+  function render(){
+    index=Math.min(index,maxIndex());
+    const step=100/perView();
+    track.style.transform=`translateX(-${index*step}%)`;
+    [...dots.children].forEach((d,i)=>d.classList.toggle('active',i===index));
+  }
+  root.querySelector('.prev').onclick=()=>{index=index<=0?maxIndex():index-1;render()};
+  root.querySelector('.next').onclick=()=>{index=index>=maxIndex()?0:index+1;render()};
+  addEventListener('resize',render);render();
+})();
+</script></body></html>

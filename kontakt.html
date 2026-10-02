@@ -1,5 +1,118 @@
-<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kontakt | KIELS Fitness Kiel</title><link rel="stylesheet" href="styles.css"></head><body class="wix-dark-page">
-<header class="site-header"><a class="brand-logo" href="index.html"><img src="assets/logo.png" alt="KIELS Fitness Health & Wellness"></a><button class="nav-toggle" aria-label="Menü">☰</button><nav><a href="index.html">Home</a><a href="fitness.html">Fitness</a><a href="wellness.html">Wellness</a><a href="health.html">Health</a><a href="kurse.html">Kurse</a><a class="active" href="kontakt.html">Kontakt</a></nav></header>
-<main class="contact-wix"><h1>GET IN <b>TOUCH</b> WITH <b>US</b></h1><div class="contact-layout"><div class="contact-left"><h2>Melde Dich bei uns</h2><p>Du hast Fragen, Feedback oder möchtest etwas Anderes loswerden? Dann sende uns gerne eine Nachricht über das Formular.</p><p>Oder ruf uns direkt an: <a href="tel:+4943154020">0431 540 20</a></p><div class="map-placeholder">KIELS Fitness<br><small>Grasweg 48 · 24118 Kiel</small></div><div class="contact-address"><h3>Kontakt</h3><p>Grasweg 48, 24118 Kiel<br>E-Mail: <a href="mailto:mail@kiel-fitness.de">mail@kiel-fitness.de</a><br>Telefon: <a href="tel:+4943154020">0431 540 20</a></p></div></div>
-<form class="wix-form" onsubmit="return false"><label>Vorname *<input required></label><label>Nachname *<input required></label><label>E-Mail-Adresse *<input type="email" required></label><label>Telefonnummer *<input type="tel" required></label><fieldset><legend>Worum geht es?</legend><div class="topic-grid"><label><input type="checkbox"> Probetraining</label><label><input type="checkbox"> Mitgliedschaft & Tarife</label><label><input type="checkbox"> Kurse</label><label><input type="checkbox"> Gesundheit & Körperanalyse</label><label><input type="checkbox"> Sauna & Wellness</label><label><input type="checkbox"> Bestehende Mitgliedschaft</label><label><input type="checkbox"> Sonstiges</label><label><input type="checkbox"> Bitte rufe mich zu meiner Anfrage zurück.</label></div></fieldset><label>Deine Nachricht *<textarea rows="5" required></textarea></label><p class="privacy-mini">Mit dem Absenden des Formulars werden die angegebenen Daten zur Bearbeitung deiner Anfrage verarbeitet. Weitere Informationen findest du in unserer Datenschutzerklärung.</p><button class="contact-submit">Nachricht senden</button></form></div></main>
-<footer class="footer"><div><img class="footer-brand-logo" src="assets/logo.png" alt="KIELS Fitness Health & Wellness"></div><div class="footer-links"><a href="index.html">Home</a><a href="fitness.html">Fitness</a><a href="wellness.html">Wellness</a><a href="health.html">Health</a><a href="kurse.html">Kurse</a><a href="agbs.html">AGB</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="kontakt.html">Kontakt</a></div></footer><script src="script.js"></script></body></html>
+<!doctype html>
+<html lang="de">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Kontakt | KIELS Fitness Kiel – Probetraining &amp; Fragen</title>
+  <meta name="description" content="KIELS Fitness in Kiel kontaktieren: Grasweg 48, 24118 Kiel, Telefon 0431 54020. Fragen stellen oder kostenloses Probetraining anfragen.">
+  <link href="kontakt.html" rel="canonical">
+  <style>
+    :root { --navy: #071720; --yellow: #fdc71e; --white: #fff; --panel: #1b2419; }
+    * { box-sizing: border-box; }
+    html { background: var(--navy); }
+    body { margin: 0; color: var(--white); background: var(--navy); font-family: "Trebuchet MS", sans-serif; font-size: 15px; line-height: 1.5; }
+    a { color: inherit; }
+    .site-header { min-height: 112px; }
+    .header-inner, main, .footer-inner { width: min(980px, calc(100% - 32px)); margin: 0 auto; }
+    .header-inner { min-height: 112px; display: flex; align-items: flex-start; justify-content: space-between; gap: 40px; padding-top: 18px; }
+    .logo img { display: block; width: 130px; height: auto; }
+    .main-nav { margin-top: 22px; }
+    .main-nav ul, .footer-nav { display: flex; flex-wrap: wrap; gap: 18px 31px; margin: 0; padding: 0; list-style: none; }
+    .main-nav a, .footer-nav a { text-decoration: none; }
+    .main-nav a:hover, .main-nav a:focus-visible, .footer-nav a:hover, .footer-nav a:focus-visible { color: var(--yellow); }
+    main { padding: 75px 0 90px; }
+    h1 { margin: 0 0 42px; text-align: center; font-size: clamp(43px, 6vw, 70px); line-height: 1; font-weight: 300; white-space: nowrap; }
+    h1 strong { color: var(--yellow); font-weight: 700; }
+    .contact-grid { display: grid; grid-template-columns: minmax(0, 1fr) minmax(480px, 1.12fr); gap: 46px; align-items: start; }
+    .contact-copy { padding-top: 18px; }
+    .contact-copy h2 { margin: 0 0 18px; font-size: 25px; }
+    .contact-copy p { margin: 0 0 23px; }
+    .contact-copy a { color: var(--yellow); }
+    .details { margin: 36px 0; }
+    .details p { margin: 5px 0; }
+    .route { padding: 24px; border: 1px solid var(--yellow); border-radius: 16px; background: rgba(255,255,255,.04); }
+    .route h2 { margin-bottom: 8px; }
+    .route-copy { margin-bottom: 19px; }
+    .route-links { display: flex; flex-wrap: wrap; gap: 12px; }
+    .route-links a { padding: 8px 13px; border: 1px solid var(--yellow); border-radius: 4px; color: var(--white); text-decoration: none; }
+    .contact-form { padding: 24px; border: 2px solid var(--yellow); border-radius: 18px; background: var(--panel); }
+    .field { display: block; margin-bottom: 20px; }
+    .field > span, fieldset legend { display: block; margin-bottom: 7px; font-size: 16px; }
+    input[type="text"], input[type="email"], input[type="tel"], textarea { width: 100%; min-height: 38px; padding: 8px 10px; border: 1px solid var(--yellow); border-radius: 5px; color: var(--white); background: #071720; font: inherit; }
+    textarea { min-height: 130px; resize: vertical; }
+    .phone { display: grid; grid-template-columns: auto 1fr; border: 1px solid var(--yellow); border-radius: 5px; overflow: hidden; background: #071720; }
+    .phone input { border: 0; border-left: 1px solid rgba(253,199,30,.55); border-radius: 0; }
+    .country { display: flex; align-items: center; gap: 8px; padding: 0 11px; }
+    .flag-de { width: 21px; height: 14px; background: linear-gradient(#111 0 33.33%, #d00 33.33% 66.66%, #ffce00 66.66%); box-shadow: 0 0 0 1px rgba(255,255,255,.4); }
+    fieldset { margin: 0 0 20px; padding: 0; border: 0; }
+    .choices { display: grid; grid-template-columns: 1fr 1fr; gap: 13px 20px; }
+    .choice { display: grid; grid-template-columns: 18px 1fr; gap: 9px; align-items: start; }
+    input[type="checkbox"] { width: 17px; height: 17px; margin: 2px 0 0; accent-color: var(--yellow); }
+    .privacy { margin: 17px 0; font-size: 12px; color: #d7d7d7; }
+    .privacy a { color: var(--yellow); }
+    .submit { min-height: 43px; padding: 9px 22px; border: 0; border-radius: 24px; color: #071720; background: var(--yellow); font: 700 15px inherit; cursor: default; }
+    .site-footer { border-top: 1px solid rgba(255,255,255,.13); }
+    .footer-inner { display: grid; grid-template-columns: 180px 1fr auto; gap: 28px 38px; align-items: center; min-height: 210px; padding: 38px 0; }
+    .footer-brand img { display: block; width: 150px; height: auto; }
+    .footer-copy { margin: 0 0 22px; font-size: 13px; }
+    .footer-nav { gap: 8px 20px; font-size: 14px; }
+    .social { display: flex; gap: 12px; }
+    .social a { display: grid; width: 30px; height: 30px; place-items: center; border: 2px solid #f2df65; border-radius: 50%; color: #f2df65; font-weight: 700; text-decoration: none; }
+    .contact-link { display: inline-block; margin-top: 18px; color: var(--yellow); text-decoration: none; }
+    @media (max-width: 900px) { .contact-grid { grid-template-columns: 1fr; } }
+    @media (max-width: 760px) {
+      .header-inner { align-items: center; flex-direction: column; gap: 16px; padding-bottom: 20px; }
+      .main-nav { margin-top: 0; }
+      .main-nav ul { justify-content: center; gap: 9px 18px; }
+      main { padding-top: 42px; }
+      h1 { font-size: 42px; white-space: normal; }
+      .choices { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr; text-align: center; }
+      .footer-brand img { margin: 0 auto; }
+      .footer-nav, .social { justify-content: center; }
+    }
+  </style>
+</head>
+<body>
+  <header class="site-header"><div class="header-inner">
+    <a class="logo" href="index.html" aria-label="KIELS Fitness – Fitnessstudio in Kiel"><img src="assets/logo.png" alt="KIELS Fitness – Fitnessstudio in Kiel" width="173" height="76"></a>
+    <nav class="main-nav" aria-label="Website"><ul><li><a href="index.html">Home</a></li><li><a href="fitness.html">Fitness</a></li><li><a href="wellness.html">Wellness</a></li><li><a href="health.html">Health</a></li><li><a href="kurse.html">Kurse</a></li><li><a href="kontakt.html">Kontakt</a></li></ul></nav>
+  </div></header>
+  <main>
+    <h1>GET IN <strong>TOUCH</strong> WITH <strong>US</strong></h1>
+    <div class="contact-grid">
+      <section class="contact-copy">
+        <h2>Melde Dich bei uns</h2>
+        <p>Du hast Fragen, Feedback oder möchtest etwas Anderes loswerden? Dann sende uns gerne eine Nachricht über das Formular.</p>
+        <p>Oder ruf uns direkt an: <a href="tel:043154020">0431 540 20</a></p>
+        <div class="details"><p>Grasweg 48, 24118 Kiel</p><p>E-Mail: <a href="mailto:mail@kiel-fitness.de?subject=Kontaktanfrage">mail@kiel-fitness.de</a></p><p>Telefon: <a href="tel:043154020">0431 540 20</a></p></div>
+        <section class="route"><h2>Anfahrt</h2><div class="route-copy">KIELS Fitness · Grasweg 48 · 24118 Kiel</div><div class="route-links"><a href="https://www.google.com/maps/search/?api=1&amp;query=Grasweg+48%2C+24118+Kiel" rel="noopener" target="_blank">Google Maps öffnen</a><a href="https://www.google.com/maps/dir/?api=1&amp;destination=Grasweg+48%2C+24118+Kiel" rel="noopener" target="_blank">Route planen</a></div></section>
+      </section>
+      <form class="contact-form">
+        <label class="field"><span>Vorname*</span><input type="text" aria-label="Vorname" autocomplete="given-name"></label>
+        <label class="field"><span>Nachname*</span><input type="text" aria-label="Nachname" autocomplete="family-name"></label>
+        <label class="field"><span>E-Mail-Adresse*</span><input type="email" aria-label="E-Mail-Adresse" autocomplete="email"></label>
+        <label class="field"><span>Telefonnummer*</span><span class="phone"><span class="country" aria-label="Deutschland, Ländervorwahl +49"><span class="flag-de" aria-hidden="true"></span>+49</span><input type="tel" aria-label="Telefonnummer" autocomplete="tel-national"></span></label>
+        <fieldset><legend>Worum geht es?</legend><div class="choices">
+          <label class="choice"><input type="checkbox" name="Worum geht es?" value="Probetraining"><span>Probetraining</span></label>
+          <label class="choice"><input type="checkbox" name="Worum geht es?" value="Mitgliedschaft &amp; Tarife"><span>Mitgliedschaft &amp; Tarife</span></label>
+          <label class="choice"><input type="checkbox" name="Worum geht es?" value="Kurse"><span>Kurse</span></label>
+          <label class="choice"><input type="checkbox" name="Worum geht es?" value="Gesundheit &amp; Körperanalyse"><span>Gesundheit &amp; Körperanalyse</span></label>
+          <label class="choice"><input type="checkbox" name="Worum geht es?" value="Sauna &amp; Wellness"><span>Sauna &amp; Wellness</span></label>
+          <label class="choice"><input type="checkbox" name="Worum geht es?" value="Bestehende Mitgliedschaft"><span>Bestehende Mitgliedschaft</span></label>
+          <label class="choice"><input type="checkbox" name="Worum geht es?" value="Sonstiges"><span>Sonstiges</span></label>
+          <label class="choice"><input type="checkbox" name="Worum geht es?" value="Rückruf"><span>Bitte ruft mich zu meiner Anfrage zurück.</span></label>
+        </div></fieldset>
+        <label class="field"><span>Deine Nachricht*</span><textarea aria-label="Deine Nachricht"></textarea></label>
+        <p class="privacy">Mit dem Absenden des Formulars werden die angegebenen Daten zur Bearbeitung deiner Anfrage verarbeitet. Weitere Informationen findest du in unserer <a href="datenschutz.html">Datenschutzerklärung</a>.</p>
+        <button class="submit" type="button">Nachricht senden</button>
+      </form>
+    </div>
+  </main>
+  <footer class="site-footer"><div class="footer-inner">
+    <div class="footer-brand"><img src="assets/logo.png" alt="KIELS Fitness – Fitnessstudio in Kiel" width="173" height="76"></div>
+    <div><p class="footer-copy">Folge uns auf Social Media und sei immer auf dem neusten Stand über aktuelle Themen und Specials</p><nav class="footer-nav" aria-label="Fußnavigation"><a href="index.html">Home</a><a href="fitness.html">Fitness</a><a href="wellness.html">Wellness</a><a href="agbs.html">AGB</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a><a href="health.html">Health</a><a href="kurse.html">Kurse</a></nav><a class="contact-link" href="kontakt.html">Kontakt</a></div>
+    <div class="social" aria-label="Social-Media-Leiste"><a href="https://www.facebook.com/kielsfitness/?locale=de_DE" aria-label="Facebook">f</a><a href="https://www.instagram.com/kielsfitness/?hl=de" aria-label="Instagram">◎</a></div>
+  </div></footer>
+</body>
+</html>
