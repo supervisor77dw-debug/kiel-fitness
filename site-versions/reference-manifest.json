@@ -1,0 +1,1101 @@
+{
+  "frozenAt": "2026-10-03",
+  "files": [
+    {
+      "path": "01-current/agbs.html",
+      "sha256": "1408e3d4051f2f38feb30c85ae7de3202a6220ad77f15847955333f2a8e8ac9c"
+    },
+    {
+      "path": "01-current/api/contact.js",
+      "sha256": "490211c32cc9d6bae1506d3beb808fdd0fc76dd3f24044432aeb59b10bf4368c"
+    },
+    {
+      "path": "01-current/CONTACT.md",
+      "sha256": "4a529a1cdb9dccd648de74f72995c1d47d13be199c1206fa462751fcca9badca"
+    },
+    {
+      "path": "01-current/datenschutz.html",
+      "sha256": "8f82f738f11c130c4c7a55474243efdd28e38d97bda4454f9f24838757ee9a4f"
+    },
+    {
+      "path": "01-current/fitness.html",
+      "sha256": "45cec2a9c1f82bd1fa32751dc09347aabd16e629c98f84dc57f3c3832c4df14c"
+    },
+    {
+      "path": "01-current/health.html",
+      "sha256": "93538919c495b7c911a3522b52aec64c1ea725714648e642e9320e542f2328a5"
+    },
+    {
+      "path": "01-current/impressum.html",
+      "sha256": "26648f131296c0642c5e602e0a81e088905812b37c37da5cc55c907e30291716"
+    },
+    {
+      "path": "01-current/index.html",
+      "sha256": "8d297aa1b29e260a291faab89b98d258fad61604f960700b8386b92e0c1e038a"
+    },
+    {
+      "path": "01-current/kontakt.html",
+      "sha256": "b7d15ef3bd81df2c2f30dbc7d31df972505fb87c1ab41454517b0f7e80c7501b"
+    },
+    {
+      "path": "01-current/kurse.html",
+      "sha256": "3fcbb32e2537dbad9c7f2308157f6f0a3c5bc96ee07283d0ce2e18e757b356fb"
+    },
+    {
+      "path": "01-current/lib/contact.js",
+      "sha256": "0849cae7c8fbfd565dad4743c8bb66666efc6dac1ada0dd19c5a38935273f798"
+    },
+    {
+      "path": "01-current/lib/highlevel.js",
+      "sha256": "5edb051b9cee7e21098f6cf89e6ca5bee309f78faa2ec6b0e1d58bc94b473d01"
+    },
+    {
+      "path": "01-current/responsive.css",
+      "sha256": "c679a503a8e767c15eb33596602a17634e1b94ec1aeeb5112bd36fada2647844"
+    },
+    {
+      "path": "01-current/script.js",
+      "sha256": "d07d3dc1b3237b42e8e5921a4007930137d665f218adbc0f5713319a57accc13"
+    },
+    {
+      "path": "01-current/styles.css",
+      "sha256": "8f33c4689996eb5e871e6387aa213ace8605f10249b175117ab1bcddfefb97b4"
+    },
+    {
+      "path": "01-current/tests/contact.test.cjs",
+      "sha256": "9b5282c58911cfcbc0f51f80abd0046941af60f21b8ce68f290349c48809cfcc"
+    },
+    {
+      "path": "01-current/wellness.html",
+      "sha256": "9845b90ddfd86a28879bbe43a5b77bb6bccf4c0d7b6293eec7f892121179a3c1"
+    },
+    {
+      "path": "shared/assets/biosauna.png",
+      "sha256": "1ed653442572d210e2597b37972a3b806718a25073c4a0ffb43a14d93b237c8c"
+    },
+    {
+      "path": "shared/assets/brunnen.png",
+      "sha256": "162ee0ec5889fb98af148d114d58249f35adf983c9746e9cf742ab529f48aedc"
+    },
+    {
+      "path": "shared/assets/courses/course-01.jpg",
+      "sha256": "979ac2ecc724a081ba47b52d151e20b48c8f85f4ee6a433f97b3872c7b4f02dd"
+    },
+    {
+      "path": "shared/assets/courses/course-02.jpg",
+      "sha256": "b31c83faf69b14cb4da347932d82e85e4333c34011e36654353bcbeb54aefaf6"
+    },
+    {
+      "path": "shared/assets/courses/course-03.jpg",
+      "sha256": "ef38664a1bd97c71ccf44f3152003bb4e854c9c84e0eb7831d7ef3d25c6b0620"
+    },
+    {
+      "path": "shared/assets/courses/course-04.jpg",
+      "sha256": "9b5585aa555d9b6816453f00761c901168241be5e3574ebe82ca49d9e91db66c"
+    },
+    {
+      "path": "shared/assets/courses/course-05.jpg",
+      "sha256": "9e6f9b8fb03494c18d499fb80b3a69f8d15c7d591f2fc98f574503985f06be8c"
+    },
+    {
+      "path": "shared/assets/courses/course-06.jpg",
+      "sha256": "a9953b2153f30e4e36a20d33bbcc18d67854d717b637dab64b90600d8adb595e"
+    },
+    {
+      "path": "shared/assets/courses/course-07.jpg",
+      "sha256": "b66a6ac344e2a687809f33ca1ed379034fa8b8b8b45bbef650a899ced529a32f"
+    },
+    {
+      "path": "shared/assets/courses/course-08.jpg",
+      "sha256": "86262c75baff0cbb34644a63fd8d95747af11a793d7a642dcc1a66da74535826"
+    },
+    {
+      "path": "shared/assets/courses/course-09.jpg",
+      "sha256": "9e6f9b8fb03494c18d499fb80b3a69f8d15c7d591f2fc98f574503985f06be8c"
+    },
+    {
+      "path": "shared/assets/courses/course-10.jpg",
+      "sha256": "4c5cf15dd080817be6720ed34a28f14078cbb2bd2b052468b0071050806049ba"
+    },
+    {
+      "path": "shared/assets/courses/course-11.jpg",
+      "sha256": "5ee77e7cf87622c6e97613221f630493776d91132c16ded2701f5e92db40737b"
+    },
+    {
+      "path": "shared/assets/courses/course-12.jpg",
+      "sha256": "76510fe19899f7ae8aacbf251a5d692b75747ed35876d1d7e2f78435d190e6ca"
+    },
+    {
+      "path": "shared/assets/courses/course-13.jpg",
+      "sha256": "3497ed01ad28924a37832470ed1563ce4f709d3c88a4dc1b74c589c9227e3f58"
+    },
+    {
+      "path": "shared/assets/courses/course-14.jpg",
+      "sha256": "50a3c36e71098056af724c2372f15eda212aa2222b6c01ab380a589d7a5e1dfe"
+    },
+    {
+      "path": "shared/assets/courses/course-15.jpg",
+      "sha256": "d7e0161b0fd1011ba5b3d26b3d6c2a909054a698e39b0c53c2cc3b384091ff95"
+    },
+    {
+      "path": "shared/assets/courses/course-16.jpg",
+      "sha256": "18571fa98d38181edf1ace6a39de81897582fcf37edfbc986666be7fabcc954b"
+    },
+    {
+      "path": "shared/assets/courses/course-17.jpg",
+      "sha256": "7b9080fa73539f1fc88deb4509fa340fe1e67f9e8fc755087ba6aaa7beafdf1c"
+    },
+    {
+      "path": "shared/assets/courses/course-18.jpg",
+      "sha256": "8495bfaab1988500d40876eafb6819579cf31862306dc292f0da6e012ce3252d"
+    },
+    {
+      "path": "shared/assets/courses/course-19.jpg",
+      "sha256": "d7e0161b0fd1011ba5b3d26b3d6c2a909054a698e39b0c53c2cc3b384091ff95"
+    },
+    {
+      "path": "shared/assets/courses/course-20.jpg",
+      "sha256": "b5857cd2022b36594aff24d6ab19c01b3afb3f08e50c7502ba03b64b26a508b7"
+    },
+    {
+      "path": "shared/assets/courses/course-21.jpg",
+      "sha256": "32cf3b27a3b0d514ca3804ab35b396d9815ef8c4a9af82c3396498338a662610"
+    },
+    {
+      "path": "shared/assets/courses/course-22.jpg",
+      "sha256": "690f7a7d010ef32978d3de69069a662c54e2348ae75d11027c56670f40c73628"
+    },
+    {
+      "path": "shared/assets/courses/course-23.jpg",
+      "sha256": "979ac2ecc724a081ba47b52d151e20b48c8f85f4ee6a433f97b3872c7b4f02dd"
+    },
+    {
+      "path": "shared/assets/courses/course-24.jpg",
+      "sha256": "979ac2ecc724a081ba47b52d151e20b48c8f85f4ee6a433f97b3872c7b4f02dd"
+    },
+    {
+      "path": "shared/assets/ellipse-12.png",
+      "sha256": "a37313001cd3c0ace931d2edf1e73130c21aef581284047a65d31a79af193577"
+    },
+    {
+      "path": "shared/assets/fitness-4925664_1280.jpg",
+      "sha256": "014355b2687a18dc9778b94465b393379ffb36ebcf10708c0c6a301e7b61a34e"
+    },
+    {
+      "path": "shared/assets/fitness-ellipse-small.png",
+      "sha256": "6b1fa24a4dcb143fd06d2da58be2f6974171a90a0a3b7192f5139af478dfb589"
+    },
+    {
+      "path": "shared/assets/fitness-ellipse.png",
+      "sha256": "3a7e8745d7985dc354da26e9598deb770b9c717b5a8f1537c17cac8b8a3f1a8c"
+    },
+    {
+      "path": "shared/assets/fitness-hero.png",
+      "sha256": "f69c3bb294cf0f45a099dbc040e4e36e2965a5b419c77c99ee447fc24939f2bd"
+    },
+    {
+      "path": "shared/assets/fitness-logo.png",
+      "sha256": "c9a96f8055acf44919d9f9a6fdc6449bd4bdcec5db369748070b08827727172b"
+    },
+    {
+      "path": "shared/assets/fitness-main.png",
+      "sha256": "ad68d8491d9f0bcdad8220c470faef5c6f2f55a761109e4ffaf39490de2334bc"
+    },
+    {
+      "path": "shared/assets/fitness-yellow-box.png",
+      "sha256": "12187a4824a7c2a73ab9d00363cb431ee5a74a20884af9308bcea567b6e0268a"
+    },
+    {
+      "path": "shared/assets/fitness.png",
+      "sha256": "10fe3a06bb3188d15dca930827877725ba856bc345bb94f87ec00093c9b103ae"
+    },
+    {
+      "path": "shared/assets/fitness1.png",
+      "sha256": "8a6374c5bc1d2c3e2f7e20d76b72a3a897286f3db5c19256112e90d301159fb7"
+    },
+    {
+      "path": "shared/assets/fitnessmobile.png",
+      "sha256": "376800cd22fe83b872464cfd7e36030e0639d40d7b58e0012dd92d74e013589b"
+    },
+    {
+      "path": "shared/assets/fitness_header.png",
+      "sha256": "90b723532278fd3e397b701fdb2733b7ed378f39ec2399a89ff2e2a0a15834b6"
+    },
+    {
+      "path": "shared/assets/Gesundheit.png",
+      "sha256": "05670cd90748376aa392700abaac3970c38aa997219e9ff03ed07b89a781182e"
+    },
+    {
+      "path": "shared/assets/gesundheitheader.png",
+      "sha256": "536738ac6353b6335321e0cbf0f2c5491a22ce0480b307c36e1968c1d56bd8b2"
+    },
+    {
+      "path": "shared/assets/health-dr-hosch-original.png",
+      "sha256": "49dd24f001784aeeeb3641b5dc8893cc343c3ae2db388929084ad15d794c2e8d"
+    },
+    {
+      "path": "shared/assets/health-dr-hosch-reference.png",
+      "sha256": "ca478a3d039a30fb7bf16079366697ce5daaa1106c292cb12ef998e1d96813e5"
+    },
+    {
+      "path": "shared/assets/health-dr-hosch.png",
+      "sha256": "cacfae7667bc502ae281c30a5cbe26c99c9f6714bb8b83048e89d6699ed08d69"
+    },
+    {
+      "path": "shared/assets/health-gesundheit.png",
+      "sha256": "05670cd90748376aa392700abaac3970c38aa997219e9ff03ed07b89a781182e"
+    },
+    {
+      "path": "shared/assets/health-gesundheitheader.png",
+      "sha256": "536738ac6353b6335321e0cbf0f2c5491a22ce0480b307c36e1968c1d56bd8b2"
+    },
+    {
+      "path": "shared/assets/health-pexels-cliff-booth-4056723.jpg",
+      "sha256": "fc69c0753251cdeb40a3634d6fdb38540aad46386112aaa05d37b9dc5123d4b0"
+    },
+    {
+      "path": "shared/assets/health-pexels-karolina-grabowska-4498240.jpg",
+      "sha256": "98a3997d1edd15a3abd5b67c369988c27608aeaaa3570700a24efcecc335a60d"
+    },
+    {
+      "path": "shared/assets/health-pexels-mart-production-7894439.jpg",
+      "sha256": "1256169e99d95a97835afd0b1c6af76274734744e861bce29a499cfd9cd5c6d1"
+    },
+    {
+      "path": "shared/assets/health-pexels-miriam-alonso-7593001.jpg",
+      "sha256": "d8c59d733d5cd08663c28fac9330e17b221e7ae27530da806a0ef05bede9961f"
+    },
+    {
+      "path": "shared/assets/health-pexels-pixabay-416747.jpg",
+      "sha256": "43c20bfedc086ee5d6a139727cd978f974b5bd247afad45e2711c41618e250fd"
+    },
+    {
+      "path": "shared/assets/health-rectangle-358.png",
+      "sha256": "a65727f149f8a2c50e8ebff3ad792d3ae8e9a756c88fa24ec910a87eb3afb540"
+    },
+    {
+      "path": "shared/assets/health-rectangle-359.png",
+      "sha256": "ca07a7674951c422a644d85f6359bd618b0921c9667767dddd68e18749321997"
+    },
+    {
+      "path": "shared/assets/health-rectangle-370.png",
+      "sha256": "8db497e08dd33a8edb53267869cb8a58217a3b526e908ec200a46467a2214f58"
+    },
+    {
+      "path": "shared/assets/health-rectangle-371.png",
+      "sha256": "63e54bbdfacf433fd08b5295d5e1a9639e67cd53259d0e3fa42793495b3b6337"
+    },
+    {
+      "path": "shared/assets/health-rectangle-372.png",
+      "sha256": "93c8916431d81bef52fd729d1665f31a17017dc9f160f5d9f0d1bd6c42802d0a"
+    },
+    {
+      "path": "shared/assets/healthmobile.png",
+      "sha256": "7279bc5560ce27c75d0fc0efcbbe3ddd5c03e02e9d802a1513a4a94134747109"
+    },
+    {
+      "path": "shared/assets/home-hero.png",
+      "sha256": "66ae5c24031a0f3011ec12daa4513952245ec85531cbb66e1db08b4b7c33bc82"
+    },
+    {
+      "path": "shared/assets/home-original/Bildschirmfoto 2024-02-07 um 19.14.46.png",
+      "sha256": "aa90683a65f259256b7828a255372b8e6f4a866e8db172d8f40792400bcd303c"
+    },
+    {
+      "path": "shared/assets/home-original/Bildschirmfoto 2024-02-07 um 19.18.51.png",
+      "sha256": "03e8982dfc4b3020f24faeb55644878a1b403088d6c4c1b7b9550a9707241d2f"
+    },
+    {
+      "path": "shared/assets/home-original/Bildschirmfoto 2024-02-07 um 19.23.01.png",
+      "sha256": "e5870eb2fcd8e06db80fd4f20f59f22890a0dedb2c6c284e08652387f7550d08"
+    },
+    {
+      "path": "shared/assets/home-original/Ellipse 12.png",
+      "sha256": "a37313001cd3c0ace931d2edf1e73130c21aef581284047a65d31a79af193577"
+    },
+    {
+      "path": "shared/assets/home-original/fitness.png",
+      "sha256": "10fe3a06bb3188d15dca930827877725ba856bc345bb94f87ec00093c9b103ae"
+    },
+    {
+      "path": "shared/assets/home-original/Frame 664.png",
+      "sha256": "0ebec98eb691bc3ebc2448ebd98aaa5477aa1b121617fba30d3ccbaeb61ae8c4"
+    },
+    {
+      "path": "shared/assets/home-original/Gesundheit.png",
+      "sha256": "05670cd90748376aa392700abaac3970c38aa997219e9ff03ed07b89a781182e"
+    },
+    {
+      "path": "shared/assets/home-original/kurse.png",
+      "sha256": "4657881a751a504cab326d319feb4f16074a83c2bd0c88c90b77098a26108c08"
+    },
+    {
+      "path": "shared/assets/home-original/Rectangle 361-1.png",
+      "sha256": "5b87bff2a5e13532cd890493ebef6dd63f1bbee25a507ab46ee53eb491b3d973"
+    },
+    {
+      "path": "shared/assets/home-original/Rectangle 361-2.png",
+      "sha256": "a4b82688ec707807547ce437314d9357865579daa58dbe66dee89c0ab8d8870e"
+    },
+    {
+      "path": "shared/assets/home-original/Rectangle 361.png",
+      "sha256": "471684192e8b8ba82400c8fb1cc188dcdccf7bab9e768dfb31a928fc556565e0"
+    },
+    {
+      "path": "shared/assets/home-original/Rectangle 370.png",
+      "sha256": "8db497e08dd33a8edb53267869cb8a58217a3b526e908ec200a46467a2214f58"
+    },
+    {
+      "path": "shared/assets/home-original/Rectangle 371.png",
+      "sha256": "63e54bbdfacf433fd08b5295d5e1a9639e67cd53259d0e3fa42793495b3b6337"
+    },
+    {
+      "path": "shared/assets/home-original/Rectangle 372.png",
+      "sha256": "93c8916431d81bef52fd729d1665f31a17017dc9f160f5d9f0d1bd6c42802d0a"
+    },
+    {
+      "path": "shared/assets/home-original/Wellness.png",
+      "sha256": "9c07f3e428546284b3dcc8166fe8336d3bcc307a396af60f630a5cc715d9fd35"
+    },
+    {
+      "path": "shared/assets/home-tour.png",
+      "sha256": "d534c14d84210660a97c2f104b59f2c4a5e237459b522e06e1c8a43781069cbf"
+    },
+    {
+      "path": "shared/assets/homeheader.png",
+      "sha256": "ead20c1208d2c473b9113e95a8517c1ae78305f179d0cbca8d1bae78c0a7d680"
+    },
+    {
+      "path": "shared/assets/kurse.png",
+      "sha256": "4657881a751a504cab326d319feb4f16074a83c2bd0c88c90b77098a26108c08"
+    },
+    {
+      "path": "shared/assets/kursemobile.png",
+      "sha256": "f2b05e04f51ecd16bd868c6dc1b0353575519c39207015e79d700beac72257f7"
+    },
+    {
+      "path": "shared/assets/kurse_header.png",
+      "sha256": "7968c552886439d98d8a88cc551eb0ad6b48ca83a90c1ae39a874e73464e9ef8"
+    },
+    {
+      "path": "shared/assets/logo.png",
+      "sha256": "c9a96f8055acf44919d9f9a6fdc6449bd4bdcec5db369748070b08827727172b"
+    },
+    {
+      "path": "shared/assets/lounge.png",
+      "sha256": "a351b0f9e03e1a501aa06b1723b15a54d3b0ac060c7e39020cc79de056a1e893"
+    },
+    {
+      "path": "shared/assets/Lounge2.png",
+      "sha256": "aa452363c9cf1a1a9dbbc62a284679b0251e0f213336e6d2a28394742fb9ba39"
+    },
+    {
+      "path": "shared/assets/mobilehomeheader.png",
+      "sha256": "949856b6d0316ce8ff0016fc6f02865f08febff3ef7a8a17d215b54c92b0a939"
+    },
+    {
+      "path": "shared/assets/pexels-andrea-piacquadio-3768722.jpg",
+      "sha256": "e9b335767491f308acafd7f2660dbaf2efabfbf228b43840376609c05061d710"
+    },
+    {
+      "path": "shared/assets/pexels-andrea-piacquadio-3775566.jpg",
+      "sha256": "0983c5224103b835c23a35a06d1437ba1dfcb7ffc5a18d1de87543cad998b47d"
+    },
+    {
+      "path": "shared/assets/pexels-andrea-piacquadio-863926.jpg",
+      "sha256": "db6a12cabdb6aef2ba0e4c60d32a0a3d1984499cc7fd24ef36d93301f43f5a2f"
+    },
+    {
+      "path": "shared/assets/pexels-clem-onojeghuo-175708.jpg",
+      "sha256": "135879b8b2c5dc9226154a6a07345216cde93b84355c01293249e8db82d5134a"
+    },
+    {
+      "path": "shared/assets/pexels-cliff-booth-4056723.jpg",
+      "sha256": "fc69c0753251cdeb40a3634d6fdb38540aad46386112aaa05d37b9dc5123d4b0"
+    },
+    {
+      "path": "shared/assets/pexels-cottonbro-studio-4324051_edited.jpg",
+      "sha256": "3a4dc83b79181559a792333f9660004bb88c3bd58405aab48c0456e55acc2aef"
+    },
+    {
+      "path": "shared/assets/pexels-cottonbro-studio-4753923.jpg",
+      "sha256": "72644e9d18d4d86481012181bbdb03013139d0995e5a4898866c1abd595d5af5"
+    },
+    {
+      "path": "shared/assets/pexels-elina-fairytale-3823076.jpg",
+      "sha256": "4429727b26a1da39ef8a522fc318f4a5bdbd708a5bc407dee1fefbff603860c8"
+    },
+    {
+      "path": "shared/assets/pexels-elina-fairytale-3823207.jpg",
+      "sha256": "89e37c52e071793330957dfb25bad5cbc5256d41e22a76f19f704dc1ae9aaeb2"
+    },
+    {
+      "path": "shared/assets/pexels-karl-solano-2780762.jpg",
+      "sha256": "605c40480352ba37fe81c2e9acd2ed5a7f671350d16802466e75a3d282b00cc9"
+    },
+    {
+      "path": "shared/assets/pexels-karolina-grabowska-4498240.jpg",
+      "sha256": "98a3997d1edd15a3abd5b67c369988c27608aeaaa3570700a24efcecc335a60d"
+    },
+    {
+      "path": "shared/assets/pexels-mart-production-7894439.jpg",
+      "sha256": "1256169e99d95a97835afd0b1c6af76274734744e861bce29a499cfd9cd5c6d1"
+    },
+    {
+      "path": "shared/assets/pexels-miriam-alonso-7593001.jpg",
+      "sha256": "d8c59d733d5cd08663c28fac9330e17b221e7ae27530da806a0ef05bede9961f"
+    },
+    {
+      "path": "shared/assets/pexels-munbaik-cycling-clothing-5851033.jpg",
+      "sha256": "09e7b42a3661fa8b4aabc2ab29d3a4faa0d57eb9aecdaa727d8da462c481ee39"
+    },
+    {
+      "path": "shared/assets/pexels-pixabay-260352.jpg",
+      "sha256": "87081cbaf1737dc415aa5258b0914f40f2388a545b78f45f1aedc8c1c8182520"
+    },
+    {
+      "path": "shared/assets/pexels-pixabay-416747.jpg",
+      "sha256": "43c20bfedc086ee5d6a139727cd978f974b5bd247afad45e2711c41618e250fd"
+    },
+    {
+      "path": "shared/assets/pexels-valeria-ushakova-3094215.jpg",
+      "sha256": "a3665fbeaf53b65df1563faacfe50f111cb517b25db03d7a4f36f89ce65cf1d3"
+    },
+    {
+      "path": "shared/assets/pexels-victor-freitas-703014.jpg",
+      "sha256": "fefcd1c816d9fbee0ee178a45f6fdd559eba2c1fb8cb3670b19474f2f7f33ce9"
+    },
+    {
+      "path": "shared/assets/ruheraum.png",
+      "sha256": "84e3c4c022ef2057bbb3c535926e14a63a6d471a10e3194ae2ed5a60ae8913e9"
+    },
+    {
+      "path": "shared/assets/stairs-1627424_1280.jpg",
+      "sha256": "b8b91f1cf3d93fe4befcbfcaea562cba749a8f9ff090fd36bacac3c27acf9ec8"
+    },
+    {
+      "path": "shared/assets/wellness-bistro-coffee.png",
+      "sha256": "cae045ca371ae9bda12c499ec91b5b704f19b3c61acc54566228dca0b4833551"
+    },
+    {
+      "path": "shared/assets/wellness-dampfbad.png",
+      "sha256": "f6db2633418f5bc5945c255d33dbb8de83e8f8ca3a3965040d22171a05fce9ff"
+    },
+    {
+      "path": "shared/assets/wellness-finnische-sauna.png",
+      "sha256": "2784cd0667c408f193b20d2b098b8e36ae56caccbcbeb8139da6efe5a7e270a2"
+    },
+    {
+      "path": "shared/assets/wellness-hero.png",
+      "sha256": "5b304b06116b6d9229bebdff274487f9249bbcb09eaf1b3c3d66d415b9820b96"
+    },
+    {
+      "path": "shared/assets/wellness-sauna-card.png",
+      "sha256": "f00b1c2078ae7c6588fa10e1c93a22b409ededd6bc90f761a3dc27cfdd575104"
+    },
+    {
+      "path": "shared/assets/wellness-sauna-samstag.png",
+      "sha256": "3ca886e74f1fadeea3911b188f942e9172a339264735be7551d172aa8b1c106e"
+    },
+    {
+      "path": "shared/assets/Wellness.png",
+      "sha256": "9c07f3e428546284b3dcc8166fe8336d3bcc307a396af60f630a5cc715d9fd35"
+    },
+    {
+      "path": "shared/assets/yellow-box.png",
+      "sha256": "7e2d329f1771be2075aeeaffcd37c20286c032f35f53cd9099db94be45161890"
+    },
+    {
+      "path": "shared/wix-clone/browser.sentry-cdn.com/7.120.3/bundle.tracing.es5.min.js",
+      "sha256": "e5027189917ec061eb7e74305e7a19230f2b55801a7420e6d0f2cfd904578287"
+    },
+    {
+      "path": "shared/wix-clone/browser.sentry-cdn.com/7.120.3/modulemetadata.es5.min.js",
+      "sha256": "3c9d035f17872f6a5972090b296a9f93e287a72313b1a8081250bee37299cc6e"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/editor-elements-library/dist/thunderbolt/media/sloppyframe.3214ce8e.png",
+      "sha256": "413ceef823554859011bed84f84e032b7b804cac59be6ced4ea8192e32dc4912"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/editor-elements-library/dist/thunderbolt/rb_wixui.thunderbolt[ClassicSection].698c66d5.min.css",
+      "sha256": "559c31c3c1eb7a728b7b900fa765ac7fbf8b4b7416b4d3ae998dc0595ee18121"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/editor-elements-library/dist/thunderbolt/rb_wixui.thunderbolt[Container_DefaultAreaSkin].69073092.min.css",
+      "sha256": "9ba00653e81f9413f19bfd25618d885b5cc06c216592cbc4540a70f854bff7f5"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/editor-elements-library/dist/thunderbolt/rb_wixui.thunderbolt[GoogleMap_WithConsentWrapper].974958f9.min.css",
+      "sha256": "cf721d42cf270535268842c2dc0a3edad2d133f65835f83f0454c216f0c9a6ce"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/editor-elements-library/dist/thunderbolt/rb_wixui.thunderbolt[SingleTab].0dcd928b.min.css",
+      "sha256": "3833db3d0c0f4613f46d5ced7eae47e53a6ea429314f77ced9cbd667c6a1297c"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/editor-elements-library/dist/thunderbolt/rb_wixui.thunderbolt[SkipToContentButton].c9649c22.min.css",
+      "sha256": "edaf5716080d5346f83d0fcfa9f7656891dc791df1650c95a35fcddddf96e171"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/editor-elements-library/dist/thunderbolt/rb_wixui.thunderbolt[SlideShowContainer].0412efaf.min.css",
+      "sha256": "9e2a3e1d25d0041c87a31ace3728b3270166fc676cd7de0ff4a0d6e5cc601202"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/editor-elements-library/dist/thunderbolt/rb_wixui.thunderbolt[SlideShowSlide].5e13e52f.min.css",
+      "sha256": "3ab8d85a244276de98e2650b1cad4ec4e9bdc27c051cdc4ed519b699ab6cfa51"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/editor-elements-library/dist/thunderbolt/rb_wixui.thunderbolt[StripColumnsContainer_Default].228b4bbf.min.css",
+      "sha256": "84599c8af2b01f281bd0250bb6cdba4356957b97ad46cc9612eabf727761008d"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/editor-elements-library/dist/thunderbolt/rb_wixui.thunderbolt[StylableButton_Default].a4db0646.min.css",
+      "sha256": "e9778dfce709de2c5e18917e710bafb13849b43b0f4f25ca0f83fbb0b24d9cae"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/editor-elements-library/dist/thunderbolt/rb_wixui.thunderbolt[Tabs].4d95de86.min.css",
+      "sha256": "b7f8040ed04f61b30a092075a1f1ab61a14db9ced5b81528fe5caafec7df7b95"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/editor-elements-library/dist/thunderbolt/rb_wixui.thunderbolt[WPhoto_RoundPhoto].c9c867b5.min.css",
+      "sha256": "8d2956513fd7e52b05963c43c32e4ba53e2a38fd9675879103726b3bdfbe15a7"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/editor-elements-library/dist/thunderbolt/rb_wixui.thunderbolt_bootstrap-classic.95bff5e0.min.css",
+      "sha256": "0adf7148f7a39387658ce648f80a38ad81e49aa846176c513974e44ec48fa5d9"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/editor-elements-library/dist/thunderbolt/rb_wixui.thunderbolt_bootstrap.674e7dbc.min.css",
+      "sha256": "ce6ced26ba7613148c1e0beb9b879870abf8a62cc7a22d92f85db48b4d6def28"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/editor-elements-library/dist/thunderbolt/rb_wixui.thunderbolt_menu.45f28881.min.css",
+      "sha256": "2cb7ff5856296ac32493ea3d1cc268f06b50c3ae0d01a8ece7678d6de6ea742f"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/form-app/1.3117.0/client-viewer/1277.chunk.min.css",
+      "sha256": "2023362aa0ea245c9c40a088cff11e28f7d86872d0c6f73fcae7c979f1338470"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/form-app/1.3117.0/client-viewer/159.chunk.min.js",
+      "sha256": "295dfc94461f278b2623e94635702f0b9586ce91b991edd1b3a0a9028d404543"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/form-app/1.3117.0/client-viewer/1816.chunk.min.css",
+      "sha256": "ebb30fa174449e92b2d6c1988cfc581beca7c3a1cfdc379d99659d9ff4ad22c4"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/form-app/1.3117.0/client-viewer/1816.chunk.min.js",
+      "sha256": "4dbcbd7a171de77d356b6ed6235e9ebc1e087d23bfab18f5256dcf5a0aa7f6bf"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/form-app/1.3117.0/client-viewer/3931.chunk.min.js",
+      "sha256": "b3cdfdeef1c421b8be10a1afe5da08b5e8bee4d4f6fcb91fec0606705bf04748"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/form-app/1.3117.0/client-viewer/4660.chunk.min.js",
+      "sha256": "f483736b45412f9d35c25f4c34f87b2f36b76b4c8310c58978eac5d9335cdc69"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/form-app/1.3117.0/client-viewer/5995.chunk.min.js",
+      "sha256": "1e86ef6075c6a78bdd2ded39c1ef8ca9efca7dd85181ca9c6d211ec49c24f0ee"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/form-app/1.3117.0/client-viewer/7757.chunk.min.js",
+      "sha256": "e4ae0fc7456d4cea61d7113ece985f9cfe63c030d6aebbe55da40cd42fa6e9ae"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/form-app/1.3117.0/client-viewer/8174.chunk.min.js",
+      "sha256": "6c527e6da2b7fc77534046dedc7d14a3b3c4953c915bcdd9fbb18d85d4456d75"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/form-app/1.3117.0/client-viewer/8509.chunk.min.js",
+      "sha256": "b5a839253aa0808a41be81409c6349f36d00260a99802b06264ebfedd0d9365d"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/form-app/1.3117.0/client-viewer/form-app-checkbox-group.chunk.min.js",
+      "sha256": "eb1c9606141d5ab2fa9f7ded9205d5fb3a08770870621f71a1e8f3b13234f0a7"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/form-app/1.3117.0/client-viewer/form-app-contacts-phone.chunk.min.css",
+      "sha256": "657fe6995cc0c58925b2bc0bf38aac53c2d9598fcd1428485fe33f9f77c254fc"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/form-app/1.3117.0/client-viewer/form-app-contacts-phone.chunk.min.js",
+      "sha256": "303d71d89a7df5595337c78af24f63e6a6e1e99c6d830e7eab4de22027724c1f"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/form-app/1.3117.0/client-viewer/form-app-rich-text.chunk.min.css",
+      "sha256": "4bcf06bd0996891a53bb06f6b6d22ede69fbcf9a8815d4f1dfd5349c0fcbd192"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/form-app/1.3117.0/client-viewer/form-app-rich-text.chunk.min.js",
+      "sha256": "705e9678edba9eba86b907df13d2fed606e77be90d6489e0d4d3b382bcae53c9"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/form-app/1.3117.0/client-viewer/form-app-text-area.chunk.min.css",
+      "sha256": "636fb9b657f970a5859e8d63ca17b35f453371d6d003098a64974f54faa62f3d"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/form-app/1.3117.0/client-viewer/form-app-text-area.chunk.min.js",
+      "sha256": "db835b6018f8662ccb5419e3c39d73cdb2a69fce8b7d9de3b1bb9af37f518e82"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/form-app/1.3117.0/client-viewer/form-app-wix-ricos-viewer.chunk.min.js",
+      "sha256": "c958067da2f0e9b32b226c370e05e17b0dc611cf9fcc0d8a452da38af37cadf7"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/form-app/1.3117.0/FormViewerWidget.min.css",
+      "sha256": "a9e12e0dc173296d15a6315851a43594541d0f86281c370d9db488a2dde95df9"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/form-app/1.3117.0/FormViewerWidgetNoCss.bundle.min.js",
+      "sha256": "fdcfbebb9f3d706f13199c1c98716a1930db945564cad88c3902d878d1509b94"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/linguist-flags/1.1005.0/assets/flags/square/DEU.png",
+      "sha256": "f0a8b62cb0b92abbbfcfb1d70815ba598e276c15483842f2f6e6d392697a6e34"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/linguist-flags/1.1005.0/assets/flags/square/DEU_2x.png",
+      "sha256": "aea8ed68763c76ead34baf38f657688593c74cfe3a1ff52b8f60f64139aa8a24"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/tag-manager-client/1.1075.0/siteTags.bundle.min.js",
+      "sha256": "f6f3db1dd9fd54e780c4a80b09c8c085ca4f0b52478eea8c2a692fbd8d551975"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/bi-common.inline.17f83560.bundle.min.js",
+      "sha256": "fcb0afe0f5e64ddb7d15ff35fc95aac2970b5ed63c82cdc1e570a3c3836847a0"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/bi.inline.ae93e7f6.bundle.min.js",
+      "sha256": "d04f12cb621c4b9540cd5fa1dae3740e7991a8be04f9edf3c37a7be5755d288c"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/browser-deprecation.bundle.es5.js",
+      "sha256": "eb16b677ca48602e8f5494eaa3308fb78abacc1746172a978134d68e85cf5654"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/createPlatformWorker.inline.a9bb4739.bundle.min.js",
+      "sha256": "2b8f2111aafff17e6dc983771e45fe3e9ad20da5030b234646e839aa42bc0c95"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/custom-element-utils.inline.43befd9d.bundle.min.js",
+      "sha256": "7fe9437cdb6241cfc57be263a24160e87cba0554c614d24d977f1f91af3de40a"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/externals-registry.inline.c335b0f1.bundle.min.js",
+      "sha256": "a850617429c5dffee3323c38b97de0db21069a1a67eb40b8e05ae957b72016d8"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/fastdom.inline.48a8bd4b.bundle.min.js",
+      "sha256": "700632a1e13bf1693c7ed3a3a6f01828a4e211f8bbb435dd230d9b47e4cb09b0"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/group_7.c472a333.chunk.min.css",
+      "sha256": "8972227695bf52f8a15a4bf76c72c063bf9846f64d621dfba4d4111ba2d01b11"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/handleAccessTokens.inline.3250797b.bundle.min.js",
+      "sha256": "f3446715362ba0eb8f755225939eb45fad93c104eae70bf250c6487d4c44b21d"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/initCustomElements.inline.51cbd1b6.bundle.min.js",
+      "sha256": "866d7614524eddbe40a13239fd2522aff5b88743ef4ba07d6efe16357558db05"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/lazyCustomElementWrapper.inline.eefbcea5.bundle.min.js",
+      "sha256": "f70906c6af219bdf0e5e6a35d11b14765958defccef7165dffac2f03023f8dde"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/main.744ea815.min.css",
+      "sha256": "73432c855d15679521c1471d4769785ee7850dea89e6f25c1cc04a63ded6ff87"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/main.a3ce3501.bundle.min.js",
+      "sha256": "8ba7a208aa009854c6f13821c4100cbedcc8f92e698ff13cb538aba93d51cd94"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/main.eeee3112.bundle.min.js",
+      "sha256": "d5f70d76fd76128cd8ec792d7d37b48731b58b66ce5bc756cd0b529d5bb3399b"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/main.f9375119.bundle.min.js",
+      "sha256": "4d0e470369b1a5cfafd07bc41b51e4fffeb897a58672a0eaf4cf263980b39a76"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/main.renderer.32731c34.bundle.min.js",
+      "sha256": "249e257bb58d43302d94d41d2347deacd41c80235d15a742704c462dd7db4590"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/main.renderer.d1b87f2e.min.css",
+      "sha256": "ed78aaa5cc42fcf9bbb1f7f3da2b0e0495bb2cf6e55b3e35738ca50d3f8347aa"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/overrideGlobals.inline.b271af7d.bundle.min.js",
+      "sha256": "26682f060d4742da8c0f6342d77cc34f87c7140b9661e8deda6e97120333d1c1"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/sendBeat12.inline.995b241c.bundle.min.js",
+      "sha256": "aabf98f49201784cc7a6ae012dc47b5dcfa09c22b135756b189fe38c5c9dda2a"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/sendFedopsLoadStarted.inline.ed1ed98a.bundle.min.js",
+      "sha256": "d8a27be62d7320c3308dd1dc92255523916712904b84db498721fcc45195a05c"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/thunderbolt-commons.217fbd8f.bundle.min.js",
+      "sha256": "17fd3fd574cc102d7638ea9369ebed0e5e5f03b2b508516a62fa8ee6a76d7e99"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/thunderbolt-commons.ad3bdc38.bundle.min.js",
+      "sha256": "a560c75a00c0e0f8ebb42c928742d63871fd90159f330c821ee94e6857e467e2"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/thunderbolt-commons.d5db60ae.bundle.min.js",
+      "sha256": "14f26c510b9d17f039f59f03d0b6f93c8d64f7b70cdd0cb6f89a18158af5df5c"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/webpack-runtime.8bd0d8e5.bundle.min.js",
+      "sha256": "7fbe4fe419ee06327efd0e74d6ba13aa4587731b95f69ff0e1e9936b09c8d541"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/webpack-runtime.a41b467d.bundle.min.js",
+      "sha256": "1655836933927f7e77d81f6362704e04c79f919ffe0b31bcd6af4d595c82e7fe"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/webpack-runtime.a5ad10bb.bundle.min.js",
+      "sha256": "66e149f5bb6502bd67b535e3a4d009cf07c591b5588711e757f6d8c47f9fc2b9"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/services/wix-thunderbolt/dist/windowMessageRegister.inline.5cd174ec.bundle.min.js",
+      "sha256": "12aa65d11f828d2261cb505949caec1a337c85e6f3937df1b8dfddd61dea4fc2"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/unpkg/@formatjs/intl-segmenter@11.7.10/polyfill.iife.js",
+      "sha256": "c0c93d59cbf79cc59588ca09c29235f14bce932dcf1a4de0e4653a561a075bab"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/unpkg/core-js-bundle@3.2.1/minified.js",
+      "sha256": "a331eb026716932307eaca1b87c68765927e1dde2933f0e0f510abff51dff3c5"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/unpkg/focus-within-polyfill@5.0.9/dist/focus-within-polyfill.js",
+      "sha256": "452a163be231d77006015e7d6f2a5b8ab5987d915c1f1e6907ddfbba3aec6eec"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/unpkg/lodash@4.17.23/lodash.min.js",
+      "sha256": "0ca1f63c3cfcf884a59f2addf17ad57c7cdb13331dd13ef110d9d534195b84b2"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/unpkg/react-dom@18.3.1/umd/react-dom.production.min.js",
+      "sha256": "35f4f974f4b2bcd44da73963347f8952e341f83909e4498227d4e26b98f66f0d"
+    },
+    {
+      "path": "shared/wix-clone/static.parastorage.com/unpkg/react@18.3.1/umd/react.production.min.js",
+      "sha256": "d949f1c3687aedadcedac85261865f29b17cd273997e7f6b2bfc53b2f9d4c4dd"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_055e800e82ff4520913b1fa24eeba1da_mv2.png/v1/fill/w_311,h_454,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Rectangle 361-2.png",
+      "sha256": "120727b3cae007a77aeeef220263d333d59ab349424036a80092b7f7a25745ba"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_055e800e82ff4520913b1fa24eeba1da_mv2.png/v1/fill/w_478,h_698,al_c,lg_1,q_85,enc_avif,quality_auto/Rectangle 361-2.png",
+      "sha256": "611cf95851d0db5ecda675c2f8d9c1bed830dd5608430a053aa32c68adaad08b"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_09a94d90381647d7acdfd88219b0603f_mv2.png/v1/fill/w_527,h_341,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Rectangle 375.png",
+      "sha256": "3ee5ec56b1d8a304d8ee1f6a1eed2551be3e691fbaf65eed9967bf1f9edadaa5"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_09a94d90381647d7acdfd88219b0603f_mv2.png/v1/fill/w_782,h_506,al_c,q_90,enc_avif,quality_auto/Rectangle 375.png",
+      "sha256": "98606847f96938ba15dad9dc53d4d79d98d727362efb17712e14ed52f8289690"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_1c64cbd45de34892bdf8854b390ffb13_mv2.png/v1/fill/w_475,h_239,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/ruheraum.png",
+      "sha256": "4c0b39bd1f5754cefb43eaabeaf1eb37fba5cf926d97c5e2a152656162369783"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_1c64cbd45de34892bdf8854b390ffb13_mv2.png/v1/fill/w_950,h_478,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/ruheraum.png",
+      "sha256": "7668802630ed1eaec22e7d3bc33f46c1021e804dd71a6d58ea75f140f21454a9"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_37b05e806d1241a5a26c644f5a2e90d2_mv2.png/v1/fill/w_279,h_408,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Rectangle 361-1.png",
+      "sha256": "12c1db85b3db2c0d9a75ef7b13f336f8413eed50f1c5aee6856a8bf450736894"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_37b05e806d1241a5a26c644f5a2e90d2_mv2.png/v1/fill/w_429,h_628,al_c,lg_1,q_85,enc_avif,quality_auto/Rectangle 361-1.png",
+      "sha256": "bfe4f76502db38e5583a820f90eb8e926f37c63059cc103e8dc882a3cab46161"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_39f73a1dd9a6411ba8bddb844c4170b6_mv2.png/v1/fill/w_1052,h_671,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/Group 651.png",
+      "sha256": "10a4340d5ffc92a7e03356f3042e38321913861e461b9216c52dac6c12def34a"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_39f73a1dd9a6411ba8bddb844c4170b6_mv2.png/v1/fill/w_1102,h_703,al_c,q_90,enc_avif,quality_auto/Group 651.png",
+      "sha256": "dc61b7db0f54c8ba654da3eaaa2e4adacbd51e86a2e784d8026a9d2bcb7e080d"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_41ab799a942147628783d7e7998d09bb_mv2.png/v1/fill/w_258,h_250,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Rectangle 370.png",
+      "sha256": "e1ed4314354ba0ff3a7388150845e46a15e8a43f5e3fc93c7026ffdd9b5399f6"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_41ab799a942147628783d7e7998d09bb_mv2.png/v1/fill/w_516,h_500,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Rectangle 370.png",
+      "sha256": "79db811a550b649d8cf151d81a2da45cfe1925392207c4c84bccfedbacd17f3a"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_48f188ee916a43dd82c7b30a1bc14ef8_mv2.png/v1/fill/w_280,h_177,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Rectangle 386.png",
+      "sha256": "171b114bb68163e1a98548b9e1e705e94f4060b1ad4f0d251433631752d0099e"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_48f188ee916a43dd82c7b30a1bc14ef8_mv2.png/v1/fill/w_560,h_354,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Rectangle 386.png",
+      "sha256": "98a7a74ddc3b1d25ec98139092cff64f9fcda24815e9b32a6b73a5e1ccb2a14d"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_5230c898a9e64f7fab6668ea4fbd2fce_mv2.png/v1/fill/w_548,h_355,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/fitness1.png",
+      "sha256": "ad68d8491d9f0bcdad8220c470faef5c6f2f55a761109e4ffaf39490de2334bc"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_5230c898a9e64f7fab6668ea4fbd2fce_mv2.png/v1/fill/w_781,h_506,al_c,q_90,enc_avif,quality_auto/fitness1.png",
+      "sha256": "2063386aed34bbc454189020d6204b5a9da70a8faed0149d15be8e82fbf65da4"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_65a08f1484a44ab59f031cad9cd80710_mv2.png/v1/fill/w_1269,h_637,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/homeheader.png",
+      "sha256": "74916d75097b162ec5cf13fc225e782686003ac5af6c0b5271f194a14cbf6800"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_65a08f1484a44ab59f031cad9cd80710_mv2.png/v1/fill/w_1440,h_723,al_c,q_90,enc_avif,quality_auto/homeheader.png",
+      "sha256": "66ae5c24031a0f3011ec12daa4513952245ec85531cbb66e1db08b4b7c33bc82"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_693bd05b519741128f0d512cea20e298_mv2.png/v1/fill/w_464,h_134,al_c,q_85,enc_avif,quality_auto/Rectangle 374.png",
+      "sha256": "8139a8210362e46ef57bf29f6967a406b977c6d9167870af2ad7b4b51b365eda"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_693bd05b519741128f0d512cea20e298_mv2.png/v1/fill/w_650,h_188,al_c,lg_1,q_85,enc_avif,quality_auto/Rectangle 374.png",
+      "sha256": "9f39cf417ec64900286171108280ebbe95629fd531380f0387f793811a0137c0"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_6d0e94677fae4dae9c78bed3071b7540_mv2.png/v1/fill/w_1148,h_916,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/Ellipse 12.png",
+      "sha256": "f82efb6097a2e5037be296181a05d6152305214f172f58ee86cabb3a37b7f08e"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_6d0e94677fae4dae9c78bed3071b7540_mv2.png/v1/fill/w_1200,h_986,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/Ellipse 12.png",
+      "sha256": "baeda75ba00b2966bc084029cdb23c2c61810959f6cff76a905614a086bcd4f4"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_6d0e94677fae4dae9c78bed3071b7540_mv2.png/v1/fill/w_454,h_373,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Ellipse 12.png",
+      "sha256": "6b1fa24a4dcb143fd06d2da58be2f6974171a90a0a3b7192f5139af478dfb589"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_6d0e94677fae4dae9c78bed3071b7540_mv2.png/v1/fill/w_574,h_458,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Ellipse 12.png",
+      "sha256": "3a7e8745d7985dc354da26e9598deb770b9c717b5a8f1537c17cac8b8a3f1a8c"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_6d0e94677fae4dae9c78bed3071b7540_mv2.png/v1/fill/w_600,h_493,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Ellipse 12.png",
+      "sha256": "18d1f9199deadc5fc7d30886e409c5c3da66f91c4ca7c31e006bfd0d9a44bf77"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_6d0e94677fae4dae9c78bed3071b7540_mv2.png/v1/fill/w_908,h_746,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/Ellipse 12.png",
+      "sha256": "1d23d934abcf78c8429357d7bfb8585a0b607ddc1652709d4cbf1c1aae87a8e0"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_784c14d81fb74918a9fd197378d50ce4_mv2.png/v1/fill/w_258,h_250,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Rectangle 372.png",
+      "sha256": "8d70353564c8b97b8a3868ebf69e09deda78b6800126f182f1aa1af586523e36"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_784c14d81fb74918a9fd197378d50ce4_mv2.png/v1/fill/w_516,h_500,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Rectangle 372.png",
+      "sha256": "487dbd47dcd9bbd279b8235112fb24ed65c2672b3e669e80e1540acea77c5232"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_7e05b40b196e45728e5bd157adc394ec_mv2.png/v1/fill/w_1200,h_504,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/fitness.png",
+      "sha256": "3f5d05bb4a779041c4abe260347753e5967e46d9be26a4102c46f65fa67295be"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_7e05b40b196e45728e5bd157adc394ec_mv2.png/v1/fill/w_600,h_252,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/fitness.png",
+      "sha256": "90f4ed451d557cd9aa46ca1bc4835ebb9bc9f83ba4a017f648ed52b60dd14263"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_8057805c9b2e4e4fb1ce4316e38a8d62_mv2.png/v1/fill/w_1200,h_472,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/Gesundheit.png",
+      "sha256": "19b5cf1b9b235040b4dbde992894241edad6f75f6bf4bc076677c6423d31e0b5"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_8057805c9b2e4e4fb1ce4316e38a8d62_mv2.png/v1/fill/w_600,h_236,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Gesundheit.png",
+      "sha256": "fd3b9f90523b7d7abd6b5b31396b6d2884b3362e5178b446ae9dde7cfd878338"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_847c89923bc9487f9794c0ca4ac6a7a9_mv2.png/v1/fill/w_1429,h_643,al_c,q_90,enc_avif,quality_auto/fitness_header.png",
+      "sha256": "f69c3bb294cf0f45a099dbc040e4e36e2965a5b419c77c99ee447fc24939f2bd"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_92a3401e3c6c4e73a2f769841b675fd2_mv2.png/v1/fill/w_432,h_250,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Rectangle 371.png",
+      "sha256": "05e9943859943cb72e29b434b46a419129e9bc97f65f6299a88415bc2b2a5b54"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_92a3401e3c6c4e73a2f769841b675fd2_mv2.png/v1/fill/w_864,h_500,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/Rectangle 371.png",
+      "sha256": "f266ccb4f5bb5c76a2ab8889e37aa7ec1283a398dfc0a7104bf731c3d274bd3d"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_9f9edbc0d34f494eb43eacac974711cf_mv2.png/v1/fill/w_1360,h_718,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/kurse_header.png",
+      "sha256": "3aa496b12b5ce44ebc442780146340b6dbdb02093d755a01bddced4329f151f4"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_9f9edbc0d34f494eb43eacac974711cf_mv2.png/v1/fill/w_1665,h_879,al_c,q_90,enc_avif,quality_auto/kurse_header.png",
+      "sha256": "680e5b11f63bf2ec7534d22b2b0cf2f2c8911ca3011d1818ff9f4f6183942a36"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_db104752e6fa4086a7a4a4507f360b35_mv2.png/v1/fill/w_1010,h_530,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/brunnen.png",
+      "sha256": "f2e70f0a61925d36c8034e20bd0e993b6fffaaf50ef5573c3f6573948cb4b949"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_db104752e6fa4086a7a4a4507f360b35_mv2.png/v1/fill/w_505,h_265,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/brunnen.png",
+      "sha256": "16f3919eced730de16b8c7494d0612ee47aecedaed9b4468e1438732c15f47a3"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_dfa2b2bb1c82415390c19d5ace6479be_mv2.png/v1/fill/w_414,h_244,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/video rundgang.png",
+      "sha256": "1256dceefe11380b7e1fe3723ee4b23db1cbd6db7d576aebece5db382d3cd70c"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_dfa2b2bb1c82415390c19d5ace6479be_mv2.png/v1/fill/w_828,h_488,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/video rundgang.png",
+      "sha256": "720540b85530975c4363e618b896a0d4f81a402b572bb143c824b260de9ab1ee"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_e753acb55fe04013b126454ef95833d4_mv2.png/v1/fill/w_362,h_236,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Wellness.png",
+      "sha256": "2177cfb7a65a75a53d184431ccc4c5655a9392fce6bbfc291eb211841968f4ff"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_e753acb55fe04013b126454ef95833d4_mv2.png/v1/fill/w_595,h_388,al_c,lg_1,q_85,enc_avif,quality_auto/Wellness.png",
+      "sha256": "45c4addb2e49475ff93a9b873c761ddad61622d502922b483e29394fb0a59fd1"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_e9d38a778a2b4844af8e898ec0db9ab4_mv2.png/v1/fill/w_279,h_408,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Rectangle 361.png",
+      "sha256": "9e3ef4cc85b9cb691153bf044aa38030c88d9a77c5dff3d21da246513b3b263b"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_e9d38a778a2b4844af8e898ec0db9ab4_mv2.png/v1/fill/w_429,h_628,al_c,lg_1,q_85,enc_avif,quality_auto/Rectangle 361.png",
+      "sha256": "8cda5a2db4b8887d7b9431e2bf45e1d6ebc66c7150e0e7ae3a42264a699fd6a7"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_ec6ba848000d47f7b22229c166016bee_mv2.png/v1/fill/w_124,h_56,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/logo.png",
+      "sha256": "ef22ed453e209ffc6649956570ad9f262ee3a84b5d322f6c7e4bb52d59c2fae3"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_ec6ba848000d47f7b22229c166016bee_mv2.png/v1/fill/w_248,h_112,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/logo.png",
+      "sha256": "ed2e9f23dfca5f89ed4925c32d3ac9e016d37950d24c38001fda36647aaf02ac"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_ec6ba848000d47f7b22229c166016bee_mv2.png/v1/fill/w_32,h_32,lg_1,usm_0.66_1.00_0.01/795096_ec6ba848000d47f7b22229c166016bee_mv2.png",
+      "sha256": "1d9978ed522456420a9fb84be15c3e65e9ed7b989254c0e7cf00b27fee45fa01"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_f04901b5df464ac48486c08aa0636f63_mv2.png/v1/fill/w_1026,h_221,al_c,lg_1,q_85,enc_avif,quality_auto/gelber kasten.png",
+      "sha256": "b9774a1c2566c26afde2d582e38f6602a30ac179ead731b22bab90c815b40cfa"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_f04901b5df464ac48486c08aa0636f63_mv2.png/v1/fill/w_670,h_144,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/gelber kasten.png",
+      "sha256": "12187a4824a7c2a73ab9d00363cb431ee5a74a20884af9308bcea567b6e0268a"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_f3e00bce5551438e9df83f88915fee91_mv2.png/v1/fill/w_369,h_252,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/kurse.png",
+      "sha256": "7e75c12bcedd8ef1e3f4a105fe3d4428312f66e4dae6accea32db8792a87bc54"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_f3e00bce5551438e9df83f88915fee91_mv2.png/v1/fill/w_738,h_504,al_c,q_90,usm_0.66_1.00_0.01,enc_avif,quality_auto/kurse.png",
+      "sha256": "13c0ce4ce6382271457e12e9f6747fa7c1018fff45350d2805d377b0337d1ed8"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_f8c50ada298e4b15ab278774ac6c5f5d_mv2.png/v1/fill/w_18,h_13,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Frame 664.png",
+      "sha256": "d9091b4b0caafebb0e0e0cbba9384db32521a2a56aa2a65c04f96e255786183e"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_f8c50ada298e4b15ab278774ac6c5f5d_mv2.png/v1/fill/w_36,h_26,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Frame 664.png",
+      "sha256": "6840a1391c010cadc5549cfc36ace2c9e358aebc4c9607ff8922e20650f01ed9"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_fc3a04ed1abe4633927eee4022b19e3e_mv2.png/v1/fill/w_505,h_326,al_c,q_85,usm_0.66_1.00_0.01,enc_avif,quality_auto/Rectangle 375.png",
+      "sha256": "879e6ce151735710ff11bc5d1bb5595054e6fb48f0c39fd21a4c38dec4beae1a"
+    },
+    {
+      "path": "shared/wix-clone/static.wixstatic.com/media/795096_fc3a04ed1abe4633927eee4022b19e3e_mv2.png/v1/fill/w_776,h_501,al_c,lg_1,q_90,enc_avif,quality_auto/Rectangle 375.png",
+      "sha256": "5bbe1c01ebaacdd7d35dc94ee98d0560766371766fe04005baa59ec57109522b"
+    },
+    {
+      "path": "shared/wix-clone/www.kiel-fitness.de/kiels-repair/biosauna.png",
+      "sha256": "1ed653442572d210e2597b37972a3b806718a25073c4a0ffb43a14d93b237c8c"
+    },
+    {
+      "path": "shared/wix-clone/www.kiel-fitness.de/kiels-repair/fitness-ellipse-small.png",
+      "sha256": "6b1fa24a4dcb143fd06d2da58be2f6974171a90a0a3b7192f5139af478dfb589"
+    },
+    {
+      "path": "shared/wix-clone/www.kiel-fitness.de/kiels-repair/fitness-ellipse.png",
+      "sha256": "3a7e8745d7985dc354da26e9598deb770b9c717b5a8f1537c17cac8b8a3f1a8c"
+    },
+    {
+      "path": "shared/wix-clone/www.kiel-fitness.de/kiels-repair/fitness-header.png",
+      "sha256": "f69c3bb294cf0f45a099dbc040e4e36e2965a5b419c77c99ee447fc24939f2bd"
+    },
+    {
+      "path": "shared/wix-clone/www.kiel-fitness.de/kiels-repair/fitness-logo-master.png",
+      "sha256": "c9a96f8055acf44919d9f9a6fdc6449bd4bdcec5db369748070b08827727172b"
+    },
+    {
+      "path": "shared/wix-clone/www.kiel-fitness.de/kiels-repair/fitness-logo.png",
+      "sha256": "ef22ed453e209ffc6649956570ad9f262ee3a84b5d322f6c7e4bb52d59c2fae3"
+    },
+    {
+      "path": "shared/wix-clone/www.kiel-fitness.de/kiels-repair/fitness-main.png",
+      "sha256": "ad68d8491d9f0bcdad8220c470faef5c6f2f55a761109e4ffaf39490de2334bc"
+    },
+    {
+      "path": "shared/wix-clone/www.kiel-fitness.de/kiels-repair/fitness-yellow-box.png",
+      "sha256": "12187a4824a7c2a73ab9d00363cb431ee5a74a20884af9308bcea567b6e0268a"
+    },
+    {
+      "path": "shared/wix-clone/www.kiel-fitness.de/kiels-repair/Group 614.png",
+      "sha256": "42177adc47ae13e00ec27fea98f3f25982bc9a7500dc3f0d62b88650da0cd8a7"
+    },
+    {
+      "path": "shared/wix-clone/www.kiel-fitness.de/kiels-repair/home-3746.png",
+      "sha256": "6e6959d3be8fbe809a4c81cde9c619cb3d898fdd38371edc17fcaba190bec6f6"
+    },
+    {
+      "path": "shared/wix-clone/www.kiel-fitness.de/kiels-repair/home-3747.png",
+      "sha256": "711a6182655324b6a053b7f8e36cf70070f7f1364448b115ba4930afbdffd73e"
+    },
+    {
+      "path": "shared/wix-clone/www.kiel-fitness.de/kiels-repair/home-3748.png",
+      "sha256": "351a7241a8c592161d4811ef88b41703c8ea00de747f3df58dbfd34784c8cf38"
+    },
+    {
+      "path": "shared/wix-clone/www.kiel-fitness.de/kiels-repair/home-3749.png",
+      "sha256": "f8823e5f3f24ed5685472632c244aac31ff24727c935ca3b3e3e7c9a2243dfa7"
+    },
+    {
+      "path": "shared/wix-clone/www.kiel-fitness.de/kiels-repair/home-homeheader-93d06e7793254d79bdee6c0770471121.png",
+      "sha256": "66ae5c24031a0f3011ec12daa4513952245ec85531cbb66e1db08b4b7c33bc82"
+    },
+    {
+      "path": "shared/wix-clone/www.kiel-fitness.de/kiels-repair/home-mobilehomeheader.png",
+      "sha256": "949856b6d0316ce8ff0016fc6f02865f08febff3ef7a8a17d215b54c92b0a939"
+    },
+    {
+      "path": "shared/wix-clone/www.kiel-fitness.de/kiels-repair/home-video-rundgang.png",
+      "sha256": "d534c14d84210660a97c2f104b59f2c4a5e237459b522e06e1c8a43781069cbf"
+    },
+    {
+      "path": "shared/wix-clone/www.kiel-fitness.de/kiels-repair/lounge.png",
+      "sha256": "a351b0f9e03e1a501aa06b1723b15a54d3b0ac060c7e39020cc79de056a1e893"
+    },
+    {
+      "path": "shared/wix-clone/www.kiel-fitness.de/kiels-repair/Rectangle 388.png",
+      "sha256": "cfccb9310c5d8ce20907a77bb8259ccc89a33f008e8773b81f2913a3165838e0"
+    },
+    {
+      "path": "shared/wix-clone/www.kiel-fitness.de/sitemap.xml",
+      "sha256": "565ebc99e1599b15bac0807437ce09a2700d8385f88f6127e09ea9f32ab2c2b4"
+    }
+  ]
+}

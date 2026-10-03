@@ -1,0 +1,95 @@
+<!doctype html><html lang="de"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fitnesskurse Kiel | KIELS Fitness</title>
+<style>
+*{box-sizing:border-box}html{background:#181719;color:#fff;font-family:Arial,sans-serif}body{margin:0;background:#181719}a{color:inherit;text-decoration:none}
+header{height:96px;display:flex;align-items:center;justify-content:space-between;padding:18px 5vw}.logo{width:112px}.nav{display:flex;gap:28px;font-weight:700}.nav a.active{color:#f2df65}
+main{max-width:1100px;margin:auto;padding:0 28px}.hero{min-height:570px;position:relative;display:flex;align-items:flex-end;padding-bottom:50px;background:url("assets/kurse_header.png") center/contain no-repeat}
+.intro{max-width:720px}.yellow{color:#f2df65}.intro h2,.plan h2{font-size:28px;margin:0 0 8px}.intro p{line-height:1.55;margin:8px 0}
+.plan{text-align:center;padding:65px 0 60px}.plan p{margin:8px auto 22px;max-width:700px}.btn{display:inline-block;background:#d9e6ee;color:#fff;border-radius:22px;padding:11px 24px;font-weight:700}
+.tabs{display:flex;justify-content:center;gap:34px;flex-wrap:wrap;border-bottom:0;margin-bottom:40px}.tabs button{font:700 16px Arial;background:none;border:0;color:#fff;padding:12px 3px;cursor:pointer}.tabs button.active{color:#f2df65;border-bottom:4px solid #f2df65}
+.pane{display:none}.pane.active{display:block}.course{display:grid;grid-template-columns:1fr 1fr;gap:55px;align-items:center;margin:0 0 75px;min-height:300px}.course:nth-child(even) .visual{order:2}.visual img{width:100%;max-width:390px;aspect-ratio:1.25/1;object-fit:cover;border-radius:22px;display:block}.copy{line-height:1.45;font-weight:400}.copy p{font-weight:300}.copy h3{font-size:42px;font-weight:400;text-transform:uppercase;margin:30px 0 0;color:#fff;letter-spacing:-1px}.copy h3 strong{font-weight:700;color:#f2b632;margin-left:0}.more{display:inline-block;margin-top:18px;background:#d9e6ee;padding:9px 22px;border-radius:22px;font-weight:700}
+footer{max-width:820px;margin:90px auto 30px;display:flex;gap:70px;padding:30px}.footlogo{width:150px}.links{display:grid;grid-template-columns:1fr 1fr;gap:8px 45px}
+@media(max-width:760px){header{height:auto}.nav{gap:10px;font-size:12px;flex-wrap:wrap;justify-content:flex-end}.hero{min-height:430px;background-size:cover}.pane{display:none}.pane.active{display:block}.course{grid-template-columns:1fr}.course:nth-child(even) .visual{order:0}.tabs{gap:12px}.copy h3{font-size:29px}}
+</style><link rel="stylesheet" href="responsive.css">
+<script src="script.js" defer></script>
+</head><body data-page="kurse">
+<header data-site-header><img class="logo" src="assets/logo.png" alt="KIELS Fitness"><button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="main-navigation"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></button><nav class="nav" id="main-navigation" data-site-nav aria-label="Hauptnavigation"><a href="index.html">Home</a><a href="fitness.html">Fitness</a><a href="wellness.html">Wellness</a><a href="health.html">Health</a><a class="active" href="kurse.html" aria-current="page">Kurse</a><a href="kontakt.html">Kontakt</a></nav></header>
+<main>
+<section class="hero"><div class="intro"><h2 class="yellow">Strong together</h2><p>Motivation und Begeisterung für sportliche Aktivitäten sind in einem FitnessKurs oft deutlich höher, als bei einem Training ganz allein. In unseren Kursen in Kiel hast du jede Menge Spaß!</p><p>Das Kiels bietet für jedes Alter und jede körperliche Verfassung passende Kurse an: Gesundheitskurse wie z. B. Rückenfitness oder Wirbelsäulengymnastik, Entspannungskurse von Yoga bis hin zu Qi Gong und jede Menge Kurse zum Auspowern wie z. B. LES MILLS-Kurse oder Cycling.</p></div></section>
+<section class="plan"><h2 class="yellow">Aktueller Kursplan</h2><p>Wir bieten monatlich um die 250 Kurse an. Von Entspannung bis Ausdauerkursen steht dir eine große Auswahl zur Verfügung. Für jeden ist garantiert etwas dabei.</p><a class="btn" href="kursplan.pdf">Kursplan öffnen</a></section>
+<section><div class="tabs"><button class="active">Kraftausdauer</button><button>Gesundheitskurse</button><button>Entspannung</button><button>Ausdauerkurse</button><button>Beweglichkeitskurse</button><button>Andere</button></div>
+<div id="courses"><div class="pane active" data-pane="0"><article class="course">
+<div class="visual"><img src="assets/courses/course-01.jpg" alt="Bodypump"></div>
+<div class="copy"><p>Bodypump ist das originale Langhantelprogramm zur Kräftigung, Formung und Straffung deines gesamten Körpers. Schon jetzt profitieren Millionen Teilnehmer von einer der weltweit schnellsten Methoden, um in Form zu kommen. Du trainierst alle Hauptmuskelgruppen mit den besten Kräftigungsübungen, wie z.B. Squats, Presses, Lifts und Curls.</p><a class="more" href="#">Mehr erfahren</a><h3>BODY<strong>PUMP®</strong></h3></div>
+</article><article class="course">
+<div class="visual"><img src="assets/courses/course-02.jpg" alt="Strength Development"></div>
+<div class="copy"><p>Dies ist ein innovatives Krafttraining mit Gewichten, das sich vor allem an Personen richtet, die stärker werden wollen. Der Fokus liegt auf Krafttraining und eher langsamen, kontrollierten Bewegungen in Kombination mit funktionellen Übungen und dynamischem Training.</p><h3>STRENGTH<strong>DEVELOPMENT</strong></h3></div>
+</article></div><div class="pane" data-pane="1"><article class="course">
+<div class="visual"><img src="assets/courses/course-03.jpg" alt="Wirbelsäulengymnastik"></div>
+<div class="copy"><p>Wirbelsäulengymnastik ist ein Mobilisations-, Kräftigungs- und Dehntraining, um die Funktion der Wirbelsäule zu optimieren und den Rücken gezielt zu stärken. Im Fokus des Kurses steht ein gesundheitsorientiertes Training für einen leistungsfähigen Rücken, um die Herausforderungen des Alltags problemlos zu meistern! Das Motto des Kurses: Rückengymnastik ist der beste Weg, um einen dauerhaft gesunden Rücken zu behalten!</p><h3>WIRBELSÄULEN<strong>GYMNASTIK</strong></h3></div>
+</article><article class="course">
+<div class="visual"><img src="assets/courses/course-04.jpg" alt="Aufbau Rückenbildung"></div>
+<div class="copy"><p>Ein starker und gesunder Rücken ist die Grundvoraussetzung für einen unbeschwerten und glücklichen Alltag. In unseren Rückenfitness-Kursen liegt der Schwerpunkt auf der korrekten Kräftigung der gesamten Rumpfmuskulatur. Mit abwechslungsreichen Übungen und Zusatzgeräten wie Tubes und Pezzibällen unter professioneller Aufsicht findet mehrmals die Woche dieser Kurs statt.</p><h3>AUFBAU RÜCKEN<strong>BILDUNG</strong></h3></div>
+</article></div><div class="pane" data-pane="2"><article class="course">
+<div class="visual"><img src="assets/courses/course-19.jpg" alt="Yoga"></div>
+<div class="copy"><p>Yoga ist eine philosophische Lehre, deren ganzheitlicher Ansatz Körper, Geist und Seele in Einklang bringen soll. Dazu werden geistige und körperliche Übungen, wie Muskel- und Entspannungsübungen, Atemübungen, Meditation und Askese eingesetzt.</p><h3><strong>YOGA</strong></h3></div>
+</article><article class="course">
+<div class="visual"><img src="assets/courses/course-20.jpg" alt="Pilates"></div>
+<div class="copy"><p>Im Pilates wird durch eine kontrollierte und bewusste Bewegungsausführung ein gesunder Körper geschaffen, die Körperwahrnehmung geschult und es ist eine Methode zur Kräftigung des Körpers. Es werden die tiefliegenden Muskelgruppen trainiert.</p><h3><strong>PILATES</strong></h3></div>
+</article><article class="course">
+<div class="visual"><img src="assets/courses/course-21.jpg" alt="Body Balance®"></div>
+<div class="copy"><p>BODYBALANCE ist eine Abfolge von einfachen Dehnungen, Bewegungen und Posen aus Yoga, Tai Chi und Pilates zu fließender Musik. Dabei ist kontrollierte Atmung ein wichtiger Bestandteil. Unsere Instruktoren geben immer auch leichtere Varianten für Anfänger vor. Du kräftigst deinen gesamten Körper und verlässt die Class entspannt, ausgeglichen, glücklich.</p><h3>BODY<strong>BALANCE®</strong></h3></div>
+</article></div><div class="pane" data-pane="3"><article class="course">
+<div class="visual"><img src="assets/courses/course-05.jpg" alt="Body Attack®"></div>
+<div class="copy"><p>BODYATTACK® ist ein hochintensiver Fitness-Kurs mit Bewegungsabläufen, die sowohl für absolute Anfänger als auch für Fitness-Freaks geeignet sind. Dieses Workout kombiniert athletische Bewegung wie Laufen, Ausfallschritte oder Springen mit Kraftübungen wie Push-Ups und Squats.</p><h3>BODY<strong>ATTACK®</strong></h3></div>
+</article><article class="course">
+<div class="visual"><img src="assets/courses/course-06.jpg" alt="LM Step®"></div>
+<div class="copy"><p>Dies ist ein Step-Workout mit simplen Bewegungen wie Gehen oder Treppensteigen. Es formt deinen gesamten Körper, besonders aber Beine und Po. Der Kurs vereint klassische Step Aerobic mit athletischen Übungen wie Burpees, Liegestütze oder Übungen mit Gewichtsscheiben, um den Oberkörper zu trainieren.</p><h3>LM<strong>STEP®</strong></h3></div>
+</article><article class="course">
+<div class="visual"><img src="assets/courses/course-07.jpg" alt="Cycling"></div>
+<div class="copy"><p>KIELS Cycling ist ein Ausdauer-, Kraftausdauer- und Intervalltraining auf speziellen Spinning-Bikes. Dieses intensive Ganzkörpertraining ist sowohl für Anfänger als auch für Fortgeschrittene geeignet, da der Widerstand je nach Trainingslevel manuell eingestellt werden kann. Mit passender dynamischer Musik werden in der Gruppe unter Anleitung ausgebildeter Trainer unterschiedliche Tempi gefahren, die für die nötige Abwechslung und vor allem Spaß sorgen.</p><h3><strong>CYCLING</strong></h3></div>
+</article><article class="course">
+<div class="visual"><img src="assets/courses/course-08.jpg" alt="Bauch Beine Po"></div>
+<div class="copy"><p>In unserem BauchBeinePo-Kurs wird nicht nur die Muskulatur gestärkt und geformt, sondern nebenbei auch etwas für deine Gesundheit getan. Durch regelmäßige Kräftigung der Muskulatur wird die Körperhaltung verbessert und der Rücken einer Workout wird gestärkt.</p><h3>BAUCH<strong>BEINEPO</strong></h3></div>
+</article><article class="course">
+<div class="visual"><img src="assets/courses/course-09.jpg" alt="Step BBP"></div>
+<div class="copy"><p>Step BBP ist einer der beliebtesten Kurse im Fitnessbereich. Verständlicherweise: Es bringt Deinen gesamten Körper in Schwung und strafft mit ganz einfachen Mitteln Deine Ausdauer und Muskulatur. Die Kombination einfacher Schritte wird im Kurs zu einer motivierenden Choreografie kombiniert.</p><h3>STEP<strong>BBP</strong></h3></div>
+</article><article class="course">
+<div class="visual"><img src="assets/courses/course-10.jpg" alt="Jumping®"></div>
+<div class="copy"><p>KIELS Jumping ist ein dynamisches Powerworkout auf kleinen Trampolinen, bei dem über 400 Muskeln im Einsatz sind. Durch den federnden Untergrund werden die Gelenke geschont und die Tiefenmuskulatur stimuliert. Dieses Ausdauertraining ist effektiver als Joggen und perfekt gegen Stress, da durch das Gruppengefühl und die passende Musik jede Menge Glückshormone ausgeschüttet werden.</p><h3><strong>JUMPING®</strong></h3></div>
+</article><article class="course">
+<div class="visual"><img src="assets/courses/course-11.jpg" alt="Fitnessboxen"></div>
+<div class="copy"><p>Beim Fitnessboxen werden Schnelligkeit, Ausdauer und explosiver Kraftaufbau trainiert. So kann psychischer Stress im Training körperlich abgebaut werden. Durch die Verbesserung der motorischen Grundeigenschaften – Kraft, Ausdauer, Schnelligkeit, Beweglichkeit und Koordination – gehört Fitnessboxen inzwischen zu den gesundheitlich bedeutsamen Fitnessaktivitäten.</p><h3>FITNESS<strong>BOXEN</strong></h3></div>
+</article><article class="course">
+<div class="visual"><img src="assets/courses/course-12.jpg" alt="Step Workout"></div>
+<div class="copy"><p>Beim KIELS Step Workout folgst du einer vorgegebenen Schrittfolge, bei der der Stepper im Mittelpunkt steht. Die Übungsstunden finden als Gruppentraining statt, bei dem motivierende, mitreißende Musik gute Laune verbreitet und das Tempo der Schritte vorgibt.</p><h3>STEP<strong>WORKOUT</strong></h3></div>
+</article><article class="course">
+<div class="visual"><img src="assets/courses/course-13.jpg" alt="Body Combat®"></div>
+<div class="copy"><p>BODYCOMBAT® ist das machtvolle Cardio-Workout, das Dich komplett entfesselt. Dieses energiegeladene Programm ist inspiriert durch Martial-Arts und hat seine Wurzeln in vielen Kampfsportarten, wie Karate, Kickboxen, Taekwondo, Tai Chi und Muay Thai.</p><h3>BODY<strong>COMBAT®</strong></h3></div>
+</article></div><div class="pane" data-pane="4"><article class="course">
+<div class="visual"><img src="assets/courses/course-14.jpg" alt="Faszien Yoga"></div>
+<div class="copy"><p>Faszien Yoga ist ein Ganzkörpertraining für mehr Flexibilität und Kraft. Der Yogastil soll die Beweglichkeit und Belastbarkeit des Fasziengewebes verbessern und Verklebungen lösen.</p><h3>FASZIEN<strong>YOGA</strong></h3></div>
+</article><article class="course">
+<div class="visual"><img src="assets/courses/course-15.jpg" alt="Flow Yoga"></div>
+<div class="copy"><p>Das Besondere: Man macht zwischen den einzelnen Yoga-Übungen keine Pause, sondern geht von einer Asana fließend in die nächste. Atmung und Bewegung verschmelzen, es kommt zu einem dynamischen Flow. Der Effekt: Es entsteht Wärme und Energie im Körper, die aktiviert den Stoffwechsel, versorgt die Zellen, reinigt das Herz-Kreislauf-System und reinigt den Körper.</p><h3>FLOW<strong>YOGA</strong></h3></div>
+</article><article class="course">
+<div class="visual"><img src="assets/courses/course-16.jpg" alt="Ashtanga Yoga"></div>
+<div class="copy"><p>Beim KIELS Ashtanga Yoga gibt es sechs feste Übungsserien, die in der immer gleichen Abfolge ohne Pausen dazwischen ausgeführt werden. Neben den Körperübungen ist auch der Atemrhythmus genau festgelegt. Der Wechsel zwischen den Asanas erfolgt sehr temporeich und fließend.</p><h3>ASHTANGA<strong>YOGA</strong></h3></div>
+</article><article class="course">
+<div class="visual"><img src="assets/courses/course-17.jpg" alt="Zumba®"></div>
+<div class="copy"><p>Zumba ist ein Tanz-Workout, bei dem tänzerische Elemente mit Aerobic-Bewegungen kombiniert werden. Zu lateinamerikanischen Rhythmen und Tanzstilen wird mit viel Spaß der ganze Körper trainiert.</p><h3><strong>ZUMBA®</strong></h3></div>
+</article><article class="course">
+<div class="visual"><img src="assets/courses/course-18.jpg" alt="Stretching"></div>
+<div class="copy"><p>Kräftige, und doch geschmeidige Muskeln – sie halten unseren Körper mobil und in Form, bringen den Stoffwechsel auf Trab, schenken uns Ausdauer und Energie. Wenn wir unsere Muskulatur zu wenig fordern und nur einseitig belasten, bauen sich die Muskelfaserstrukturen ab, die Muskeln verkürzen und werden unbeweglich – und mit ihnen die Gelenke.</p><h3><strong>STRETCHING</strong></h3></div>
+</article></div><div class="pane" data-pane="5"><article class="course">
+<div class="visual"><img src="assets/courses/course-22.jpg" alt="Bauch Intensiv"></div>
+<div class="copy"><p>Bauch Intensiv ist ein 30-Minuten-Kurs, bei dem die Rumpfmuskulatur durch unterschiedliche Übungen trainiert wird. Dabei wird auch die Rückenmuskulatur gestärkt und Rückenproblemen wird vorgebeugt. Durch verschiedene Hilfsmittel wie Pezzibällen, Tubes oder Therabändern wird für die nötige Abwechslung gesorgt.</p><h3>BAUCH<strong>INTENSIV</strong></h3></div>
+</article><article class="course">
+<div class="visual"><img src="assets/courses/course-23.jpg" alt="LES MILLS CORE®"></div>
+<div class="copy"><p>Das aus dem Profisport inspirierte Workout LES MILLS CORE™ ist das optimale Training für deine starke Körpermitte. Basierend auf wissenschaftlichen Untersuchungen, aktiviert dieses Workout die hintere Muskelkette und steigert Kraft, Stabilität und Ausdauer deiner Rumpfmuskulatur. Nebenbei beugst du Verletzungen vor und unterstützt jegliche Bewegungen in deinem Alltag.</p><h3>LES MILLS<strong>CORE®</strong></h3></div>
+</article><article class="course">
+<div class="visual"><img src="assets/courses/course-24.jpg" alt="LES MILLS TONE®"></div>
+<div class="copy"><p>Wenn Sie ein spaßbringendes und funktionelles Trainingsprogramm anbieten möchten, das in Blöcke mit effektiven Kraft-, Cardio- und Core-Übungen eingeteilt ist, dann ist LES MILLS TONE genau das Richtige. Dieses Ganzkörpertraining spricht alle Mitglieder an, da sie die Trainingsintensität ihres Fitnesslevel wählen können.</p><h3>LES MILLS<strong>TONE®</strong></h3></div>
+</article></div></div></section></main>
+<footer><div><img class="footlogo" src="assets/logo.png" alt="KIELS Fitness"><p>Folge uns auf Social Media und sei immer auf dem neuesten Stand.</p></div><div class="links"><a href="index.html">Home</a><a href="agbs.html">AGB</a><a href="fitness.html">Fitness</a><a href="impressum.html">Impressum</a><a href="wellness.html">Wellness</a><a href="datenschutz.html">Datenschutz</a><a href="health.html">Health</a><a href="kontakt.html">Kontakt</a><a href="kurse.html">Kurse</a></div></footer>
+<script>document.querySelectorAll(".tabs button").forEach((b,i)=>b.onclick=()=>{document.querySelectorAll(".tabs button").forEach(x=>x.classList.remove("active"));document.querySelectorAll(".pane").forEach(x=>x.classList.remove("active"));b.classList.add("active");document.querySelector(`[data-pane="${i}"]`).classList.add("active")});</script></body></html>
