@@ -47,12 +47,14 @@
       .footer-nav, .social { justify-content: center; }
     }
   </style>
+<link rel="stylesheet" href="responsive.css">
+<script src="script.js" defer></script>
 </head>
-<body>
-  <header class="site-header">
+<body data-page="agbs">
+  <header class="site-header" data-site-header>
     <div class="header-inner">
       <a class="logo" href="index.html" aria-label="KIELS Fitness – Fitnessstudio in Kiel"><img src="assets/logo.png" alt="KIELS Fitness – Fitnessstudio in Kiel" width="173" height="76"></a>
-      <nav class="main-nav" aria-label="Website">
+      <button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="main-navigation"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></button><nav class="main-nav" id="main-navigation" data-site-nav aria-label="Hauptnavigation">
         <ul>
           <li><a href="index.html">Home</a></li>
           <li><a href="fitness.html">Fitness</a></li>

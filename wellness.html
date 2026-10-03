@@ -26,11 +26,13 @@ header{height:82px;background:var(--taupe);display:flex;align-items:center;justi
 footer{max-width:1040px;margin:52px auto 0;padding:0 35px 48px;display:grid;grid-template-columns:2.1fr .65fr .65fr;gap:65px;font-size:12px}.flogo{width:155px;margin-bottom:12px}footer a{display:block;color:#fff;text-decoration:none;margin:6px 0;font-weight:600}.social{margin-top:15px;display:flex;gap:18px;align-items:center}.social a{display:inline-flex;margin:0;color:#fff}.social svg{width:20px;height:20px;display:block;fill:currentColor}
 @media(max-width:760px){header{height:auto;padding:18px 20px;align-items:flex-start}.nav{gap:10px;flex-wrap:wrap;justify-content:flex-end}.hero{height:260px}.quote{padding:50px 24px 35px;font-size:18px}.row,.row.reverse,.saturday .inner,.bistro .inner,footer{grid-template-columns:1fr}.sauna-carousel{padding:0 34px 55px}.card{flex-basis:calc(100% - 18px)}.row,.row.reverse{gap:25px;margin-bottom:55px}.row.reverse .pic{order:0}.alt{padding:10px 20px 50px}.saturday .inner,.bistro .inner{padding-left:20px;padding-right:20px}.yellowbox{width:92%;margin:-25px auto 0}.copyblock h2,.saturday h2{font-size:30px}footer{padding:0 20px 40px}.card img{height:220px}}
 </style>
+<link rel="stylesheet" href="responsive.css">
+<script src="script.js" defer></script>
 </head>
-<body>
-<header>
+<body data-page="wellness">
+<header data-site-header>
   <a href="index.html"><img class="logo" src="assets/logo.png" alt="KIELS Fitness"></a>
-  <nav class="nav"><a href="index.html">Home</a><a href="fitness.html">Fitness</a><a class="active" href="wellness.html">Wellness</a><a href="health.html">Health</a><a href="kurse.html">Kurse</a><a href="kontakt.html">Kontakt</a></nav>
+  <button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="main-navigation"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></button><nav class="nav" id="main-navigation" data-site-nav aria-label="Hauptnavigation"><a href="index.html">Home</a><a href="fitness.html">Fitness</a><a class="active" href="wellness.html" aria-current="page">Wellness</a><a href="health.html">Health</a><a href="kurse.html">Kurse</a><a href="kontakt.html">Kontakt</a></nav>
 </header>
 
 <section class="hero"><img src="assets/wellness-hero.png" alt="Wellness im KIELS"></section>

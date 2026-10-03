@@ -1,0 +1,685 @@
+.nav-toggle {
+ display: none;
+}
+[data-site-nav] a:focus-visible,
+.nav-toggle:focus-visible {
+ outline: 2px solid currentColor !important;
+ outline-offset: 4px;
+}
+body[data-page="kontakt"] .main-nav a.active {
+ color: var(--yellow);
+}
+
+/* Confine the oversized Wix hero to its section, not the document. */
+body[data-page="fitness"] #comp-lqfhs5ur {
+ overflow: clip;
+}
+body[data-page="index"] #comp-lq6m0hij {
+ overflow: clip;
+}
+
+@media (max-width: 1080px) {
+ body[data-page="wellness"] .yellowbox { margin-right: 0; }
+}
+@media (min-width: 1025px) and (max-width: 1030px) {
+ body[data-page="index"] #comp-lqfgjbjo {
+  width: calc((100vw + 980px) / 2 - 405px);
+ }
+ body[data-page="index"] #comp-lqfgjbjo img {
+  width: 100%;
+  height: auto;
+ }
+}
+
+@media (min-width: 1025px) and (max-width: 1363px) {
+ body[data-page="fitness"] #comp-lqifh0v3 {
+  width: calc(100% - 48px);
+  left: 24px;
+  margin-left: 0;
+ }
+ body[data-page="fitness"] [data-mesh-id="comp-lqifh0v3inlineContent-gridContainer"] {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  gap: 16px;
+ }
+ body[data-page="fitness"] :is([data-mesh-id="comp-lqifh0v3inlineContent"], [data-mesh-id="comp-lqifh0v3inlineContent-gridContainer"]) {
+  width: 100%;
+  min-width: 0;
+ }
+ body[data-page="fitness"] [data-mesh-id="comp-lqifh0v3inlineContent-gridContainer"] > * {
+  width: auto;
+  left: auto;
+  margin: 0;
+  min-width: 0;
+  max-width: 100%;
+  justify-self: stretch;
+ }
+ body[data-page="fitness"] #comp-lqifdwk2 { grid-area: 1 / 1; width: 100%; height: 100%; }
+ body[data-page="fitness"] #comp-lqif28hw { grid-area: 1 / 1; align-self: center; padding: 24px; box-sizing: border-box; }
+ body[data-page="fitness"] #comp-lqif1efe { grid-area: 1 / 2; }
+ body[data-page="fitness"] :is(#comp-lqif9y7b, #comp-lqifaga5, #comp-lqifbx3c) { grid-area: 2 / 2; }
+ body[data-page="fitness"] :is(#comp-lqif1efe, #comp-lqif9y7b) .apPOZK { width: 100%; height: 100%; }
+ body[data-page="fitness"] #comp-lqif1efe img { width: 100%; height: auto; display: block; }
+ body[data-page="fitness"] #comp-lqif9y7b img { width: 100%; height: 100%; object-fit: fill !important; }
+ body[data-page="fitness"] #comp-lqifbx3c { padding: 20px 20px 0; align-self: start; box-sizing: border-box; }
+ body[data-page="fitness"] #comp-lqifaga5 { padding: 60px 20px 20px; box-sizing: border-box; }
+ body[data-page="fitness"] #comp-lqqpbkox {
+  left: min(597px, calc((100vw + 980px) / 2 - 573px));
+ }
+ body[data-page="fitness"] #comp-lqqpbx0f {
+  left: max(-185px, calc(24px - (100vw - 980px) / 2));
+ }
+}
+
+@media (max-width: 1024px) {
+ body[data-page="wellness"] .yellowbox {
+  margin-right: 0;
+  max-width: 100%;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) :is(#SITE_CONTAINER, #site-root, #masterPage, #PAGES_CONTAINER, #SITE_PAGES, .wixui-page, .wixui-section, #SITE_FOOTER, [id^="pageBackground_"]) {
+  min-width: 0 !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  box-sizing: border-box;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) [data-mesh-id$="inlineContent"] {
+  width: 100% !important;
+  min-width: 0 !important;
+  height: auto !important;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) [data-mesh-id$="gridContainer"] {
+  display: flex !important;
+  flex-direction: column;
+  gap: 16px;
+  min-height: 0 !important;
+  height: auto !important;
+  width: 100% !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  position: relative !important;
+  box-sizing: border-box;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) [data-mesh-id$="gridContainer"]::before,
+ body:is([data-page="index"], [data-page="fitness"]) [data-mesh-id$="gridContainer"]::after {
+  content: none !important;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) [data-mesh-id$="gridContainer"] > [id^="comp-"] {
+  grid-area: auto !important;
+  position: relative !important;
+  inset: auto !important;
+  margin: 0 !important;
+  width: auto !important;
+  min-width: 0 !important;
+  max-width: 100% !important;
+  height: auto !important;
+  min-height: 0 !important;
+  align-self: stretch !important;
+  justify-self: stretch !important;
+  box-sizing: border-box;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) [data-mesh-id*="inlineContent-wedge"] {
+  display: none !important;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) .wixui-section > [data-mesh-id$="inlineContent"] > [data-mesh-id$="gridContainer"] {
+  padding: 40px 24px;
+  gap: 28px;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) .wixui-rich-text {
+  overflow-wrap: anywhere;
+  --min-height: 0px;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) .wixui-rich-text :is(h1, h2, h3, p, span, li) {
+  min-width: 0;
+  max-width: 100%;
+  line-height: 1.5 !important;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) .wixui-rich-text [style*="font-size:1"] {
+  font-size: 15px !important;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) .wixui-image > .apPOZK {
+  width: 100% !important;
+  height: auto !important;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) .wixui-image img {
+  max-width: 100%;
+  width: 100%;
+  height: auto;
+  display: block;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) .wixui-button {
+  min-height: 44px;
+  box-sizing: border-box;
+  transition-property: color, background-color, border-color !important;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) :is(#comp-lv19vn4x, #comp-lv1a65be) {
+  width: 100% !important;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) :is([data-mesh-id="comp-lq6m0hijinlineContent-gridContainer"], [data-mesh-id="comp-lqfhs5urinlineContent-gridContainer"]) {
+  padding: 0 !important;
+ }
+
+ /* Existing ellipse images stay decorative and cannot set document width. */
+ body:is([data-page="index"], [data-page="fitness"]) [data-mesh-id$="gridContainer"] > :is(#comp-lqfbnvrz, #comp-lqe7qrbq, #comp-lqfchq7e, #comp-lqfbo5ln, #comp-lqfepqd1, #comp-lqfgjbjo, #comp-lqfgj1ji, #comp-lqfgseis, #comp-lqqpqasx, #comp-lqqppy8b, #comp-lqqppczr, #comp-lqfhr4s5) {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  pointer-events: none;
+  z-index: -1;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) .wixui-section > [data-mesh-id$="inlineContent"] {
+  isolation: isolate;
+ }
+
+ /* Home: the same tour, opening-time blocks and service cards reflow. */
+ body[data-page="index"] [data-mesh-id="comp-lqe4n2b3inlineContent-gridContainer"] {
+  display: grid !important;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: start;
+ }
+ body[data-page="index"] :is(#comp-lqe7b4su, #comp-lqe7j4s5) {
+  grid-column: span 3 !important;
+ }
+ body[data-page="index"] :is(#comp-lqe7ogtj, #comp-lqe8km17) {
+  grid-column: 1 / -1 !important;
+  text-align: center;
+ }
+ body[data-page="index"] :is(#comp-lqfb8re0, #comp-lqfb8wf6, #comp-lqfb92qc, #comp-lqfb98pe, #comp-lqfb9dzg, #comp-lqfb9itz) {
+  grid-column: span 2 !important;
+  text-align: center;
+ }
+ body[data-page="index"] [data-mesh-id="comp-lqe7ogtjinlineContent-gridContainer"] {
+  display: grid !important;
+  grid-template-columns: 40px minmax(0, 1fr) 40px;
+  align-items: center;
+ }
+ body[data-page="index"] [data-mesh-id="comp-lqe7b4suinlineContent-gridContainer"] {
+  display: grid !important;
+ }
+ body[data-page="index"] :is(#comp-lqe5iwpb, #comp-lqe6rlu6) {
+  grid-area: 1 / 1 !important;
+  align-self: center !important;
+ }
+ body[data-page="index"] #comp-lqe6rlu6 {
+  width: 64px !important;
+  height: 64px !important;
+  justify-self: center;
+ }
+ body[data-page="index"] [data-mesh-id="comp-lqe7t14zinlineContent-gridContainer"] {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+ }
+ body[data-page="index"] :is(#comp-lqfbggqe, #comp-lqfbn5v1, #comp-lqfbzwa8, #comp-lqfc19sd, #comp-lqfc86tv, #comp-lqfcby4f, #comp-lqfcc25r) > [data-mesh-id] > [data-mesh-id] {
+  min-height: 290px !important;
+  padding: 24px;
+  justify-content: flex-end;
+  gap: 12px;
+  border-radius: 16px;
+  overflow: clip;
+  isolation: isolate;
+ }
+ body[data-page="index"] [data-mesh-id$="gridContainer"] > :is(#comp-lqe7v41s, #comp-lqfbjy6n, #comp-lqfbxytb, #comp-lqfbqk59, #comp-lqfc38fa, #comp-lqfc38ew) {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: -1;
+ }
+ body[data-page="index"] :is(#comp-lqe7v41s, #comp-lqfbjy6n, #comp-lqfbxytb, #comp-lqfbqk59, #comp-lqfc38fa, #comp-lqfc38ew) :is(.apPOZK, img) {
+  height: 100% !important;
+  object-fit: cover;
+ }
+ body[data-page="index"] :is(#comp-lqfbf7jc, #comp-lqfbl2ox, #comp-lqfbyeyj, #comp-lqfc06du, #comp-lqfc5iu2, #comp-lqfc8g0g, #comp-lqfcaa96) {
+  order: -1;
+ }
+ body[data-page="index"] :is(#comp-lqfbggqe, #comp-lqfbn5v1, #comp-lqfbzwa8, #comp-lqfc19sd, #comp-lqfcby4f) [data-semantic-classname="button"] {
+  order: 2;
+ }
+ body[data-page="index"] #comp-lqfcc25r {
+  min-height: 290px !important;
+ }
+ body[data-page="index"] #comp-lqfc38ee {
+  grid-column: 1 !important;
+  grid-row: 4 !important;
+ }
+ body[data-page="index"] #comp-lqfcc25r {
+  grid-column: 1 !important;
+  grid-row: 4 !important;
+  align-self: end !important;
+ }
+
+ /* Tariffs retain their original background assets and checkmark rows. */
+ body[data-page="index"] [data-mesh-id="comp-lqfcnfr6inlineContent-gridContainer"] {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+ }
+ body[data-page="index"] :is(#comp-lqfcvc7y, #comp-lqfcwgyl, #comp-lqfei06k) {
+  grid-column: 1 / -1 !important;
+  text-align: center;
+ }
+ body[data-page="index"] :is(#comp-lqfeh7xd, #comp-lqfegzm3, #comp-lqfeh3jg) > [data-mesh-id] > [data-mesh-id] {
+  display: grid !important;
+  grid-template-columns: 20px minmax(0, 1fr);
+  gap: 10px 8px;
+  padding: 24px 18px;
+  height: auto !important;
+  isolation: isolate;
+ }
+ body[data-page="index"] :is(#comp-lqfeh7xd, #comp-lqfegzm3, #comp-lqfeh3jg) .wixui-rich-text,
+ body[data-page="index"] :is(#comp-lqfeh7xd, #comp-lqfegzm3, #comp-lqfeh3jg) [data-semantic-classname="button"] {
+  grid-column: 1 / -1 !important;
+ }
+ body[data-page="index"] :is(#comp-lqfeh7xd, #comp-lqfegzm3, #comp-lqfeh3jg) .wixui-image:not(:first-child) + .wixui-rich-text {
+  grid-column: 2 !important;
+ }
+ body[data-page="index"] :is(#comp-lqfeh7xd, #comp-lqfegzm3, #comp-lqfeh3jg) .wixui-image:not(:first-child) {
+  width: 18px !important;
+  height: 13px !important;
+  grid-column: 1 !important;
+  align-self: center !important;
+ }
+ body[data-page="index"] :is(#comp-lqfe419h1, #comp-lqfe7qtz) { grid-row: 10 !important; }
+ body[data-page="index"] :is(#comp-lqfe419c, #comp-lqfe7qtv).wixui-rich-text { grid-area: 10 / 2 !important; }
+ body[data-page="index"] :is(#comp-lqfe3csi, #comp-lqfe7qts1) { grid-row: 9 !important; }
+ body[data-page="index"] :is(#comp-lqfe3csc, #comp-lqfe7qto).wixui-rich-text { grid-area: 9 / 2 !important; }
+ body[data-page="index"] :is(#comp-lqfe4zix, #comp-lqfe7qu1) { grid-row: 11 !important; }
+ body[data-page="index"] #comp-lqfegzm3 { grid-area: 3 / 1 !important; }
+ body[data-page="index"] #comp-lqfeh3jg { grid-area: 3 / 2 !important; }
+ body[data-page="index"] #comp-lqfeh7xd { grid-area: 3 / 3 !important; }
+ body[data-page="index"] #comp-lqfdbx4o { grid-area: 4 / 1 !important; }
+ body[data-page="index"] #comp-lqfeajgi { grid-area: 4 / 2 !important; }
+ body[data-page="index"] [data-mesh-id$="gridContainer"] > :is(#comp-lqfczpmo, #comp-lqfczpnl, #comp-lqfczpn8) {
+  position: absolute !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100% !important;
+  z-index: -1;
+ }
+ body[data-page="index"] :is(#comp-lqfczpmo, #comp-lqfczpnl, #comp-lqfczpn8) :is(.apPOZK, img) {
+  height: 100% !important;
+  object-fit: fill !important;
+ }
+ body[data-page="index"] [data-mesh-id="comp-lqffjprninlineContent-gridContainer"] {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+ }
+ body[data-page="index"] :is(#comp-lqfg3fma, #comp-lqfg3fnn) {
+  grid-column: 1 / -1 !important;
+  text-align: center;
+ }
+ body[data-page="index"] .kiels-training-card-final > [data-mesh-id] > [data-mesh-id] {
+  padding: 20px;
+  height: 100% !important;
+  text-align: center;
+ }
+ body[data-page="index"] #comp-lqfgih2n.kiels-training-card-final,
+ body[data-page="index"] #comp-lqfgilf6.kiels-training-card-final,
+ body[data-page="index"] #comp-lqfgippy.kiels-training-card-final {
+  left: auto !important;
+  width: 100% !important;
+  max-width: 100% !important;
+  padding: 0 !important;
+  justify-self: stretch !important;
+ }
+ body[data-page="index"] :is(#comp-lqfg6ro5, #comp-lqfgbopv, #comp-lqfgbvlw) {
+  position: absolute !important;
+  inset: 0 !important;
+  height: 100% !important;
+  pointer-events: none;
+ }
+ body[data-page="index"] #comp-lqfgaydz {
+  order: -1;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) :is(#comp-lqfgru7k, #comp-lqfhrurb) {
+  text-align: center;
+ }
+
+ /* Fitness: preserve components, replace only their fixed mesh placement. */
+ body[data-page="fitness"] [data-mesh-id="comp-lqiew6bminlineContent-gridContainer"] {
+  display: grid !important;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+ }
+ body[data-page="fitness"] :is(#comp-lqiexop6, #comp-lqifh0v3) {
+  grid-column: 1 / -1 !important;
+ }
+ body[data-page="fitness"] [data-mesh-id="comp-lqiexop6inlineContent-gridContainer"] {
+  display: grid !important;
+  grid-template-columns: 40px minmax(0, 1fr) 40px;
+  align-items: center;
+ }
+ body[data-page="fitness"] [data-mesh-id="comp-lqifh0v3inlineContent-gridContainer"] {
+  display: grid !important;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+ }
+ body[data-page="fitness"] #comp-lqifdwk2 {
+  grid-area: 1 / 1 !important;
+  height: 100% !important;
+ }
+ body[data-page="fitness"] #comp-lqif28hw {
+  grid-area: 1 / 1 !important;
+  align-self: center !important;
+  padding: 24px;
+ }
+ body[data-page="fitness"] #comp-lqif1efe {
+  grid-area: 1 / 2 !important;
+ }
+ body[data-page="fitness"] :is(#comp-lqif9y7b, #comp-lqifaga5, #comp-lqifbx3c) {
+  grid-area: 2 / 2 !important;
+ }
+ body[data-page="fitness"] #comp-lqif9y7b {
+  height: 100% !important;
+ }
+ body[data-page="fitness"] #comp-lqif9y7b :is(.apPOZK, img) {
+  height: 100% !important;
+  object-fit: fill !important;
+ }
+ body[data-page="fitness"] #comp-lqifbx3c {
+  padding: 20px 20px 0;
+  align-self: start !important;
+ }
+ body[data-page="fitness"] #comp-lqifaga5 {
+  padding: 65px 20px 20px;
+ }
+ body[data-page="fitness"] :is(#comp-lqmh4ev6, #comp-lqmh4p31, #comp-lqmh4s04) {
+  height: 100% !important;
+ }
+ body[data-page="fitness"] #comp-lqmh4ev6 { grid-area: 3 / 1 / 6 / 2 !important; }
+ body[data-page="fitness"] #comp-lqmh4p31 { grid-area: 3 / 2 / 6 / 3 !important; }
+ body[data-page="fitness"] #comp-lqmh4s04 { grid-area: 3 / 3 / 6 / 4 !important; }
+ body[data-page="fitness"] #comp-lqmh5z9x { grid-area: 3 / 1 !important; }
+ body[data-page="fitness"] #comp-lqmh7enx { grid-area: 4 / 1 !important; }
+ body[data-page="fitness"] #comp-lqmh5z9j { grid-area: 5 / 1 !important; }
+ body[data-page="fitness"] #comp-lqmhi524 { grid-area: 3 / 2 !important; }
+ body[data-page="fitness"] #comp-lqmhi52k { grid-area: 4 / 2 !important; }
+ body[data-page="fitness"] #comp-lqqo1mzn { grid-area: 5 / 2 !important; }
+ body[data-page="fitness"] #comp-lqqo0nr8 { grid-area: 3 / 3 !important; }
+ body[data-page="fitness"] #comp-lqqo0nrn { grid-area: 4 / 3 !important; }
+ body[data-page="fitness"] #comp-lqqo1qeh { grid-area: 5 / 3 !important; }
+ body[data-page="fitness"] :is(#comp-lqmh5z9x, #comp-lqmh7enx, #comp-lqmh5z9j, #comp-lqmhi524, #comp-lqmhi52k, #comp-lqqo1mzn, #comp-lqqo0nr8, #comp-lqqo0nrn, #comp-lqqo1qeh) {
+  padding: 12px 16px;
+ }
+ body[data-page="fitness"] :is([data-mesh-id="comp-lqqodmnlinlineContent-gridContainer"], [data-mesh-id="comp-lqqpb08binlineContent-gridContainer"]) {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+ }
+ body[data-page="fitness"] :is([data-mesh-id="comp-lqqowqcminlineContent-gridContainer"], [data-mesh-id="comp-lqqpbwz4inlineContent-gridContainer"]) {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 4px;
+ }
+ body[data-page="fitness"] :is(#comp-lqqofk9u, #comp-lqqpbx4g) { grid-area: 1 / 1 !important; }
+ body[data-page="fitness"] :is(#comp-lqqoem6h, #comp-lqqpbx47) { grid-area: 1 / 2 !important; }
+ body[data-page="fitness"] :is(#comp-lqqodzj1, #comp-lqqpbx3q) { grid-area: 2 / 1 !important; }
+ body[data-page="fitness"] :is(#comp-lqqofwt1, #comp-lqqpbx4n1) { grid-area: 2 / 2 !important; }
+ body[data-page="fitness"] :is(#comp-lqqowqcm, #comp-lqqpbwz4) .wixui-rich-text [style*="font-size"] {
+  font-size: clamp(24px, 4vw, 48px) !important;
+  line-height: 1.1 !important;
+ }
+ body[data-page="fitness"] #comp-lqqpsvdf {
+  grid-column: 2 !important;
+ }
+ body[data-page="fitness"] :is(#comp-lqqpbkox, #comp-lqqpbx0f) > [data-mesh-id] > [data-mesh-id] {
+  padding: 24px;
+  height: 100% !important;
+ }
+ body[data-page="fitness"] [data-mesh-id$="gridContainer"] > :is(#comp-lqqp40a8, #comp-lqqpbx6q) {
+  position: absolute !important;
+  inset: 0 !important;
+  height: 100% !important;
+  pointer-events: none;
+ }
+ body[data-page="fitness"] .wixui-vector-image :is(div, svg) {
+  width: 100%;
+  height: 100%;
+ }
+ body[data-page="fitness"] [data-mesh-id$="gridContainer"] > .wixui-vector-image {
+  width: 100% !important;
+  justify-self: stretch !important;
+  pointer-events: none;
+ }
+ body[data-page="fitness"] :is(#comp-lqqowqcm, #comp-lqqpbwz4) [data-mesh-id$="gridContainer"] {
+  align-content: start;
+ }
+ body[data-page="fitness"] #comp-lqqpbwzt {
+  grid-column: 1 / -1 !important;
+ }
+
+ body:is([data-page="index"], [data-page="fitness"]) #SITE_FOOTER {
+  padding: 40px 24px;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) [data-mesh-id="comp-lqfhk7s1inlineContent-gridContainer"] {
+  display: grid !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px 24px;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) :is(#comp-lqfgub8b, #comp-lqfgzgm5, #comp-lq6ly6xh) {
+  grid-column: 1 / -1 !important;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) #comp-lqfgub8b {
+  max-width: 173px !important;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) #SITE_FOOTER a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) #comp-lq6ly6xh :is(ul, li) {
+  position: static !important;
+  width: auto !important;
+  height: auto !important;
+ }
+ body:is([data-page="index"], [data-page="fitness"]) #comp-lq6ly6xh ul {
+  display: flex;
+  gap: 16px;
+ }
+}
+
+@media (max-width: 760px) {
+ [data-site-header].nav-enhanced,
+ #SITE_HEADER[data-site-header].nav-enhanced {
+  height: 88px !important;
+  min-height: 88px !important;
+  padding: 16px 20px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  position: relative !important;
+  z-index: 100 !important;
+  box-sizing: border-box;
+ }
+ [data-site-header].nav-enhanced .header-inner {
+  width: 100%;
+  min-height: 0;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+ }
+ [data-site-header].nav-enhanced > a,
+ [data-site-header].nav-enhanced .header-inner > a {
+  flex-shrink: 0;
+ }
+ [data-site-header].nav-enhanced img {
+  flex-shrink: 0;
+  max-width: 140px;
+  height: auto;
+ }
+ [data-site-header].nav-enhanced .nav-toggle {
+  display: inline-flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  width: 48px;
+  height: 48px;
+  padding: 10px;
+  border: 1px solid currentColor;
+  border-radius: 4px;
+  background: transparent;
+  color: #fff;
+  cursor: pointer;
+ }
+ .nav-toggle span {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: currentColor;
+ }
+ .nav-toggle[aria-expanded="true"] span:first-child { transform: translateY(7px) rotate(45deg); }
+ .nav-toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
+ .nav-toggle[aria-expanded="true"] span:last-child { transform: translateY(-7px) rotate(-45deg); }
+ [data-site-header].nav-enhanced [data-site-nav],
+ #SITE_HEADER[data-site-header].nav-enhanced [data-site-nav] {
+  display: none !important;
+  position: absolute !important;
+  inset: 100% 0 auto !important;
+  width: 100% !important;
+  margin: 0 !important;
+  padding: 12px 20px !important;
+  box-sizing: border-box;
+  max-height: calc(100dvh - 88px);
+  overflow-y: auto;
+  background: #0a161f;
+  z-index: 101;
+  gap: 0 !important;
+ }
+ body[data-page="wellness"] [data-site-nav] { background: #b4a89c !important; }
+ body[data-page="health"] [data-site-nav] { background: #89958b !important; }
+ body[data-page="kurse"] [data-site-nav] { background: #181719 !important; }
+ [data-site-header].nav-enhanced [data-site-nav].open,
+ #SITE_HEADER[data-site-header].nav-enhanced [data-site-nav].open {
+  display: block !important;
+ }
+ [data-site-header].nav-enhanced [data-site-nav] ul {
+  display: block;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+ }
+ [data-site-header].nav-enhanced [data-site-nav] a,
+ #SITE_HEADER[data-site-header].nav-enhanced [data-site-nav] a {
+  display: flex !important;
+  align-items: center;
+  min-height: 48px;
+  padding: 8px 12px;
+  font-size: 16px !important;
+  line-height: 1.5;
+  box-sizing: border-box;
+ }
+ body[data-page="wellness"] :is(.carousel-arrow, .carousel-dot) {
+  min-width: 44px;
+  min-height: 44px;
+ }
+ body[data-page="wellness"] .carousel-dot {
+  border-radius: 0;
+  background: transparent;
+  position: relative;
+ }
+ body[data-page="wellness"] .carousel-dot::before {
+  content: "";
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c9c9c9;
+  inset: calc(50% - 4px);
+ }
+ body[data-page="wellness"] .carousel-dot.active::before { background: #111; }
+ body[data-page="wellness"] .carousel-dots { gap: 0; }
+ body[data-page="wellness"] .carousel-arrow { padding: 0; }
+ body[data-page="kurse"] :is(.course, .visual, .copy, .links) {
+  min-width: 0;
+ }
+ body[data-page="kurse"] .course {
+  grid-template-columns: minmax(0, 1fr);
+  gap: 28px;
+ }
+ body[data-page="kurse"] .visual img {
+  max-width: 100%;
+  height: auto;
+ }
+ body[data-page="kurse"] .copy h3 {
+  font-size: clamp(26px, 6vw, 29px);
+  overflow-wrap: anywhere;
+ }
+ body[data-page="kurse"] .copy h3 strong {
+  display: inline-block;
+  max-width: 100%;
+ }
+ body[data-page="kurse"] footer {
+  flex-wrap: wrap;
+  gap: 28px;
+  padding: 24px;
+ }
+ body[data-page="kurse"] footer > * { min-width: 0; max-width: 100%; }
+ body[data-page="kurse"] .links { gap: 8px 24px; }
+ body[data-page="kurse"] .tabs button {
+  min-height: 44px;
+  padding: 12px 8px;
+ }
+ body[data-page="health"] .doctor-card { margin: 20px 0; }
+ body[data-page="health"] .pill { white-space: normal; }
+ body[data-page="health"] .heroquote { font-size: 15px; }
+ body[data-page="health"] .health-top .multi p,
+ body[data-page="health"] .training,
+ body[data-page="health"] .doctor-note p,
+ body[data-page="health"] .sport p,
+ body[data-page="health"] .doctor-card,
+ body[data-page="health"] .sport-list,
+ body[data-page="health"] .sport ul { font-size: 14px; line-height: 1.5; }
+ body[data-page="kontakt"] :is(input, textarea, .submit) { min-height: 44px; }
+ body[data-page="kontakt"] .choice { min-height: 44px; align-items: center; }
+ body[data-page="kontakt"] .phone { min-width: 0; }
+ body[data-page="kontakt"] .phone input { min-width: 0; }
+ body[data-page="kontakt"] .privacy { font-size: 13px; }
+ body:not(:is([data-page="index"], [data-page="fitness"])) footer a,
+ body[data-page="health"] :is(.course a, .allcourses),
+ body[data-page="kontakt"] .route-links a {
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  box-sizing: border-box;
+ }
+ body[data-page="health"] .footer a,
+ body[data-page="wellness"] footer > div > a { display: flex; }
+}
+
+@media (max-width: 700px) {
+ body[data-page="index"] [data-mesh-id="comp-lqe4n2b3inlineContent-gridContainer"] {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+ }
+ body[data-page="index"] :is(#comp-lqe7b4su, #comp-lqe7j4s5) { grid-column: 1 / -1 !important; }
+ body[data-page="index"] :is(#comp-lqfb8re0, #comp-lqfb8wf6, #comp-lqfb92qc, #comp-lqfb98pe, #comp-lqfb9dzg, #comp-lqfb9itz) {
+  grid-column: span 1 !important;
+ }
+ body[data-page="index"] :is([data-mesh-id="comp-lqe7t14zinlineContent-gridContainer"], [data-mesh-id="comp-lqfcnfr6inlineContent-gridContainer"], [data-mesh-id="comp-lqffjprninlineContent-gridContainer"]) {
+  grid-template-columns: minmax(0, 1fr);
+ }
+ body[data-page="index"] #comp-lqfc38ee { grid-row: 7 !important; }
+ body[data-page="index"] #comp-lqfcc25r { grid-row: 7 !important; }
+ body[data-page="index"] #comp-lqfegzm3 { grid-area: 3 / 1 !important; }
+ body[data-page="index"] #comp-lqfeh3jg { grid-area: 4 / 1 !important; }
+ body[data-page="index"] #comp-lqfeh7xd { grid-area: 5 / 1 !important; }
+ body[data-page="index"] #comp-lqfdbx4o { grid-area: 6 / 1 !important; }
+ body[data-page="index"] #comp-lqfeajgi { grid-area: 7 / 1 !important; }
+ body[data-page="fitness"] :is([data-mesh-id="comp-lqifh0v3inlineContent-gridContainer"], [data-mesh-id="comp-lqqodmnlinlineContent-gridContainer"], [data-mesh-id="comp-lqqpb08binlineContent-gridContainer"]) {
+  grid-template-columns: minmax(0, 1fr);
+ }
+ body[data-page="fitness"] #comp-lqif1efe { grid-area: 2 / 1 !important; }
+ body[data-page="fitness"] :is(#comp-lqif9y7b, #comp-lqifaga5, #comp-lqifbx3c) { grid-area: 3 / 1 !important; }
+ body[data-page="fitness"] #comp-lqqpsvdf { grid-column: 1 !important; }
+ body[data-page="fitness"] [data-mesh-id="comp-lqiew6bminlineContent-gridContainer"] { grid-template-columns: minmax(0, 1fr); }
+ body[data-page="fitness"] #comp-lqmh4ev6 { grid-area: 3 / 1 / 6 / 2 !important; }
+ body[data-page="fitness"] #comp-lqmh4p31 { grid-area: 6 / 1 / 9 / 2 !important; }
+ body[data-page="fitness"] #comp-lqmh4s04 { grid-area: 9 / 1 / 12 / 2 !important; }
+ body[data-page="fitness"] #comp-lqmhi524 { grid-area: 6 / 1 !important; }
+ body[data-page="fitness"] #comp-lqmhi52k { grid-area: 7 / 1 !important; }
+ body[data-page="fitness"] #comp-lqqo1mzn { grid-area: 8 / 1 !important; }
+ body[data-page="fitness"] #comp-lqqo0nr8 { grid-area: 9 / 1 !important; }
+ body[data-page="fitness"] #comp-lqqo0nrn { grid-area: 10 / 1 !important; }
+ body[data-page="fitness"] #comp-lqqo1qeh { grid-area: 11 / 1 !important; }
+}

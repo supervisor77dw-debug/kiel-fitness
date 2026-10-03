@@ -50,12 +50,14 @@
       .footer-nav, .social { justify-content: center; }
     }
   </style>
+<link rel="stylesheet" href="responsive.css">
+<script src="script.js" defer></script>
 </head>
-<body>
-  <header class="site-header">
+<body data-page="impressum">
+  <header class="site-header" data-site-header>
     <div class="header-inner">
       <a class="logo" href="index.html" aria-label="KIELS Fitness – Fitnessstudio in Kiel"><img src="assets/logo.png" alt="KIELS Fitness – Fitnessstudio in Kiel" width="173" height="76"></a>
-      <nav class="main-nav" aria-label="Website"><ul><li><a href="index.html">Home</a></li><li><a href="fitness.html">Fitness</a></li><li><a href="wellness.html">Wellness</a></li><li><a href="health.html">Health</a></li><li><a href="kurse.html">Kurse</a></li><li><a href="kontakt.html">Kontakt</a></li></ul></nav>
+      <button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="main-navigation"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></button><nav class="main-nav" id="main-navigation" data-site-nav aria-label="Hauptnavigation"><ul><li><a href="index.html">Home</a></li><li><a href="fitness.html">Fitness</a></li><li><a href="wellness.html">Wellness</a></li><li><a href="health.html">Health</a></li><li><a href="kurse.html">Kurse</a></li><li><a href="kontakt.html">Kontakt</a></li></ul></nav>
     </div>
   </header>
   <main>
