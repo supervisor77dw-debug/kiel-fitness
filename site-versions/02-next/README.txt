@@ -1,178 +1,137 @@
-KIELS Next – aktiver Website-Arbeitsstand, Etappe 5B, 03.10.2026
+KIELS Next – aktiver Website-Arbeitsstand, Etappe 5D, 03.10.2026
 
 Alle Website-Optimierungen erfolgen hier. Current/Archiv und shared bleiben
-eingefroren. Ressourcen können hier unter assets oder wix-clone überschrieben
-werden; der lokale Server verwendet die eigene Datei vor dem shared-Snapshot.
+eingefroren. Eigene Ressourcen unter assets oder wix-clone haben Vorrang vor
+dem shared-Snapshot. Versionsarchitektur: ..\README.txt.
 
-Gemeinsames Designsystem
-home.css gilt für sämtliche neun Seiten, script.js für Navigation und Formular.
+Gemeinsames freigegebenes Designsystem
+home.css gilt für alle neun Seiten, script.js für Navigation und Formular.
 1240 px maximale Contentbreite; 64 px Abschnittsabstand, mobil 40 px.
-Trebuchet MS/Systemfallback; H1 38–62 px, H2 30–44 px; Navy, Weiß, Gelb.
-Primär: Probetraining; sekundär: Leistungsanker und persönliche Beratung.
-Sticky Header mit 96 px Desktop-/80 px Mobilhöhe; dezenter Blur nur im Header,
-opaker Fallback; Scrollzustand ändert nur Hintergrunddeckung, nicht Geometrie.
-Mobile Menü bis 760 px; Escape/Fokus/No-JS-Fallback; scrollbares kurzes Menü.
-Zwei mobile Aktionen; Safe-Area-/Scrollabstände; reduced-motion ohne Transition.
+Trebuchet MS/Systemfallback; Navy, Weiß, Gelb; Primär-CTA: Probetraining.
+Sticky Header: 96 px Desktop/80 px Mobil, Glas-/opaker Fallback.
+Scrollzustand ändert Hintergrunddeckung, nicht Geometrie.
+Mobile Menü bis 760 px, Escape/Fokus/No-JS; Safe-Area, reduced-motion.
+Etappe 5D verändert weder CSS noch Header/Footer, Bilder oder Formulartechnik.
 
-Nutzerreisen
-Home: Ziel finden, Studio kennenlernen, Mitgliedschaft, Besuch planen.
-Fitness: Trainingsziel -> Trainingswege -> Betreuung/Zirkel -> Probetraining.
-Gesundheit: Ausgangspunkt -> Analyse/Diagnostik -> Plan -> Betreuung/Kurse.
-Kurse: Kurswelt wählen -> reale Kursangebote -> aktuellen Plan erfragen.
-Wellness: vorhandene Bereiche -> Pause/Abkühlung -> aktuelle Verfügbarkeit.
-Kontakt: Anliegen wählen -> direkt kontaktieren oder bestehendes Formular.
-Rechtliches: unveränderter Hauptinhalt, nur gemeinsame Hülle/Styles.
+Fachlich bestätigt / korrigiert
+- Late-Night: 20:00–22:00 Uhr, 27,90 EUR alle 14 Tage, 6 Monate Laufzeit.
+  Die frühere offene Abrechnungsfrage ist erledigt; Preis/Laufzeit unverändert.
+- Aufbau Rückbildung: für Frauen nach Schwangerschaft/Entbindung, postnatal.
+  Falsche frühere Bezeichnung und rückenorientierte Beschreibung korrigiert.
+- Rückenfit: eigenes bereits auf Gesundheit beschriebenes Angebot, getrennt
+  von Rückbildung. Nun zusätzlich als eigene Karte im Kurskatalog sichtbar.
+  25 Angebote im Inventar = bisherige 24 Karten plus vorhandenes Rückenangebot;
+  kein neues Leistungsprogramm eingeführt.
+- Pauschaler offener Punkt "Bereichszeiten" entfällt. Bestehende veröffentlichte
+  Sauna-/Kinderbetreuungszeiten wurden nicht geändert.
+- Kursbeschreibungen gekürzt; Wirkungs-/Heilversprechen und pauschale
+  Marketingaussagen entfernt. Du-Ansprache und Programmnamen vereinheitlicht.
 
-SEO
-Vorhandene Titles, Descriptions, Canonicals, OG/X und Schema unverändert
-übernommen; keine zusätzliche LocalBusiness-Struktur, keine URL-Migration.
-Gesundheit und Wellness besitzen im übernommenen Next-Bestand nur kurze Titles
-und keine Description/Canonical. Das widerspricht der gewünschten vollständigen
-Keyword-Zuordnung; ohne neue Freigabe wurden diese Metadaten nicht erfunden.
-Sichtbar verbessert: eine H1, H2/H3, Leistungsinformationen, interne Zielpfade
-und Bildbeschreibungen. Die Bilddaten selbst wurden nicht verändert.
+Content-/SEO-Prüftabelle
+Alle Hauptseiten: genau eine H1, gegliederte H2/H3, eigener Title/Description,
+relative seitenrichtige Canonical. Canonicals folgen der bestehenden relativen
+Konvention und lösen auf dem jeweiligen Host auf; keine Wix-Domainmigration.
+Vercel bleibt ausdrücklich noindex/nofollow, trotz vervollständigter Metadaten.
+Keine SEO-Scores, keine neuen medizinischen Versprechen oder Schema-Fakten.
 
-Inhaltliche Grenzen
-Keine pauschalen Heilversprechen, Prozent-/Kostenversprechen der Firmenfitness
-oder unbestätigten Terminzusagen. Sauna-Samstag und Arzt-/Bereichsverfügbarkeit
-werden zur aktuellen Bestätigung beim Team verwiesen.
-24 tatsächliche Kursangebote bleiben sichtbar; keine erfundene PDF/Bodypump-URL.
-Etappe 5C: Studio/Late-Night-Nutzung endet bestätigt um 22:00 Uhr.
-Late-Night-Abrechnungsperiode bleibt offen; Preis 27,90 EUR unverändert.
-Rechtstexte und Datenschutzhinweis der Form wurden nicht inhaltlich verändert.
+Seite | Fokus | H1 | Title | Meta Description | Canonical | Interne Links | Alt-Texte | Befund
+Home | Fitnessstudio Kiel | Dein Fitnessstudio in Kiel für Training, Gesundheit und echte Erholung. | Fitnessstudio Kiel – Sauna, Kurse & Kinderbetreuung | Vorhandene lokale Angebotsbeschreibung beibehalten | index.html | Leistungsseiten, Mitgliedschaft, Kinderbetreuung; Firmenfitness jetzt direkt #firmenfitness | Beschreibende Hauptbilder; leere Alt-Texte nur bei dekorativen verlinkten Kartenbildern mit gleichem Textziel | Tarif vollständig, sonst kein unnötiger Textnachzug
+Fitness | Fitnesstraining Kiel | Fitnesstraining in Kiel. Dein Trainingsweg. | Fitnesstraining Kiel – Personal, Ausdauer & Zirkel | Vorhandene Beschreibung beibehalten | fitness.html | Gesundheit, Zirkel, Firmenfitness, Kontakt | Hero/Trainingsbereich konkretisiert | Suchintention in H1; Trainingswege/Betreuung/Zirkel klar
+Gesundheit | Gesundheitstraining Kiel | Gesundheitstraining in Kiel. Individuell begleitet. | Gesundheitstraining Kiel – Analyse & Betreuung | Neu: Körperanalyse, Sportdiagnostik, Trainingsplanung, Rückenfit | health.html | Fitness-Trainingswege, Gesundheitskurse, Rückbildung-Anker, Firmenfitness, Kontakt | Gesundheitsmotiv und Arztporträt konkretisiert | H1/Title/Description/Canonical vollständig; InBody 770, Planung und Betreuung erläutert
+Kurse | Fitnesskurse Kiel | Fitnesskurse in Kiel. Deinen Kurs finden. | Fitnesskurse Kiel – LES MILLS, Yoga & Rückenfit | Neu: Kursangebot einschließlich Rückbildung; Kursplan anfragen | kurse.html | Sechs Kurswelten, Kursplan, Rückenfit/Gesundheit, Kontakt | Alle Karten mit Kursmotiv bezeichnet | 25 Angebote; acht ergänzende offizielle LES-MILLS-Links
+Wellness | Fitnessstudio mit Sauna Kiel | Dein Fitnessstudio mit Sauna in Kiel. Training und Auszeit. | Fitnessstudio mit Sauna Kiel – Wellness & Ruhe | Neu: bestätigte Saunen, Dampfbad, Ruheraum und veröffentlichte Zeiten | wellness.html | Öffnungszeiten, Fitness, Kontakt | Sauna-/Ruheraum-/Wellnessmotive konkretisiert | H1/Title/Description/Canonical vollständig; keine Betriebs-/Terminzusage erfunden
+Kontakt | KIELS Kiel Kontakt / Probetraining | Kontakt zu KIELS in Kiel. Deine Frage zählt. | Kontakt – KIELS Fitness Kiel, Probetraining & Fragen | Vorhandene Adresse/Telefon/Anfragebeschreibung beibehalten | kontakt.html | Öffnungszeiten, Datenschutz; direkte Telefon/Mail/Anfahrt | Logo vorhanden, keine zusätzlichen Inhaltsbilder | Einführung priorisiert echte Telefon-/Mailanfrage; Versandhinweis bleibt
+Mitgliedschaft | Tarife / Mitgliedschaft Kiel | Nutzt Home-H1, eigener Abschnitt H2 "Welcher Tarif passt zu dir?" | Nutzt Home-Title | Nutzt Home-Description | index.html (kein separates Dokument) | index.html#mitgliedschaft, Mail-/Telefonberatung | Keine eigenen Bilder; keine künstlichen Alt-Texte | Alle drei Tarifkarten; Late-Night vollständig bestätigt
+Rechtsseiten | AGB / Impressum / Datenschutz | Je eine bestehende H1 | Bestehende Titel | Unverändert | Unverändert | Gemeinsame Navigation/Rechtslinks | Gemeinsames Logo | Rechtlicher Hauptinhalt unverändert
 
-Kontakttechnik
-Bestehende Felder, native/JS/serverseitige Validierung, Honeypot, Attribution
-und Submission-ID bleiben erhalten. Eigene api/contact.js und lib-Kopie.
-Frontend verwendet die eigene relative api/contact-action.
-Der sichtbare Staginghinweis sagt ausdrücklich: kein Versand/keine Speicherung.
-Keine neue Einwilligung, kein CRM, keine lokale Lead-Datenbank.
-Details des Datenvertrags: CONTACT.md.
+LES-MILLS-Verifikation und eingebauter Stand
+Grundlage: https://www.lesmills.com/de/programme/ leitet zur offiziellen
+Programmübersicht https://www.lesmills.com/de/programme/all weiter.
+Am 03.10.2026 wurden die deutschen Programmseiten direkt aufgerufen:
+HTTP 200, passender Programmname und deutsche Inhaltsbeschreibung.
+Nicht allein aus Namen konstruierte URLs; keine Studios/Blogs/Embeds.
 
-Vercel-Staging
-Projekt: kiel-fitness, Scope: supervisor77dw-debugs-projects.
-Production-Branch main, Root unverändert; keine Wix-/Custom-Domain-Umschaltung.
-node tools\build-staging.cjs aus dem Projekt-Root erzeugt .vercel\output im
-Vercel Build Output API v3-Format; benötigt keine Pakete und keine Credentials.
-Es enthält alle Next-Seiten und die tatsächlich referenzierten Ressourcen.
-API-Function nutzt Node.js 22 mit unverändertem Validator und einem im
-Staging-Paket ausdrücklich deaktivierten HighLevel-Adapter, unabhängig von ENV.
-Alle Stagingantworten sind noindex/nofollow. Kein produktiver Versand.
-tools\contact-http.cjs überbrückt rohe Node-Requests/Responses für den
-Build-Output-Function-Launcher und den lokalen Server (begrenzter JSON-Body,
-status/json-Response-Helfer). Der versionsspezifische Validator bleibt getrennt.
-Seit Etappe 5C ist Production im bestehenden Vercel-Projekt freigegeben.
-Dies betrifft nur kiel-fitness.vercel.app, niemals die Wix-/Unternehmensdomain.
-vercel.json baut bei Git-Deployments exakt denselben Next-Build-Output;
-Repository-Root und Production-Branch main bleiben unverändert.
-Build/Production sind weiter noindex/nofollow und Versand-deaktiviert,
-da Vercel Production hier ein Arbeits-/Demonstrationsstand bleibt.
-Lokale .vercel-Anbindung/Output sind ignoriert und nicht für Git bestimmt.
+KIELS-Kurs | Offizielles Programm | Offizielle geprüfte URL | Eingebaut
+BODYPUMP | BODYPUMP | https://www.lesmills.com/de/programme/bodypump | Ja
+Strength Development | LES MILLS STRENGTH DEVELOPMENT | https://www.lesmills.com/de/programme/strength-development | Ja
+BODYBALANCE® | BODYBALANCE | https://www.lesmills.com/de/programme/bodybalance | Ja
+BODYATTACK® | BODYATTACK | https://www.lesmills.com/de/programme/bodyattack | Ja
+LM Step® | LMI STEP | https://www.lesmills.com/de/programme/lmi-step | Ja
+BODYCOMBAT® | BODYCOMBAT | https://www.lesmills.com/de/programme/bodycombat | Ja
+LES MILLS CORE® | LES MILLS CORE | https://www.lesmills.com/de/programme/les-mills-core | Ja
+LES MILLS TONE® | LES MILLS TONE | https://www.lesmills.com/de/programme/les-mills-tone | Ja
 
-Verifiziertes Preview vom 03.10.2026
-URL: https://kiel-fitness-fsiii0hlr-supervisor77dw-debugs-projects.vercel.app/
-Deployment-ID: dpl_3HGVVToDwq79g1MMq1VcxeYLjMu7
-Target: Preview (READY), ohne Production-Alias.
-Aus lokal geprüftem Arbeitsstand/.vercel/output, kein neuer Git-Commit nötig.
-Git-Ausgangs-HEAD: f5f038a1e4b23635898bd1f4af512e621ee8bc1c.
-Ein genehmigter Freigabelink ist nur für dieses Deployment erstellt.
-Die Freigabe-Zugangsdaten liegen ausschließlich lokal im ignorierten .vercel,
-nicht in Quellcode, Dokumentation oder Browser-JavaScript.
-Projektweiter Login-Schutz bleibt unverändert. Der Preview-Stand von Etappe 5B
-ist historisch; Etappe 5C ersetzt die Vercel-Production-Version nach Prüfung.
-Online geprüft: neun Seiten, fünf Breiten, Reloads, Bilder, Menü, Sticky,
-Formular/API 503, Attribution, Submission-ID, No-JS, SEO und Rechtsinhalte.
+LM Step wird auf der offiziellen deutschen Seite als LMI STEP geführt.
+Step-Abfolgen, Cardio-/Kraftübungen, Step und optionale Gewichtsscheiben stimmen
+mit dem vorhandenen KIELS-Kurs überein. Die abweichende offizielle Bezeichnung
+bleibt transparent; die KIELS-Karte wurde nicht in einen anderen Kurs umbenannt.
+Vollständiges 25-Angebote-Inventar und Zuordnungsbelege: course-links.json.
 
+UX/Technik der Kurslinks
+Je LES-MILLS-Karte genau ein "Mehr über [Programm] erfahren"-Textlink innerhalb
+des Karteninhalts. Offizielle Zusatzinformation und neuer Tab werden im
+zugänglichen Namen angekündigt; target="_blank", rel="noopener noreferrer".
+Keine Trackingparameter, externen Scripts, Embeds oder neue Consent-Logik.
+Normale Links laden beim Lesen der KIELS-Seite keine Drittanbieter-Ressourcen.
+KIELS-Beschreibungen funktionieren eigenständig, ohne externe Seite zu öffnen.
+Die alten unsichtbaren Linktemplates und der BODYPUMP-Offenhinweis entfallen.
 
-Etappe 5C – vollständige Kurs-/Linkarbeitsliste, 03.10.2026
-Quelle: alle 24 sichtbaren Kurskarten in kurse.html; course-links.json bildet
-die eindeutigen data-course-id-Zuordnungen ab. Alle officialUrl-Werte sind null.
-Keine URL geraten, recherchiert oder ergänzt. Keine aktuelle Kurskarte besitzt
-einen Detail-Link. LES-MILLS-Zuordnung nach bestehender Kursbezeichnung;
-"LM Step" ist als LES-MILLS-Angebot zu bestätigen, bevor ein Link geliefert wird.
-Jumping-/Zumba-Anbieter und offizielle Programmseite ebenfalls bestätigen.
+Bewusst ohne externe Links
+Jumping und Zumba bleiben auf ausdrückliche Freigabe lokal beschrieben.
+Kein externer Anbieterlink erforderlich oder gesucht.
+Lokale Angebote: Wirbelsäulengymnastik, Aufbau Rückbildung, Rückenfit, Yoga,
+Pilates, Cycling, Bauch Beine Po, Step BBP, Fitnessboxen, Step Workout,
+Faszien Yoga, Flow Yoga, Ashtanga Yoga, Stretching und Bauch Intensiv.
+Rückenfit verlinkt ausschließlich intern auf health.html#rueckenfit.
+Rückbildung hat den stabilen lokalen Anker kurse.html#rueckbildung.
 
-Kurs | Kategorie | Gruppe | Verlinkt? | Ziel | Offizieller Link sinnvoll? | Status
-|---|---|---|---|---|---|---|
-| Bodypump | Power & Kraftausdauer | LES MILLS | Nein | – | Ja | URL FEHLT – vom Betreiber nachzuliefern |
-| Strength Development | Power & Kraftausdauer | LES MILLS | Nein | – | Ja | URL FEHLT – vom Betreiber nachzuliefern |
-| Wirbelsäulengymnastik | Rücken & Gesundheit | KIELS/lokales Angebot | Nein | – | Nein | Kein externer Link erforderlich |
-| Aufbau Rückenbildung | Rücken & Gesundheit | KIELS/lokales Angebot | Nein | – | Nein | Kein externer Link erforderlich |
-| Yoga | Body & Mind | KIELS/lokales Angebot | Nein | – | Nein | Kein externer Link erforderlich |
-| Pilates | Body & Mind | KIELS/lokales Angebot | Nein | – | Nein | Kein externer Link erforderlich |
-| Body Balance® | Body & Mind | LES MILLS | Nein | – | Ja | URL FEHLT – vom Betreiber nachzuliefern |
-| Body Attack® | Cardio & Ausdauer | LES MILLS | Nein | – | Ja | URL FEHLT – vom Betreiber nachzuliefern |
-| LM Step® | Cardio & Ausdauer | LES MILLS | Nein | – | Ja | URL FEHLT – vom Betreiber nachzuliefern |
-| Cycling | Cardio & Ausdauer | KIELS/lokales Angebot | Nein | – | Nein | Kein externer Link erforderlich |
-| Bauch Beine Po | Cardio & Ausdauer | KIELS/lokales Angebot | Nein | – | Nein | Kein externer Link erforderlich |
-| Step BBP | Cardio & Ausdauer | KIELS/lokales Angebot | Nein | – | Nein | Kein externer Link erforderlich |
-| Jumping® | Cardio & Ausdauer | Externes Programm | Nein | – | Ja | URL FEHLT – vom Betreiber nachzuliefern |
-| Fitnessboxen | Cardio & Ausdauer | KIELS/lokales Angebot | Nein | – | Nein | Kein externer Link erforderlich |
-| Step Workout | Cardio & Ausdauer | KIELS/lokales Angebot | Nein | – | Nein | Kein externer Link erforderlich |
-| Body Combat® | Cardio & Ausdauer | LES MILLS | Nein | – | Ja | URL FEHLT – vom Betreiber nachzuliefern |
-| Faszien Yoga | Beweglichkeit | KIELS/lokales Angebot | Nein | – | Nein | Kein externer Link erforderlich |
-| Flow Yoga | Beweglichkeit | KIELS/lokales Angebot | Nein | – | Nein | Kein externer Link erforderlich |
-| Ashtanga Yoga | Beweglichkeit | KIELS/lokales Angebot | Nein | – | Nein | Kein externer Link erforderlich |
-| Zumba® | Beweglichkeit | Externes Programm | Nein | – | Ja | URL FEHLT – vom Betreiber nachzuliefern |
-| Stretching | Beweglichkeit | KIELS/lokales Angebot | Nein | – | Nein | Kein externer Link erforderlich |
-| Bauch Intensiv | Weitere Kurswelten | KIELS/lokales Angebot | Nein | – | Nein | Kein externer Link erforderlich |
-| LES MILLS CORE® | Weitere Kurswelten | LES MILLS | Nein | – | Ja | URL FEHLT – vom Betreiber nachzuliefern |
-| LES MILLS TONE® | Weitere Kurswelten | LES MILLS | Nein | – | Ja | URL FEHLT – vom Betreiber nachzuliefern |
+Kursplan-PDF – vorbereitet, noch keine Datei
+Bereich kurse.html#kursplan mit verständlichem Status und Kontaktlink.
+Kein falscher Dateiname, leeres href, aktiver Download oder erfundene PDF.
+Sobald die freigegebene PDF geliefert wird, dort genau einen beschreibenden
+Download-Link einsetzen; Dateipfad, Version/Stand und Erreichbarkeit prüfen.
+Eigene PDF-Ressourcen gehören unter 02-next\assets und werden vom vorhandenen
+Builder übernommen, sobald sie im HTML unter assets referenziert sind.
 
-Bereits korrekt verlinkt:
-Keine externen Kursdetail-Links vorhanden.
-Interne Kurswelt-Anker: #power, #gesundheit, #body-mind, #cardio,
-#beweglichkeit und #weitere (jeweils in kurse.html).
-Gesundheit verweist auf kurse.html#gesundheit; Firmenfitness auf
-fitness.html#firmenfitness. Das sind lokale Orientierungspfade, keine externen
-Kursdetail-Informationen.
+Zukunftsanforderung: Kursplan-Upload für Mitarbeiter – NICHT IMPLEMENTIERT
+Nur berechtigte Mitarbeiter sollen PDF-Pläne einfach austauschen können,
+ohne Codeänderung oder vollständiges Website-Deployment.
+Vor Umsetzung entscheiden und prüfen:
+- Geschützter, authentifizierter Zugriff und Berechtigungen, keine öffentliche
+  allgemeine Uploadfunktion; Hosting/Speicherlösung noch nicht festgelegt.
+- Einfacher PDF-Upload, serverseitige Dateityp-/Inhalts- und Größenvalidierung;
+  zulässige Maximalgröße in der Umsetzung festlegen.
+- Möglichst stabile öffentliche Kursplan-URL, kontrollierter atomarer Ersatz.
+- Versionierung/Rückfalloption, Rechte und Fehler-/Statusmeldung.
+- Bedienung ohne technische Kenntnisse, optional Vorschau vor Veröffentlichung.
+Keine Uploadroute, Datenbank oder externer Speicher in Etappe 5D angelegt.
 
-Link vorhanden, aber prüfen:
-Keine vorhandene konkrete externe Kursdetail-URL.
-Historischer BODYPUMP-#-Platzhalter wurde bereits in Etappe 5B nicht als
-klickbarer Link übernommen. Der Kursplan-PDF ist weiterhin nicht verfügbar.
+Kontakttechnik und Vercel-Demonstrationsstand
+Felder, native/JS/serverseitige Validierung, Honeypot, Attribution, Submission-ID
+und relative api/contact-action unverändert. Kein Versand/keine Speicherung.
+Eigene API/lib-Kopien; Details des Vertrags: CONTACT.md.
+Projekt kiel-fitness, Scope supervisor77dw-debugs-projects, Git main.
+Production: https://kiel-fitness.vercel.app/ – Next-Arbeits-/Demonstrationsstand,
+nicht die Wix-Unternehmenswebsite. Keine Domain-/DNS-/Nameserveränderung.
+vercel.json ruft tools\build-staging.cjs auf, Build Output API v3, Node.js 22.
+Es baut nur Next-Seiten, referenzierte Ressourcen und den HTTP-API-Wrapper
+tools\contact-http.cjs. HighLevel unabhängig von ENV ausdrücklich deaktiviert.
+Alle Antworten noindex/nofollow; gültige Anfragen weiterhin HTTP 503
+delivery_not_configured. Keine Credentials oder lokalen Vercel-Daten in Git.
+Lokale Vorschau: node tools\preview.cjs, http://127.0.0.1:8766/next/
+Tests: node --test tests\*.test.cjs site-versions\01-current\tests\contact.test.cjs
+site-versions\02-next\tests\contact.test.cjs (aus Projekt-Root).
 
-Link fehlt – jeweils offizielle Programm-Detailseite vom Betreiber:
-- Bodypump (LES MILLS): URL FEHLT – vom Betreiber nachzuliefern
-- Strength Development (LES MILLS): URL FEHLT – vom Betreiber nachzuliefern
-- Body Balance® (LES MILLS): URL FEHLT – vom Betreiber nachzuliefern
-- Body Attack® (LES MILLS): URL FEHLT – vom Betreiber nachzuliefern
-- LM Step® (LES MILLS): URL FEHLT – vom Betreiber nachzuliefern
-- Jumping® (Externes Programm): URL FEHLT – vom Betreiber nachzuliefern
-- Body Combat® (LES MILLS): URL FEHLT – vom Betreiber nachzuliefern
-- Zumba® (Externes Programm): URL FEHLT – vom Betreiber nachzuliefern
-- LES MILLS CORE® (LES MILLS): URL FEHLT – vom Betreiber nachzuliefern
-- LES MILLS TONE® (LES MILLS): URL FEHLT – vom Betreiber nachzuliefern
-Zusätzlich: gültige KIELS-Kursplan-PDF-Datei oder bestätigte Kursplan-URL.
+Historischer technischer Preview-Stand Etappe 5B (nicht aktueller Inhalt):
+https://kiel-fitness-fsiii0hlr-supervisor77dw-debugs-projects.vercel.app/
+Deployment dpl_3HGVVToDwq79g1MMq1VcxeYLjMu7, Preview ohne Production-Alias.
+Genehmigter Freigabelink nur für dieses Deployment; Zugriffsdaten ausschließlich
+lokal im ignorierten .vercel. Projektweiter Login-Schutz unverändert.
 
-Kein externer Link erforderlich:
-- Wirbelsäulengymnastik: lokale/allgemeine Trainingsform; KIELS-Beschreibung und aktuelle Kursplanung sind maßgeblich.
-- Aufbau Rückenbildung: lokale/allgemeine Trainingsform; KIELS-Beschreibung und aktuelle Kursplanung sind maßgeblich.
-- Yoga: lokale/allgemeine Trainingsform; KIELS-Beschreibung und aktuelle Kursplanung sind maßgeblich.
-- Pilates: lokale/allgemeine Trainingsform; KIELS-Beschreibung und aktuelle Kursplanung sind maßgeblich.
-- Cycling: lokale/allgemeine Trainingsform; KIELS-Beschreibung und aktuelle Kursplanung sind maßgeblich.
-- Bauch Beine Po: lokale/allgemeine Trainingsform; KIELS-Beschreibung und aktuelle Kursplanung sind maßgeblich.
-- Step BBP: lokale/allgemeine Trainingsform; KIELS-Beschreibung und aktuelle Kursplanung sind maßgeblich.
-- Fitnessboxen: lokale/allgemeine Trainingsform; KIELS-Beschreibung und aktuelle Kursplanung sind maßgeblich.
-- Step Workout: lokale/allgemeine Trainingsform; KIELS-Beschreibung und aktuelle Kursplanung sind maßgeblich.
-- Faszien Yoga: lokale/allgemeine Trainingsform; KIELS-Beschreibung und aktuelle Kursplanung sind maßgeblich.
-- Flow Yoga: lokale/allgemeine Trainingsform; KIELS-Beschreibung und aktuelle Kursplanung sind maßgeblich.
-- Ashtanga Yoga: lokale/allgemeine Trainingsform; KIELS-Beschreibung und aktuelle Kursplanung sind maßgeblich.
-- Stretching: lokale/allgemeine Trainingsform; KIELS-Beschreibung und aktuelle Kursplanung sind maßgeblich.
-- Bauch Intensiv: lokale/allgemeine Trainingsform; KIELS-Beschreibung und aktuelle Kursplanung sind maßgeblich.
-
-Kursbereiche:
-Power & Kraftausdauer / Rücken & Gesundheit / Body & Mind / Cardio & Ausdauer /
-Beweglichkeit / Weitere Kurswelten sind interne Anker, keine fremden Programme.
-"Rückenfitness" auf Gesundheit ist eine lokale Leistungsbeschreibung; der
-Kurskatalog enthält "Aufbau Rückenbildung". Die genaue gemeinsame Bezeichnung
-ist vom Betreiber zu bestätigen, kein zusätzlicher Kurs wurde erfunden.
-
-UX-Vorbereitung:
-Jede Karte besitzt eine feste data-course-id und ein unsichtbares
-template[data-course-detail] für genau einen ergänzenden "Mehr erfahren"-Link.
-Templates werden erst mit einer bestätigten offiziellen HTTPS-Zieladresse
-aktiviert; aktuell kein href, kein toter Button, keine Roh-URL im Frontend.
-Neuer Tab wird angekündigt, rel="noopener noreferrer"; keine Tracker/Embeds,
-kein zusätzlicher Consent. Die Arbeitsliste ist nicht Teil des Deployment-
-Outputs, die HTML-Templates allein führen keine externen Requests aus.
+Konkrete verbleibende fachliche Punkte
+- Aktuelle Kursplan-PDF liefern.
+- Nächster Sauna-Samstag: kein konkreter Termin/Programm geliefert.
+- Aktueller Betrieb des Dampfbads und Arzt-/Physiotherapie-Termine sind nicht
+  neu bestätigt; vorhandene Hinweise zur persönlichen Nachfrage bleiben.
+Keine pauschale Liste "offene Bereichszeiten". Keine offenen Late-Night-
+Abrechnungsfragen oder fehlenden Gesundheit-/Wellness-Metadaten mehr.

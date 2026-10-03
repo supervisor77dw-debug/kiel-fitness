@@ -56,10 +56,13 @@ Versandarchitektur: CONTACT.md innerhalb der jeweiligen Version.
 Tests je Version: node --test site-versions\01-current\tests\contact.test.cjs
 beziehungsweise node --test site-versions\02-next\tests\contact.test.cjs
 
-Bekannte offene Bestandsangaben: Kursplan-PDF fehlt; Bodypump-Platzhalter;
-Late-Night-Abrechnung offen. Etappe 5C bestätigt in Next Nutzung bis 22:00 Uhr.
+Etappe 5D: Late-Night in Next bestätigt: 20:00–22:00 Uhr, 27,90 EUR alle
+14 Tage, 6 Monate Laufzeit. Aufbau Rückbildung und Rückenfit sind getrennte
+Angebote. Acht offizielle deutsche LES-MILLS-Programmseiten sind verlinkt.
+Kursplan-PDF fehlt noch; Mitarbeiter-Upload ist nur eine Zukunftsanforderung.
+Content-/SEO-Prüftabelle und konkrete offene Punkte: 02-next\README.txt.
 Historische Zeitangaben in Current/Archiv bleiben absichtlich unverändert.
-Keine eigenständigen Korrekturen in dieser Etappe.
+Fachliche Korrekturen erfolgen ausschließlich in Next, nicht in Referenzkopien.
 Chrome meldet beim Wechsel von der bestehenden Home zur Fitness-Seite
 gelegentlich "ViewTransition opt-in disabled". Im unveränderten Root-Bestand
 reproduziert; Navigation funktioniert. Die bestehenden Wix-Transition-Regeln

@@ -44,3 +44,11 @@ Aktueller Late-Night-Nutzungszeitraum in Next: 20:00 bis 22:00 Uhr.
 Current, Archiv, Root-Clone und die alte Etappe-5A-Preview sind historische
 Referenzen, nicht der aktuelle fachliche Stand; dort bleiben frühere Zeiten.
 Kurs-/Linkarbeitsliste: site-versions\02-next\README.txt (Etappe 5C).
+
+Etappe 5D: Late-Night-Abrechnung bestätigt: 27,90 EUR alle 14 Tage.
+Aufbau Rückbildung ist postnatal, Rückenfit bleibt ein eigenes Angebot.
+Gesundheit/Wellness sowie Kurse besitzen vervollständigte SEO-Metadaten.
+Acht geprüfte deutsche LES-MILLS-Links; Jumping/Zumba bleiben ohne externe Links.
+SEO-Prüftabelle, Kursplan-Vorbereitung und zukünftiger geschützter Mitarbeiter-
+Upload stehen in site-versions\02-next\README.txt. Upload nicht implementiert.
+Wix, DNS, Unternehmensdomain und deaktivierter Versand bleiben unverändert.

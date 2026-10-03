@@ -3,15 +3,20 @@
   "courses": [
     {
       "id": "course-01",
-      "name": "Bodypump",
+      "name": "BODYPUMP",
       "category": "Power & Kraftausdauer",
       "categoryId": "power",
       "group": "LES MILLS",
-      "linked": false,
-      "currentTargets": [],
+      "linked": true,
+      "currentTargets": [
+        "https://www.lesmills.com/de/programme/bodypump"
+      ],
       "officialLinkUseful": true,
-      "officialUrl": null,
-      "status": "URL FEHLT – vom Betreiber nachzuliefern"
+      "officialUrl": "https://www.lesmills.com/de/programme/bodypump",
+      "status": "Offizielle deutsche Programmseite geprüft und eingebaut",
+      "officialProgram": "BODYPUMP",
+      "verifiedAt": "2026-10-03",
+      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Beschreibung stimmen überein."
     },
     {
       "id": "course-02",
@@ -19,16 +24,21 @@
       "category": "Power & Kraftausdauer",
       "categoryId": "power",
       "group": "LES MILLS",
-      "linked": false,
-      "currentTargets": [],
+      "linked": true,
+      "currentTargets": [
+        "https://www.lesmills.com/de/programme/strength-development"
+      ],
       "officialLinkUseful": true,
-      "officialUrl": null,
-      "status": "URL FEHLT – vom Betreiber nachzuliefern"
+      "officialUrl": "https://www.lesmills.com/de/programme/strength-development",
+      "status": "Offizielle deutsche Programmseite geprüft und eingebaut",
+      "officialProgram": "LES MILLS STRENGTH DEVELOPMENT",
+      "verifiedAt": "2026-10-03",
+      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Beschreibung stimmen überein."
     },
     {
       "id": "course-03",
       "name": "Wirbelsäulengymnastik",
-      "category": "Rücken & Gesundheit",
+      "category": "Rücken, Rückbildung & Gesundheit",
       "categoryId": "gesundheit",
       "group": "KIELS/lokales Angebot",
       "linked": false,
@@ -39,8 +49,8 @@
     },
     {
       "id": "course-04",
-      "name": "Aufbau Rückenbildung",
-      "category": "Rücken & Gesundheit",
+      "name": "Aufbau Rückbildung",
+      "category": "Rücken, Rückbildung & Gesundheit",
       "categoryId": "gesundheit",
       "group": "KIELS/lokales Angebot",
       "linked": false,
@@ -75,27 +85,37 @@
     },
     {
       "id": "course-07",
-      "name": "Body Balance®",
+      "name": "BODYBALANCE®",
       "category": "Body & Mind",
       "categoryId": "body-mind",
       "group": "LES MILLS",
-      "linked": false,
-      "currentTargets": [],
+      "linked": true,
+      "currentTargets": [
+        "https://www.lesmills.com/de/programme/bodybalance"
+      ],
       "officialLinkUseful": true,
-      "officialUrl": null,
-      "status": "URL FEHLT – vom Betreiber nachzuliefern"
+      "officialUrl": "https://www.lesmills.com/de/programme/bodybalance",
+      "status": "Offizielle deutsche Programmseite geprüft und eingebaut",
+      "officialProgram": "BODYBALANCE",
+      "verifiedAt": "2026-10-03",
+      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Beschreibung stimmen überein."
     },
     {
       "id": "course-08",
-      "name": "Body Attack®",
+      "name": "BODYATTACK®",
       "category": "Cardio & Ausdauer",
       "categoryId": "cardio",
       "group": "LES MILLS",
-      "linked": false,
-      "currentTargets": [],
+      "linked": true,
+      "currentTargets": [
+        "https://www.lesmills.com/de/programme/bodyattack"
+      ],
       "officialLinkUseful": true,
-      "officialUrl": null,
-      "status": "URL FEHLT – vom Betreiber nachzuliefern"
+      "officialUrl": "https://www.lesmills.com/de/programme/bodyattack",
+      "status": "Offizielle deutsche Programmseite geprüft und eingebaut",
+      "officialProgram": "BODYATTACK",
+      "verifiedAt": "2026-10-03",
+      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Beschreibung stimmen überein."
     },
     {
       "id": "course-09",
@@ -103,11 +123,16 @@
       "category": "Cardio & Ausdauer",
       "categoryId": "cardio",
       "group": "LES MILLS",
-      "linked": false,
-      "currentTargets": [],
+      "linked": true,
+      "currentTargets": [
+        "https://www.lesmills.com/de/programme/lmi-step"
+      ],
       "officialLinkUseful": true,
-      "officialUrl": null,
-      "status": "URL FEHLT – vom Betreiber nachzuliefern"
+      "officialUrl": "https://www.lesmills.com/de/programme/lmi-step",
+      "status": "Offizielle deutsche Programmseite geprüft und eingebaut",
+      "officialProgram": "LMI STEP",
+      "verifiedAt": "2026-10-03",
+      "verification": "Offizielle deutsche Seite nennt LMI STEP und beschreibt das Ganzkörper-Step-Workout mit Step und Gewichtsscheiben; passt zum vorhandenen LM-Step-Angebot."
     },
     {
       "id": "course-10",
@@ -153,9 +178,9 @@
       "group": "Externes Programm",
       "linked": false,
       "currentTargets": [],
-      "officialLinkUseful": true,
+      "officialLinkUseful": false,
       "officialUrl": null,
-      "status": "URL FEHLT – vom Betreiber nachzuliefern"
+      "status": "Bewusst ohne externen Detail-Link – Freigabe Etappe 5D"
     },
     {
       "id": "course-14",
@@ -183,15 +208,20 @@
     },
     {
       "id": "course-16",
-      "name": "Body Combat®",
+      "name": "BODYCOMBAT®",
       "category": "Cardio & Ausdauer",
       "categoryId": "cardio",
       "group": "LES MILLS",
-      "linked": false,
-      "currentTargets": [],
+      "linked": true,
+      "currentTargets": [
+        "https://www.lesmills.com/de/programme/bodycombat"
+      ],
       "officialLinkUseful": true,
-      "officialUrl": null,
-      "status": "URL FEHLT – vom Betreiber nachzuliefern"
+      "officialUrl": "https://www.lesmills.com/de/programme/bodycombat",
+      "status": "Offizielle deutsche Programmseite geprüft und eingebaut",
+      "officialProgram": "BODYCOMBAT",
+      "verifiedAt": "2026-10-03",
+      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Beschreibung stimmen überein."
     },
     {
       "id": "course-17",
@@ -237,9 +267,9 @@
       "group": "Externes Programm",
       "linked": false,
       "currentTargets": [],
-      "officialLinkUseful": true,
+      "officialLinkUseful": false,
       "officialUrl": null,
-      "status": "URL FEHLT – vom Betreiber nachzuliefern"
+      "status": "Bewusst ohne externen Detail-Link – Freigabe Etappe 5D"
     },
     {
       "id": "course-21",
@@ -271,11 +301,16 @@
       "category": "Weitere Kurswelten",
       "categoryId": "weitere",
       "group": "LES MILLS",
-      "linked": false,
-      "currentTargets": [],
+      "linked": true,
+      "currentTargets": [
+        "https://www.lesmills.com/de/programme/les-mills-core"
+      ],
       "officialLinkUseful": true,
-      "officialUrl": null,
-      "status": "URL FEHLT – vom Betreiber nachzuliefern"
+      "officialUrl": "https://www.lesmills.com/de/programme/les-mills-core",
+      "status": "Offizielle deutsche Programmseite geprüft und eingebaut",
+      "officialProgram": "LES MILLS CORE",
+      "verifiedAt": "2026-10-03",
+      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Beschreibung stimmen überein."
     },
     {
       "id": "course-24",
@@ -283,11 +318,30 @@
       "category": "Weitere Kurswelten",
       "categoryId": "weitere",
       "group": "LES MILLS",
-      "linked": false,
-      "currentTargets": [],
+      "linked": true,
+      "currentTargets": [
+        "https://www.lesmills.com/de/programme/les-mills-tone"
+      ],
       "officialLinkUseful": true,
+      "officialUrl": "https://www.lesmills.com/de/programme/les-mills-tone",
+      "status": "Offizielle deutsche Programmseite geprüft und eingebaut",
+      "officialProgram": "LES MILLS TONE",
+      "verifiedAt": "2026-10-03",
+      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Beschreibung stimmen überein."
+    },
+    {
+      "id": "course-25",
+      "name": "Rückenfit",
+      "category": "Rücken, Rückbildung & Gesundheit",
+      "categoryId": "gesundheit",
+      "group": "KIELS/lokales Angebot",
+      "linked": true,
+      "currentTargets": [
+        "health.html#rueckenfit"
+      ],
+      "officialLinkUseful": false,
       "officialUrl": null,
-      "status": "URL FEHLT – vom Betreiber nachzuliefern"
+      "status": "Bestehendes Gesundheitsangebot separat im Kurskatalog dargestellt; nur intern verlinkt"
     }
   ]
 }
