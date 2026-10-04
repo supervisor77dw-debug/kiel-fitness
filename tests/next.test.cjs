@@ -15,12 +15,12 @@ test("archive exactly matches frozen current checksums without duplicating share
 });
 test("all Next pages share one header/footer and stylesheet, no clone transitions or embeds", () => {
  const files = fs.readdirSync(next).filter(n => n.endsWith(".html"));
- assert.equal(files.length, 9);
+ assert.equal(files.length, 11);
  let commonHeader, commonFooter;
  for (const file of files) {
   const text = fs.readFileSync(path.join(next, file), "utf8");
-  const header = text.match(/<header[\s\S]*?<\/header>/)[0].replace(/ aria-current="page"/g, "");
-  const footer = text.match(/<footer[\s\S]*?<\/footer>/)[0];
+  const header = text.match(/<header[\s\S]*?<\/header>/)[0].replace(/\r\n/g, "\n").replace(/ aria-current="page"/g, "");
+  const footer = text.match(/<footer[\s\S]*?<\/footer>/)[0].replace(/\r\n/g, "\n").replace(/<div class="wrap footer-bottom">[\s\S]*?<\/div>/, "<div class=\"wrap footer-bottom\"></div>");
   commonHeader ??= header; commonFooter ??= footer;
   assert.equal(header, commonHeader, file);
   assert.equal(footer, commonFooter, file);
@@ -29,9 +29,15 @@ test("all Next pages share one header/footer and stylesheet, no clone transition
   assert.equal((text.match(/<h1(?:\s|>)/g) || []).length, 1, file);
  }
 });
-test("staging builder cannot enable HighLevel, copy secrets or promote Production", () => {
+test("staging builder reads server runtime configuration without embedding credentials or promoting Production", () => {
  const source = fs.readFileSync(path.join(root, "tools", "build-staging.cjs"), "utf8");
- assert.match(source, /HIGHLEVEL_ENABLED: \\"false\\"|HIGHLEVEL_ENABLED: "false"/);
+ assert.match(source, /fs\.writeFileSync\(path\.join\(contactFunctionRoot, "api", "contact\.js"\), handler\)/);
+ assert.match(source, /highlevel-readiness\.func/);
+ assert.match(source, /api\/highlevel-readiness/);
+ assert.match(source, /HIGHLEVEL_PRIVATE_TOKEN and HIGHLEVEL_LOCATION_ID at runtime/);
+ assert.doesNotMatch(source, /HIGHLEVEL_ENABLED:\s*["']false["']/);
+ assert.doesNotMatch(source, /HIGHLEVEL_PRIVATE_TOKEN:\s*["'][^"']+["']/);
+ assert.doesNotMatch(source, /HIGHLEVEL_LOCATION_ID:\s*["'][^"']+["']/);
  assert.match(source, /noindex, nofollow/);
  assert.doesNotMatch(source, /--prod|HIGHLEVEL_WEBHOOK_URL:/);
 });
@@ -130,11 +136,12 @@ test("all main pages have unique local SEO metadata, meaningful headings and acc
  }
  assert.match(fs.readFileSync(path.join(next, "index.html"), "utf8"), /href="fitness.html#firmenfitness"/);
 });
-test("Git-triggered Vercel builds use only the same guarded Next output", () => {
+test("Git-triggered Vercel builds use the Next output with fail-closed runtime configuration", () => {
  const config = JSON.parse(fs.readFileSync(path.join(root, "vercel.json"), "utf8"));
  assert.equal(config.buildCommand, "node tools/build-staging.cjs");
  assert.equal(config.framework, null);
  const builder = fs.readFileSync(path.join(root, "tools", "build-staging.cjs"), "utf8");
  assert.match(builder, /"site-versions", "02-next"/);
- assert.match(builder, /mode: "demonstration"/);
+ assert.match(builder, /mode: "staging"/);
+ assert.match(builder, /HIGHLEVEL_PRIVATE_TOKEN and HIGHLEVEL_LOCATION_ID at runtime/);
 });

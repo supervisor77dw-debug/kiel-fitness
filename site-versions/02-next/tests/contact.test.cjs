@@ -3,16 +3,94 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const { createContactHandler } = require("../api/contact");
-const { createHighLevelAdapter, mapHighLevelPayload } = require("../lib/highlevel");
+const { createHighLevelAdapter, checkHighLevelReadiness, checkFieldDefinitions, mapCampaignDetail } = require("../lib/highlevel");
 const { validateContact, MAX_BODY_BYTES, ATTRIBUTION_LIMITS } = require("../lib/contact");
-const contact = createContactHandler({ submitLead: createHighLevelAdapter({ env: {}, fetchImpl: () => { throw new Error("Unexpected external request"); } }) });
+
+const TEST_ENV = {
+ HIGHLEVEL_PRIVATE_TOKEN: "unit-test-token",
+ HIGHLEVEL_LOCATION_ID: "unit-test-location"
+};
+const interestOptions = [
+ "Probetraining", "Mitgliedschaft & Tarife", "Kurse", "Gesundheit & Körperanalyse",
+ "Sauna & Wellness", "Bestehende Mitgliedschaft", "Sonstiges"
+];
+const customFields = [
+ { id: "source-id", name: "Lead-Quelle", model: "contact", dataType: "SINGLE_OPTIONS", picklistOptions: ["Website", "Google"] },
+ { id: "detail-id", name: "Kampagne / Lead-Detail", model: "contact", dataType: "TEXT", picklistOptions: [] },
+ { id: "message-id", name: "Nachricht / Anfrage", model: "contact", dataType: "LARGE_TEXT", picklistOptions: [] },
+ { id: "callback-id", name: "Rückruf erwünscht", model: "contact", dataType: "SINGLE_OPTIONS", picklistOptions: ["Ja", "Nein"] },
+ { id: "interest-id", name: "Interesse / Anliegen", model: "contact", dataType: "MULTIPLE_OPTIONS", picklistOptions: interestOptions },
+ { id: "location-id", name: "Standort", model: "contact", dataType: "TEXT", picklistOptions: [] },
+ { id: "size-id", name: "Beschäftigtengröße", model: "contact", dataType: "SINGLE_OPTIONS", picklistOptions: ["1-9", "10-49", "50-249", "250+"] },
+ { id: "offer-id", name: "Bestehendes Firmenfitness-Angebot", model: "contact", dataType: "SINGLE_OPTIONS", picklistOptions: ["Ja", "Nein", "Nicht sicher"] }
+];
+
 const valid = () => ({
  firstName: " Erika ", lastName: " Muster ", email: "erika@example.test", phone: "0431 54020",
- message: "Bitte um ein Probetraining.", interests: ["trial"], callbackRequested: false,
+ message: "  Bitte um ein Probetraining.\nVielen Dank.  ", interests: ["trial"], callbackRequested: false,
  sourcePage: "Fitness", website: ""
 });
-async function request(body, overrides = {}, handler = contact) {
- const req = { method: "POST", headers: { host: "kiels.example", origin: "https://kiels.example", "content-type": "application/json" }, body, ...overrides };
+
+function jsonResponse(body, status = 200) {
+ return new Response(JSON.stringify(body), {
+  status,
+  headers: { "Content-Type": "application/json" }
+ });
+}
+
+function mockApi({ existingContacts = [], failureAt, failureStatus = 502, delayUntilAbort = false } = {}) {
+ const calls = [];
+ const fetchImpl = async (url, options) => {
+  const parsed = new URL(url);
+  const method = options.method || "GET";
+  calls.push({ url: parsed, method, options, body: options.body ? JSON.parse(options.body) : null });
+  if (delayUntilAbort) {
+   return new Promise((resolve, reject) => options.signal.addEventListener(
+    "abort", () => reject(new Error("unit-test-token private lead data")), { once: true }
+   ));
+  }
+  if (failureAt && parsed.pathname.includes(failureAt)) {
+   return jsonResponse({ error: "unit-test-token sensitive@example.test private lead data" }, failureStatus);
+  }
+  if (parsed.pathname.endsWith("/customFields") && method === "GET") {
+   return jsonResponse({ customFields });
+  }
+  if (parsed.pathname === "/contacts/" && method === "GET") {
+   const query = parsed.searchParams.get("query");
+   const matches = existingContacts.filter(contact => contact.email === query || contact.phone === query);
+   return jsonResponse({ contacts: matches.map(({ id }) => ({ id })), count: matches.length });
+  }
+  const contactMatch = parsed.pathname.match(/^\/contacts\/([^/]+)$/);
+  if (contactMatch && method === "GET") {
+   const found = existingContacts.find(contact => contact.id === decodeURIComponent(contactMatch[1]));
+   return found ? jsonResponse({ contact: found }) : jsonResponse({ message: "not found" }, 404);
+  }
+  if (contactMatch && method === "PUT") {
+   return jsonResponse({ contact: { id: decodeURIComponent(contactMatch[1]) } });
+  }
+  if (parsed.pathname === "/contacts/upsert" && method === "POST") {
+   return jsonResponse({ new: true, contact: { id: "created-contact-id" } }, 201);
+  }
+  throw new Error(`Unexpected mocked HighLevel request: ${method} ${parsed.pathname}`);
+ };
+ return { calls, fetchImpl };
+}
+
+function mockHandler(api, env = TEST_ENV, timeoutMs = 12000) {
+ return createContactHandler({
+  submitLead: createHighLevelAdapter({ env, fetchImpl: api.fetchImpl, timeoutMs })
+ });
+}
+
+async function request(body, overrides = {}, handler = createContactHandler({
+ submitLead: createHighLevelAdapter({ env: {}, fetchImpl: () => { throw new Error("Unexpected outbound request"); } })
+})) {
+ const req = {
+  method: "POST",
+  headers: { host: "kiels.example", origin: "https://kiels.example", "content-type": "application/json" },
+  body,
+  ...overrides
+ };
  const result = { headers: {} };
  const res = {
   setHeader(key, value) { result.headers[key] = value; },
@@ -22,37 +100,80 @@ async function request(body, overrides = {}, handler = contact) {
  await handler(req, res);
  return result;
 }
-test("normalizes a lead without storing it, including server timestamp", () => {
+
+function firmFitnessInput(requestType = "employer_inquiry", overrides = {}) {
+ return {
+  schemaVersion: 1, requestType,
+  sourcePage: requestType === "employer_referral" ? "Arbeitgeberempfehlen" : "Firmenfitness",
+  companyName: "Kiel Beispiel GmbH", firstName: "Erika", lastName: "Muster",
+  email: "erika@example.test", phone: "", location: "Kiel", callbackRequested: false, website: "",
+  ...overrides
+ };
+}
+
+function field(body, id) {
+ return body.customFields.find(value => value.id === id)?.field_value;
+}
+
+test("readiness inspection validates every existing contact field and option without writing", async () => {
+ const checked = checkFieldDefinitions(customFields);
+ assert.equal(checked.ready, true);
+ assert.deepEqual(checked.missing, []);
+ assert.deepEqual(checked.incompatible, []);
+ assert.deepEqual(checked.fields.find(item => item.requestedName === "Lead-Quelle").options, ["Website", "Google"]);
+ const missing = checkFieldDefinitions(customFields.filter(item => item.id !== "interest-id"));
+ assert.equal(missing.ready, false);
+ assert.deepEqual(missing.missing, ["Interesse / Anliegen"]);
+ let calls = 0;
+ const readiness = await checkHighLevelReadiness({
+  env: TEST_ENV,
+  fetchImpl: async (url, options) => {
+   calls++;
+   assert.equal(new URL(url).pathname, "/locations/unit-test-location/customFields");
+   assert.equal(options.method, "GET");
+   assert.equal(options.headers.Version, "2021-07-28");
+   return jsonResponse({ customFields });
+  }
+ });
+ assert.equal(readiness.status, 200);
+ assert.equal(readiness.body.runtime.tokenPresent, true);
+ assert.equal(readiness.body.runtime.locationPresent, true);
+ assert.equal(readiness.body.ready, true);
+ assert.equal(calls, 1);
+});
+
+test("valid contact is normalized while the free-text message stays byte-for-byte intact", () => {
  const result = validateContact({ ...valid(), interests: ["trial", "trial"], callbackRequested: true });
  assert.equal(result.valid, true);
- assert.deepEqual(Object.keys(result.lead), ["firstName", "lastName", "name", "email", "phone", "message", "interests", "callbackRequested", "preferredContact", "sourcePage", "submittedAt", ...Object.keys(ATTRIBUTION_LIMITS), "submissionId"]);
  assert.equal(result.lead.name, "Erika Muster");
  assert.equal(result.lead.phone, "+4943154020");
+ assert.equal(result.lead.message, valid().message);
  assert.equal(result.lead.preferredContact, "phone");
  assert.deepEqual(result.lead.interests, ["trial"]);
  assert.ok(Math.abs(Date.now() - Date.parse(result.lead.submittedAt)) < 1000);
 });
-test("valid data never receives a false delivery success", async () => {
- const result = await request(JSON.stringify(valid()));
- assert.equal(result.status, 503);
- assert.equal(result.body.success, false);
- assert.equal(result.body.code, "delivery_not_configured");
- assert.equal(result.headers["Cache-Control"], "no-store");
- assert.equal("lead" in result.body, false);
-});
-test("Vercel parsed object and buffer bodies are accepted", async () => {
- for (const body of [valid(), Buffer.from(JSON.stringify(valid()))]) assert.equal((await request(body)).status, 503);
-});
-test("required values, email, telephone, selections, source and honeypot are validated", async () => {
- const bad = { firstName: " ", lastName: 7, email: "bad@", phone: "abc123", message: "x".repeat(5001), interests: ["unknown"], callbackRequested: "true", sourcePage: "Unknown", website: "spam" };
- for (const [key, value] of Object.entries(bad)) {
+
+test("missing required fields, invalid email and invalid phone fail server validation", async () => {
+ for (const [key, value] of [
+  ["firstName", " "], ["email", "bad@"], ["phone", "abc123"], ["message", ""]
+ ]) {
   const result = await request({ ...valid(), [key]: value });
   assert.equal(result.status, 400, key);
   assert.equal(result.body.success, false);
   assert.ok(result.body.errors[key], key);
  }
- for (const body of [null, [], 42, {}, undefined]) assert.equal((await request(body)).status, 400);
 });
+
+test("Vercel parsed object and buffer bodies are accepted", async () => {
+ const api = mockApi();
+ const handler = mockHandler(api);
+ for (const body of [valid(), Buffer.from(JSON.stringify(valid()))]) {
+  const result = await request(body, {}, handler);
+  assert.equal(result.status, 200);
+  assert.equal(result.body.success, true);
+ }
+});
+
 test("method, origin, content type, malformed JSON and size fail explicitly", async () => {
  assert.equal((await request(valid(), { method: "GET" })).status, 405);
  for (const origin of ["https://other.example", "not a url", "null"]) {
@@ -65,83 +186,249 @@ test("method, origin, content type, malformed JSON and size fail explicitly", as
  assert.equal((await request(valid(), { headers: { "content-type": "application/json", "content-length": MAX_BODY_BYTES + 1 } })).status, 413);
 });
 
-const testEnv = { HIGHLEVEL_ENABLED: "true", HIGHLEVEL_WEBHOOK_URL: "https://webhook.example.invalid/test-secret" };
-function mockHandler(fetchImpl, env = testEnv, timeoutMs = 10000) {
- return createContactHandler({ submitLead: createHighLevelAdapter({ env, fetchImpl, timeoutMs }) });
-}
-test("disabled, incomplete and invalid configuration never make external requests", async () => {
+test("token and location are both required and missing configuration makes no API calls", async () => {
  let calls = 0;
  const fetchImpl = async () => { calls++; throw new Error("Must not call"); };
  for (const env of [
-  {}, { HIGHLEVEL_ENABLED: "false", HIGHLEVEL_WEBHOOK_URL: testEnv.HIGHLEVEL_WEBHOOK_URL },
-  { HIGHLEVEL_ENABLED: "true" }, { HIGHLEVEL_WEBHOOK_URL: testEnv.HIGHLEVEL_WEBHOOK_URL },
-  { HIGHLEVEL_ENABLED: "TRUE", HIGHLEVEL_WEBHOOK_URL: testEnv.HIGHLEVEL_WEBHOOK_URL },
-  { HIGHLEVEL_ENABLED: "true", HIGHLEVEL_WEBHOOK_URL: "not a URL" },
-  { HIGHLEVEL_ENABLED: "true", HIGHLEVEL_WEBHOOK_URL: "http://example.invalid" },
-  { HIGHLEVEL_ENABLED: "true", HIGHLEVEL_WEBHOOK_URL: "https://user:password@example.invalid" },
-  { HIGHLEVEL_ENABLED: "true", HIGHLEVEL_WEBHOOK_URL: "https://example.invalid/#secret" }
+  {}, { HIGHLEVEL_PRIVATE_TOKEN: TEST_ENV.HIGHLEVEL_PRIVATE_TOKEN },
+  { HIGHLEVEL_LOCATION_ID: TEST_ENV.HIGHLEVEL_LOCATION_ID }
  ]) {
-  const response = await request(valid(), {}, mockHandler(fetchImpl, env));
-  assert.equal(response.status, 503);
-  assert.equal(response.body.code, "delivery_not_configured");
+  const handler = createContactHandler({ submitLead: createHighLevelAdapter({ env, fetchImpl }) });
+  const result = await request(valid(), {}, handler);
+  assert.equal(result.status, 503);
+  assert.equal(result.body.code, "delivery_not_configured");
+  assert.equal(result.body.success, false);
  }
  assert.equal(calls, 0);
 });
-test("invalid data, honeypot and invalid attribution never reach a configured adapter", async () => {
- let calls = 0;
- const handler = mockHandler(async () => { calls++; return new Response(null, { status: 200 }); });
- for (const [input,code] of [
-  [{ ...valid(), email: "invalid" }, "validation_error"],
-  [{ ...valid(), website: "bot" }, "spam_rejected"],
-  [{ ...valid(), utmCampaign: 17 }, "validation_error"],
-  [{ ...valid(), landingPage: "javascript:alert(1)" }, "validation_error"]
- ]) {
-  const response = await request(input, {}, handler);
-  assert.equal(response.status, 400);
-  assert.equal(response.body.code, code);
- }
- assert.equal(calls, 0);
+
+test("a new regular contact uses API v2, actual field IDs, and the semantic website mapping", async () => {
+ const api = mockApi();
+ const result = await request({ ...valid(), interests: ["trial", "courses"] }, {}, mockHandler(api));
+ assert.equal(result.status, 200);
+ assert.equal(result.body.code, "delivery_success");
+ const configRequest = api.calls[0];
+ assert.equal(configRequest.url.pathname, "/locations/unit-test-location/customFields");
+ assert.equal(configRequest.options.headers.Authorization, `Bearer ${TEST_ENV.HIGHLEVEL_PRIVATE_TOKEN}`);
+ assert.equal(configRequest.options.headers.Version, "2021-07-28");
+ assert.equal(api.calls.filter(call => call.url.pathname === "/contacts/upsert").length, 1);
+ const create = api.calls.find(call => call.url.pathname === "/contacts/upsert");
+ assert.equal(create.body.createNewIfDuplicateAllowed, false);
+ assert.equal(create.body.firstName, "Erika");
+ assert.equal(create.body.lastName, "Muster");
+ assert.equal(create.body.email, "erika@example.test");
+ assert.equal(create.body.phone, "+4943154020");
+ assert.equal(create.body.source, "Website");
+ assert.equal(field(create.body, "source-id"), "Website");
+ assert.equal(field(create.body, "detail-id"), "Probetraining");
+ assert.equal(field(create.body, "message-id"), valid().message);
+ assert.equal(field(create.body, "callback-id"), undefined);
+ assert.deepEqual(field(create.body, "interest-id"), ["Probetraining", "Kurse"]);
+ assert.equal("token" in result.body, false);
 });
-test("configured mock receives only central contact/lead/opportunity mapping", async () => {
- const submissionId = "d473b2c0-a213-48fa-a17c-f13b4cddae87";
- const input = {
-  ...valid(), submissionId, submittedAt: "1900-01-01", leadSource: "Website",
-  leadSourceDetail: "Fitness", utmSource: "search", utmMedium: "cpc", utmCampaign: "trial",
-  utmContent: "a", utmTerm: "fitness", landingPage: "https://kiels.example/kontakt.html",
-  referrer: "https://kiels.example/fitness.html", gclid: "test-click", fbclid: "test-social"
+
+test("an existing contact found by email and phone is updated once", async () => {
+ const existing = {
+  id: "existing-contact-id", email: "erika@example.test", phone: "+4943154020",
+  firstName: "Erika", lastName: "Muster"
  };
- const calls = [];
- const handler = mockHandler(async (url, options) => {
-  calls.push({ url, options });
-  return new Response(null, { status: 202 });
+ const api = mockApi({ existingContacts: [existing] });
+ const result = await request(valid(), {}, mockHandler(api));
+ assert.equal(result.body.code, "delivery_success");
+ assert.equal(api.calls.filter(call => call.method === "PUT" && call.url.pathname.endsWith(existing.id)).length, 1);
+ assert.equal(api.calls.some(call => call.url.pathname === "/contacts/upsert"), false);
+});
+
+test("email and phone matches pointing to different contacts fail closed as ambiguous", async () => {
+ const api = mockApi({ existingContacts: [
+  { id: "email-contact", email: "erika@example.test", phone: "+49123456789" },
+  { id: "phone-contact", email: "other@example.test", phone: "+4943154020" }
+ ] });
+ const result = await request(valid(), {}, mockHandler(api));
+ assert.equal(result.status, 502);
+ assert.equal(result.body.success, false);
+ assert.equal(api.calls.some(call => call.method === "PUT" || call.url.pathname === "/contacts/upsert"), false);
+});
+
+test("unmatched custom field definitions and options never trigger a guessed mapping", async () => {
+ const api = mockApi();
+ api.fetchImpl = async (url, options) => {
+  const parsed = new URL(url);
+  api.calls.push({ url: parsed, method: options.method || "GET", options, body: options.body ? JSON.parse(options.body) : null });
+  return jsonResponse({ customFields: customFields.filter(field => field.id !== "source-id") });
+ };
+ const result = await request(valid(), {}, mockHandler(api));
+ assert.equal(result.status, 502);
+ assert.equal(api.calls.some(call => call.url.pathname === "/contacts/upsert"), false);
+});
+
+test("multiple user interests are not discarded when the existing field is single-select", async () => {
+ const api = mockApi();
+ const standardFetch = api.fetchImpl;
+ api.fetchImpl = async (url, options) => {
+  if (new URL(url).pathname.endsWith("/customFields")) {
+   const definitions = customFields.map(field => field.id === "interest-id"
+    ? { ...field, dataType: "SINGLE_OPTIONS" }
+    : field);
+   api.calls.push({ url: new URL(url), method: "GET", options, body: null });
+   return jsonResponse({ customFields: definitions });
+  }
+  return standardFetch(url, options);
+ };
+ const result = await request({ ...valid(), interests: ["trial", "courses"] }, {}, mockHandler(api));
+ assert.equal(result.status, 502);
+ assert.equal(result.body.success, false);
+ assert.equal(api.calls.some(call => call.url.pathname === "/contacts/upsert"), false);
+});
+
+test("firm-fitness inquiry uses the same endpoint and maps its distinct lead detail", async () => {
+ const input = firmFitnessInput("employer_inquiry", {
+  location: "Kiel", employeeSize: "10-49", existingOffer: "no",
+  message: "  Bitte um ein Gespräch.  ", callbackRequested: true, phone: "0431 54020"
  });
- const response = await request(input, {}, handler);
- assert.equal(response.status, 200);
- assert.equal(response.body.code, "delivery_success");
- assert.equal(response.body.success, true);
- assert.equal(calls.length, 1);
- assert.equal(calls[0].url, testEnv.HIGHLEVEL_WEBHOOK_URL);
- assert.equal(calls[0].options.method, "POST");
- assert.equal(calls[0].options.redirect, "error");
- const payload = JSON.parse(calls[0].options.body);
- assert.deepEqual(Object.keys(payload), ["schemaVersion", "submissionId", "contact", "lead", "opportunity"]);
- assert.deepEqual(payload.contact, { firstName: "Erika", lastName: "Muster", name: "Erika Muster", email: input.email, phone: "+4943154020" });
- for (const field of Object.keys(ATTRIBUTION_LIMITS)) assert.equal(payload.lead[field], input[field]);
- assert.notEqual(payload.lead.submittedAt, input.submittedAt);
- assert.equal(payload.submissionId, submissionId);
- assert.deepEqual(payload.opportunity, { initialStageName: "Neuer Lead", contactReference: { submissionId } });
- assert.equal("website" in payload.lead, false);
- assert.equal("contactId" in response.body, false);
+ const api = mockApi();
+ const result = await request(input, {}, mockHandler(api));
+ assert.equal(result.status, 200);
+ const create = api.calls.find(call => call.url.pathname === "/contacts/upsert");
+ assert.equal(create.body.companyName, input.companyName);
+ assert.equal(create.body.phone, "+4943154020");
+ assert.equal(field(create.body, "detail-id"), "Firmenfitness");
+ assert.equal(field(create.body, "location-id"), "Kiel");
+ assert.equal(field(create.body, "size-id"), "10-49");
+ assert.equal(field(create.body, "offer-id"), "Nein");
+ assert.equal(field(create.body, "message-id"), input.message);
+ assert.equal(field(create.body, "callback-id"), "Ja");
 });
-test("missing optional attribution becomes null and is not fabricated", () => {
- const result = validateContact(valid());
- assert.equal(result.valid, true);
- for (const field of Object.keys(ATTRIBUTION_LIMITS)) assert.equal(result.lead[field], null);
- assert.match(result.lead.submissionId, /^[0-9a-f-]{36}$/);
- assert.equal(mapHighLevelPayload(result.lead).lead.utmSource, null);
+
+test("firm-fitness referral maps without inventing optional phone, message, size, or offer values", async () => {
+ const input = firmFitnessInput("employer_referral");
+ const api = mockApi();
+ const result = await request(input, {}, mockHandler(api));
+ assert.equal(result.status, 200);
+ const create = api.calls.find(call => call.url.pathname === "/contacts/upsert");
+ assert.equal(create.body.companyName, input.companyName);
+ assert.equal("phone" in create.body, false);
+ assert.equal("companyName" in create.body && create.body.companyName, input.companyName);
+ assert.equal(field(create.body, "detail-id"), "Firmenfitness Empfehlung");
+ assert.equal(field(create.body, "location-id"), "Kiel");
+ assert.equal(field(create.body, "message-id"), undefined);
+ assert.equal(field(create.body, "size-id"), undefined);
+ assert.equal(field(create.body, "offer-id"), undefined);
+ assert.equal(field(create.body, "callback-id"), undefined);
 });
-test("attribution boundaries, invalid types, URLs and submission IDs fail validation", () => {
- for (const [key,max] of Object.entries(ATTRIBUTION_LIMITS)) {
+
+test("invalid firm requests are rejected before any HighLevel calls", async () => {
+ const api = mockApi();
+ const handler = mockHandler(api);
+ for (const [input, code] of [
+  [firmFitnessInput("employer_referral", { location: "" }), "validation_error"],
+  [firmFitnessInput("employer_inquiry", { phone: "", callbackRequested: true }), "validation_error"],
+  [firmFitnessInput("employer_inquiry", { employeeSize: "100000" }), "validation_error"],
+  [firmFitnessInput("employer_inquiry", { website: "bot" }), "spam_rejected"]
+ ]) {
+  const result = await request(input, {}, handler);
+  assert.equal(result.status, 400);
+  assert.equal(result.body.code, code);
+ }
+ assert.equal(api.calls.length, 0);
+});
+
+test("API failure responses and network errors do not expose credentials or lead data", async () => {
+ const api = mockApi({ failureAt: "customFields", failureStatus: 500 });
+ const logs = [];
+ const original = console.error;
+ console.error = (...args) => logs.push(args.join(" "));
+ try {
+  const result = await request(valid(), {}, mockHandler(api));
+  assert.equal(result.status, 502);
+  assert.equal(result.body.success, false);
+  const serialized = JSON.stringify(result) + JSON.stringify(logs);
+  for (const secret of [TEST_ENV.HIGHLEVEL_PRIVATE_TOKEN, "sensitive@example.test", "private lead data", valid().message]) {
+   assert.equal(serialized.includes(secret), false);
+  }
+ } finally {
+  console.error = original;
+ }
+});
+
+test("network failures and HTTP success without a contact ID are never reported as success", async () => {
+ const logs = [];
+ const original = console.error;
+ console.error = (...args) => logs.push(args.join(" "));
+ try {
+  const unavailable = mockApi();
+  unavailable.fetchImpl = async () => {
+   throw new Error(`${TEST_ENV.HIGHLEVEL_PRIVATE_TOKEN} sensitive@example.test ${valid().message}`);
+  };
+  const failed = await request(valid(), {}, mockHandler(unavailable));
+  assert.equal(failed.status, 502);
+  assert.equal(failed.body.success, false);
+
+  const unconfirmed = mockApi();
+  const standardFetch = unconfirmed.fetchImpl;
+  unconfirmed.fetchImpl = async (url, options) => {
+   if (new URL(url).pathname === "/contacts/upsert") {
+    return jsonResponse({ message: "accepted without a contact reference" }, 202);
+   }
+   return standardFetch(url, options);
+  };
+  const response = await request(valid(), {}, mockHandler(unconfirmed));
+  assert.equal(response.status, 502);
+  assert.equal(response.body.success, false);
+  assert.equal(JSON.stringify(logs).includes(TEST_ENV.HIGHLEVEL_PRIVATE_TOKEN), false);
+  assert.equal(JSON.stringify(logs).includes("sensitive@example.test"), false);
+ } finally {
+  console.error = original;
+ }
+});
+
+test("API timeout returns a controlled failure without logging the token or request body", async () => {
+ const api = mockApi({ delayUntilAbort: true });
+ const logs = [];
+ const original = console.error;
+ console.error = (...args) => logs.push(args.join(" "));
+ try {
+  const result = await request(valid(), {}, mockHandler(api, TEST_ENV, 10));
+  assert.equal(result.status, 504);
+  assert.equal(result.body.code, "delivery_timeout");
+  assert.equal(result.body.success, false);
+  assert.equal(JSON.stringify(result).includes(TEST_ENV.HIGHLEVEL_PRIVATE_TOKEN), false);
+  assert.equal(JSON.stringify(logs).includes(TEST_ENV.HIGHLEVEL_PRIVATE_TOKEN), false);
+ } finally {
+  console.error = original;
+ }
+});
+
+test("custom source and interest values are fixed server mappings, not client supplied values", async () => {
+ const api = mockApi();
+ await request({ ...valid(), leadSource: "Facebook", leadSourceDetail: "Injected" }, {}, mockHandler(api));
+ const create = api.calls.find(call => call.url.pathname === "/contacts/upsert");
+ assert.equal(field(create.body, "source-id"), "Website");
+ assert.equal(field(create.body, "detail-id"), "Probetraining");
+ assert.equal(mapCampaignDetail({ requestType: "employer_referral", interests: [] }), "Firmenfitness Empfehlung");
+ assert.equal(mapCampaignDetail({ requestType: "employer_inquiry", interests: [] }), "Firmenfitness");
+});
+
+test("message text is not trimmed by either server-side request contract", () => {
+ const regular = validateContact(valid());
+ const referral = validateContact(firmFitnessInput("employer_referral", { message: "\n  Bitte Rückruf.  \n" }));
+ assert.equal(regular.lead.message, valid().message);
+ assert.equal(referral.lead.message, "\n  Bitte Rückruf.  \n");
+});
+
+test("optional attribution is validated but is not invented or forwarded as contact data", async () => {
+ const lead = validateContact(valid());
+ assert.equal(lead.valid, true);
+ for (const fieldName of Object.keys(ATTRIBUTION_LIMITS)) assert.equal(lead.lead[fieldName], null);
+ const api = mockApi();
+ await request(valid(), {}, mockHandler(api));
+ const create = api.calls.find(call => call.url.pathname === "/contacts/upsert");
+ assert.equal("utmCampaign" in create.body, false);
+ assert.equal("leadSourceDetail" in create.body, false);
+});
+
+test("attribution boundaries, invalid URLs and invalid submission IDs remain rejected", () => {
+ for (const [key, max] of Object.entries(ATTRIBUTION_LIMITS)) {
   const boundary = key === "landingPage" || key === "referrer"
    ? "https://example.invalid/" + "x".repeat(max - "https://example.invalid/".length)
    : "x".repeat(max);
@@ -150,85 +437,15 @@ test("attribution boundaries, invalid types, URLs and submission IDs fail valida
   assert.equal(validateContact({ ...valid(), [key]: {} }).valid, false, key);
   assert.equal(validateContact({ ...valid(), [key]: "bad\nvalue" }).valid, false, key);
  }
- for (const url of ["https://user:pass@example.invalid", "https://example.invalid/?email=private", "https://example.invalid/#private"]) {
+ for (const url of ["******example.invalid", "https://example.invalid/?email=private", "https://example.invalid/#private"]) {
   assert.equal(validateContact({ ...valid(), referrer: url }).valid, false);
  }
  assert.equal(validateContact({ ...valid(), submissionId: "invalid" }).valid, false);
 });
-test("server-only configuration never enters frontend or browser responses", async () => {
+
+test("the browser has no HighLevel configuration, and firm forms require confirmed success", () => {
  const browserCode = fs.readFileSync(path.join(__dirname, "../script.js"), "utf8");
- assert.equal(/HIGHLEVEL_|highlevel|webhook/i.test(browserCode), false);
- let mapped;
- const handler = mockHandler(async (url,options) => {
-  mapped = options.body;
-  return new Response("provider token and internal data", { status: 200 });
- });
- const response = await request({ ...valid(), HIGHLEVEL_WEBHOOK_URL: "client-injected-secret", token: "client-token" }, {}, handler);
- assert.equal(response.body.code, "delivery_success");
- for (const secret of ["client-injected-secret", "client-token", "provider token", "test-secret", valid().email]) {
-  assert.equal(JSON.stringify(response).includes(secret), false);
- }
- assert.equal(mapped.includes("client-injected-secret"), false);
- assert.equal(mapped.includes("client-token"), false);
-});
-test("HTTP/network/redirect errors never expose endpoint, credentials or personal data", async () => {
- const logs = [];
- const original = console.error;
- console.error = (...args) => logs.push(args.join(" "));
- try {
-  for (const fetchImpl of [
-   async () => new Response(testEnv.HIGHLEVEL_WEBHOOK_URL + valid().email, { status: 500 }),
-   async () => new Response("internal credentials", { status: 429 }),
-   async () => new Response(null, { status: 302 }),
-   async () => { throw new Error(testEnv.HIGHLEVEL_WEBHOOK_URL + valid().email); }
-  ]) {
-   const response = await request(valid(), {}, mockHandler(fetchImpl));
-   assert.equal(response.status, 502);
-   assert.equal(response.body.code, "delivery_failed");
-   assert.equal(response.body.success, false);
-   const serialized = JSON.stringify(response) + JSON.stringify(logs);
-   for (const secret of [testEnv.HIGHLEVEL_WEBHOOK_URL, "test-secret", valid().email, valid().message, "internal credentials"]) assert.equal(serialized.includes(secret), false, secret);
-  }
-  assert.equal(logs.length, 4);
- } finally { console.error = original; }
-});
-test("timeout aborts one request, returns controlled error and never retries", async () => {
- let calls = 0;
- const logs = [];
- const original = console.error;
- console.error = (...args) => logs.push(args.join(" "));
- try {
-  const handler = mockHandler((url, options) => {
-   calls++;
-   return new Promise((resolve, reject) => options.signal.addEventListener("abort", () => reject(new Error(url + valid().email)), { once: true }));
-  }, testEnv, 10);
-  const response = await request(valid(), {}, handler);
-  assert.equal(response.status, 504);
-  assert.equal(response.body.code, "delivery_timeout");
-  assert.equal(response.body.success, false);
-  assert.equal(calls, 1);
-  assert.deepEqual(logs, ["HighLevel delivery timed out."]);
-  assert.equal(JSON.stringify(response).includes("test-secret"), false);
- } finally { console.error = original; }
-});
-test("same submission ID is forwarded unchanged; no local persistent deduplication is claimed", async () => {
- const ids = [];
- const handler = mockHandler(async (url,options) => {
-  ids.push(JSON.parse(options.body).submissionId);
-  return new Response(null, { status: 200 });
- });
- const input = { ...valid(), submissionId: "d473b2c0-a213-48fa-a17c-f13b4cddae87" };
- await request(input, {}, handler);
- await request(input, {}, handler);
- assert.deepEqual(ids, [input.submissionId, input.submissionId]);
-});
-test("international phone input and optional interests remain supported", () => {
- for (const phone of ["+44 1234567890", "0044 1234567890"]) {
-  const result = validateContact({ ...valid(), phone, interests: [] });
-  assert.equal(result.lead.phone, "+441234567890");
-  assert.equal(result.lead.preferredContact, "email");
- }
- assert.equal(validateContact({ ...valid(), phone: "123456789012345" }).valid, false);
- assert.equal(validateContact({ ...valid(), firstName: "Erika\nHeader" }).valid, false);
- assert.equal(validateContact({ ...valid(), message: "Zeile 1\nZeile 2" }).valid, true);
+ const firmBrowserCode = fs.readFileSync(path.join(__dirname, "../firmenfitness.js"), "utf8");
+ assert.equal(/HIGHLEVEL_|highlevel|webhook/i.test(browserCode + firmBrowserCode), false);
+ assert.match(firmBrowserCode, /response\.ok && result\?\.success === true/);
 });

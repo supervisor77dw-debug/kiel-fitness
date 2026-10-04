@@ -115,9 +115,10 @@ Production: https://kiel-fitness.vercel.app/ – Next-Arbeits-/Demonstrationssta
 nicht die Wix-Unternehmenswebsite. Keine Domain-/DNS-/Nameserveränderung.
 vercel.json ruft tools\build-staging.cjs auf, Build Output API v3, Node.js 22.
 Es baut nur Next-Seiten, referenzierte Ressourcen und den HTTP-API-Wrapper
-tools\contact-http.cjs. HighLevel unabhängig von ENV ausdrücklich deaktiviert.
-Alle Antworten noindex/nofollow; gültige Anfragen weiterhin HTTP 503
-delivery_not_configured. Keine Credentials oder lokalen Vercel-Daten in Git.
+tools\contact-http.cjs. Der Function-Handler nutzt HighLevel API v2 nur mit
+HIGHLEVEL_PRIVATE_TOKEN und HIGHLEVEL_LOCATION_ID aus der Server-Runtime;
+fehlende Variablen bleiben fail-closed. Keine Credentials oder lokalen
+Vercel-Daten in Git.
 Lokale Vorschau: node tools\preview.cjs, http://127.0.0.1:8766/next/
 Tests: node --test tests\*.test.cjs site-versions\01-current\tests\contact.test.cjs
 site-versions\02-next\tests\contact.test.cjs (aus Projekt-Root).
@@ -135,3 +136,95 @@ Konkrete verbleibende fachliche Punkte
   neu bestätigt; vorhandene Hinweise zur persönlichen Nachfrage bleiben.
 Keine pauschale Liste "offene Bereichszeiten". Keine offenen Late-Night-
 Abrechnungsfragen oder fehlenden Gesundheit-/Wellness-Metadaten mehr.
+
+Gestaltungsrunde – Navigation, Oberflächen und Interaktionen, 04.10.2026
+Aktiver Prüfstand: lokal unter http://127.0.0.1:8766/next/
+Keine Veröffentlichung, produktive Umschaltung oder Änderung an Produktion.
+
+Einheitliches UI-System in home.css:
+- Navy/Weiß/Gelb beibehalten; zentrale Glas-, Kontur-, Schatten- und
+  Bewegungsvariablen ergänzt. Opake Flächen bleiben der backdrop-filter-Fallback.
+- Sticky-Header erhält zurückhaltende Transparenz und einen optischen
+  Scrollzustand ohne Geometriewechsel. Aktive Hauptnavigation klar markiert.
+- Menüflächen, CTA, Fokus- und Druckzustände sowie Eingabefelder vereinheitlicht.
+- Mobile Navigation bis 900 px: eigene aufklappbare Fläche, Scrollbegrenzung,
+  Body-Scrollsperre, Escape-Schließen und Fokus-Rückgabe. Keine Dropdowns:
+  die bestehende Informationsarchitektur benötigt sie nicht. Wenn JavaScript
+  fehlt, bleibt die Navigation als statische Linkliste sichtbar.
+- Verlinkte Leistungs-/Kurskacheln erhalten eine subtile Anhebung, Kontur,
+  Bildaufhellung und internen Bildzoom. Rein informative Wellnesskacheln
+  erhalten nur eine dezente Kontur-/Bildreaktion und erscheinen nicht wie Buttons.
+- Blur auf Mobilgeräten wird auf Header/Formular begrenzt; Kartenflächen nutzen
+  dort eine stärker deckende Oberfläche als Performance-Fallback.
+- Kurswelten-Anker zeigen beim Scrollen die aktive Sektion. Keine neuen
+  Inhalte oder Filter erfunden.
+- Formulare behalten vorhandene Validierung/Endpunkte; Fokus, Fehler-,
+  Disabled- und Statusoberflächen sind deutlicher. Versand und Speicherung
+  bleiben aus.
+- Keine Scroll-Einblendeanimation. Inhalte bleiben ohne JavaScript sichtbar.
+  Reduced Motion schaltet weiches Scrollen und Übergänge ab. Blur wird nur
+  auf größeren Flächen eingesetzt; keine Animationsbibliothek.
+
+Vorher-/Nachher-Ansichten (gleiche lokale URLs, gleiche Inhalte):
+- Startseite Desktop 1440 px: vorher kompakte Textnavigation und flache
+  Kachelkonturen; nachher aktive Navigations-Pille, subtile Glasheaderfläche,
+  stärker abgestufte Karten- und CTA-Zustände.
+- Startseite Mobil 390 px: vorher einfacher Menüknopf/Grundlayout; nachher
+  eigenständiges Menü mit Touch-Zeilen, Escape-/Fokusverhalten und Scrollsperre.
+- Wellness/Sauna: nachher eigene Bild-/Konturreaktion, ohne informative
+  Saunakarten als Links oder Buttons auszugeben.
+Zum direkten Vergleich: /next/index.html und /next/wellness.html.
+
+QA am 04.10.2026:
+- Lokale Playwright-Ansichten bei 1440, 1024, 900, 768, 390 und 375 px.
+  Kein Dokument-Overflow; Hauptbilder und Seitenstyles laden.
+- Desktopnavigation bleibt bei 1440/1024 sichtbar; mobile Navigation ab
+  900 px als Menü. Bei 768 px geprüft: Öffnen fokussiert Home, Escape schließt
+  und stellt Fokus zum Menüknopf zurück, der Hintergrund scrollt nicht.
+  Fallback ohne geladenes JavaScript bei 768 px hält alle acht Menüpunkte sichtbar.
+- Aktive Kurswelt folgt der sichtbaren Sektion. Reduced-Motion-Regeln und
+  alternative opake Oberflächen sind vorhanden.
+- Kontakt- und Firmenfitness-API-Regression: `node --test
+  site-versions\02-next\tests\contact.test.cjs` – 19 Tests bestanden.
+  Firmenfitness bleibt bei delivery_not_configured, ohne Erfolgssignal;
+  Eingaben bleiben erhalten.
+- Gesamte bestehende Suite: `node --test tests\*.test.cjs
+  site-versions\01-current\tests\contact.test.cjs
+  site-versions\02-next\tests\contact.test.cjs` – 64 Tests bestanden.
+- Geprüfte Seiten: Startseite, Fitness, Gesundheit, Wellness, Kurse, Kontakt,
+  Firmenfitness und Arbeitgeberempfehlung. Firmenfitness bleibt außerhalb
+  der Hauptnavigation.
+
+Eingeschränkte Prüfung: Screenshots wurden in der lokalen Browseransicht
+vor/nach der Änderung visuell verglichen; keine Bilddateien in den Website-
+Ordner geschrieben. Tastaturfokus/Escape und Touch-Breakpoint wurden geprüft;
+ein vollständiger Screenreader-/Gerätetest steht aus. Die Kursseite hat keine
+Filtertabs, sondern vorhandene Sprunglinks; deren aktive Sektion wird markiert.
+Historische Wix-Snapshots und vorhandene Löschungen unter shared/wix-clone
+blieben außerhalb des Bearbeitungsumfangs.
+
+HighLevel-API-v2-Integration, 04.10.2026
+- Der gemeinsame Endpoint api/contact nutzt die serverseitige REST-API v2
+  und die Vercel-Runtime-Variablen HIGHLEVEL_PRIVATE_TOKEN und
+  HIGHLEVEL_LOCATION_ID. Die lokale Vorschau bleibt unabhängig davon
+  deaktiviert; kein Credential wird in statische Dateien eingebettet.
+- Custom-Field-IDs/Optionen werden durch GET locations/{id}/customFields
+  aufgelöst. Kontakte werden per E-Mail und Telefon gesucht; eindeutige
+  Treffer werden aktualisiert, uneindeutige Treffer abgebrochen, neue
+  Kontakte über contacts/upsert mit Duplikat-Anlage ausgeschaltet erstellt.
+- Kontakt-, Firmenfitness- und Empfehlungsformulare nutzen dieselbe Route.
+  Erfolg wird nur nach einer API-Bestätigung mit Kontakt-ID angezeigt;
+  Fehler erhalten Eingaben und erhalten keine Provider-/Lead-Daten im Log.
+- GET /api/highlevel-readiness prüft in der Vercel-Function-Umgebung
+  ausschließlich Variablen-Präsenz und vorhandene Felddefinitionen/
+  Dropdown-Optionen. Keine IDs, Secrets oder Lead-Daten in der Antwort;
+  ausschließlich GET-Aufrufe, keine Schreiboperation. Ergebnis je warmer
+  Function-Instanz fünf Minuten gecacht.
+- Automatisierte Tests verwenden ausschließlich gemockte API-Antworten.
+  Der lokale Prozess hatte keine der beiden HighLevel-Variablen; Runtime-
+  Erkennung des neuen Functions-Builds kann erst nach freigegebenem Deploy
+  geprüft werden. Kein Live-Testlead, Push oder Deployment ausgeführt.
+- Vor produktivem Einsatz: tatsächliche HighLevel-Felddefinitionen und
+  Vercel-Scopes prüfen sowie Rechtsgrundlage, Auftragsverarbeitung und
+  Aufbewahrungsfristen in der Datenschutzerklärung bestätigen.
+  Technische Einzelheiten: CONTACT.md.

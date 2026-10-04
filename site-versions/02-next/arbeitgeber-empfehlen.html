@@ -1,0 +1,54 @@
+<!doctype html>
+<html lang="de">
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width, initial-scale=1">
+ <meta name="robots" content="noindex, nofollow">
+ <title>KIELS beim Arbeitgeber vorschlagen | Firmenfitness Kiel</title>
+ <meta name="description" content="Möchtest du Firmenfitness bei KIELS in deinem Unternehmen anstoßen? Teile Informationen oder schlage deinem Arbeitgeber KIELS vor.">
+ <link rel="icon" href="assets/logo.png" type="image/png">
+ <link rel="stylesheet" href="home.css">
+ <script>document.documentElement.classList.add("prototype-js");</script>
+ <script src="script.js" defer onerror="document.documentElement.classList.remove('prototype-js')"></script>
+ <script src="firmenfitness.js" defer></script>
+</head>
+<body data-page="arbeitgeber-empfehlen">
+<a class="skip-link" href="#main">Zum Inhalt</a>
+<header class="site-header" data-site-header><div class="wrap header-inner">
+ <a class="brand" href="index.html" aria-label="KIELS – Startseite"><img src="assets/logo.png" alt="KIELS Fitness, Health &amp; Wellness" width="524" height="237"></a>
+ <button class="nav-toggle" type="button" aria-label="Menü öffnen" aria-expanded="false" aria-controls="main-navigation"><span aria-hidden="true"></span><span aria-hidden="true"></span><span aria-hidden="true"></span></button>
+ <nav id="main-navigation" data-site-nav aria-label="Hauptnavigation"><a href="index.html">Home</a><a href="fitness.html">Fitness</a><a href="health.html">Gesundheit</a><a href="kurse.html">Kurse</a><a href="wellness.html">Wellness</a><a href="index.html#mitgliedschaft">Mitgliedschaft</a><a href="kontakt.html">Kontakt</a><a class="button primary header-cta" href="kontakt.html">Kostenloses Probetraining</a></nav></div></header>
+<main id="main" tabindex="-1">
+ <section class="hero page-hero wrap"><div>
+  <p class="eyebrow">Firmenfitness bei KIELS</p>
+  <h1>Bring KIELS zu deinem <em>Arbeitgeber.</em></h1>
+  <p class="intro">Wünschst du dir ein Firmenfitness-Angebot bei KIELS? Du kannst das Thema im eigenen Team anstoßen oder uns einen Arbeitgeber vorschlagen. Eine Empfehlung ist unverbindlich: Sie begründet keine Kooperation und ändert keine bestehende Mitgliedschaft.</p>
+  <div class="actions"><a class="button primary" href="#teilen">Informationen weitergeben <span aria-hidden="true">↓</span></a><a class="button secondary" href="#vorschlag">Arbeitgeber vorschlagen <span aria-hidden="true">↓</span></a></div>
+ </div><div class="info-card"><p class="eyebrow">Ein möglicher erster Schritt</p><h2>Interesse intern ansprechen.</h2><p>Firmenfitness Direkt wird entwickelt. Preise, Teilnahmebedingungen und betriebliche Abläufe sind noch nicht freigegeben.</p><a class="text-link" href="firmenfitness.html">Informationen für Arbeitgeber ↗</a></div></section>
+ <section class="section wrap" id="teilen"><div class="section-heading"><div><p class="eyebrow">Weg 1</p><h2>Informationen im Team teilen.</h2></div><p>Du kannst das Thema intern ansprechen und gemeinsam prüfen lassen, ob es für euren Betrieb interessant ist.</p></div>
+  <div class="support-panel"><p class="intro-text" id="recommendation-text">Ich würde mich über ein Firmenfitnessangebot bei KIELS freuen. Dort wird ein direktes Angebot für Unternehmen in Kiel entwickelt. Können wir prüfen, ob das für unser Team interessant ist?</p><p class="staging-notice" role="note"><strong>Vorschauhinweis:</strong> Beim Kopieren wird der aktuelle Seitenlink eingefügt. In der lokalen Vorschau ist das ein lokaler Vorschau-Link, keine veröffentlichte Produktionsadresse.</p><button class="button secondary" type="button" data-copy-recommendation>KIELS-Vorschlag kopieren</button><p class="contact-status" data-copy-status role="status" aria-live="polite" aria-atomic="true" hidden></p></div>
+ </section>
+ <section class="section wrap" id="vorschlag"><div class="section-heading"><div><p class="eyebrow">Weg 2</p><h2>Schlage deinen Arbeitgeber vor.</h2></div><p>Teile nur Firmenname und Standort sowie deine eigenen Kontaktdaten, falls du eine Rückmeldung möchtest. Keine HR-Kontaktdaten Dritter.</p></div>
+  <div class="contact-grid"><div class="contact-copy"><div class="staging-notice" role="note"><strong>Datenschutzhinweis:</strong> Deine Angaben werden zur Bearbeitung des Vorschlags an KIELS übermittelt. Das löst keine automatische Kontaktaufnahme mit deinem Arbeitgeber aus.</div><div class="info-card"><h3>Was passiert mit einer Empfehlung?</h3><p>Sie ist zunächst ein unverbindlicher Hinweis. Wenn du eine Rückmeldung wünschst, kann das KIELS-Team dich über deine angegebenen Kontaktdaten erreichen. Deinen Arbeitgeber kontaktieren wir nicht automatisch.</p></div><p><a class="text-link" href="tel:043154020">Fragen? KIELS anrufen: 0431 540 20 ↗</a></p></div>
+   <form class="contact-form" data-firm-fitness-form action="api/contact" method="post" novalidate>
+    <input type="hidden" name="schemaVersion" value="1"><input type="hidden" name="requestType" value="employer_referral"><input type="hidden" name="sourcePage" value="Arbeitgeberempfehlen">
+    <label class="field" for="referral-company"><span>Unternehmen*</span><input id="referral-company" name="companyName" type="text" maxlength="160" autocomplete="organization" required></label>
+    <label class="field" for="referral-location"><span>Standort*</span><input id="referral-location" name="location" type="text" maxlength="120" autocomplete="address-level2" required></label>
+    <fieldset><legend>Deine Kontaktdaten für eine gewünschte Rückmeldung</legend><label class="field" for="referral-first-name"><span>Vorname*</span><input id="referral-first-name" name="firstName" type="text" maxlength="80" autocomplete="given-name" required></label><label class="field" for="referral-last-name"><span>Nachname*</span><input id="referral-last-name" name="lastName" type="text" maxlength="80" autocomplete="family-name" required></label></fieldset>
+    <label class="field" for="referral-email"><span>E-Mail*</span><input id="referral-email" name="email" type="email" maxlength="254" autocomplete="email" required></label>
+    <label class="field" for="referral-phone"><span>Telefon (optional; für Rückruf erforderlich)</span><input id="referral-phone" name="phone" type="tel" maxlength="32" autocomplete="tel"></label>
+    <label class="choice"><input type="checkbox" name="callbackRequested" value="true"><span>Ich wünsche eine Rückmeldung per Telefon.</span></label>
+    <label class="field" for="referral-message"><span>Was möchtest du uns noch mitteilen? (optional)</span><textarea id="referral-message" name="message" maxlength="2000"></textarea></label>
+    <div class="contact-honeypot" aria-hidden="true"><label for="referral-website">Website</label><input id="referral-website" name="website" type="text" tabindex="-1" autocomplete="off"></div>
+    <p class="privacy">Bitte keine Namen, Kontaktdaten oder Gesundheitsdaten anderer Personen angeben. Deine Angaben werden zur Bearbeitung an KIELS übermittelt. <a href="datenschutz.html">Datenschutzhinweise</a></p>
+    <button class="submit" type="submit">Vorschlag senden</button>
+    <p class="contact-status" role="status" aria-live="polite" aria-atomic="true" tabindex="-1" hidden></p>
+    <noscript><p>Das Formular benötigt JavaScript. Bitte nutze Telefon oder E-Mail.</p></noscript>
+   </form>
+  </div>
+ </section>
+ <section class="closing wrap"><p class="eyebrow">Kein Automatismus</p><h2>Dein Hinweis bleibt unverbindlich.</h2><p>Es gibt keine Prämie, keinen Rabatt und keine automatische Änderung deiner Mitgliedschaft.</p><a class="button secondary" href="firmenfitness.html">Zum Arbeitgeberangebot <span aria-hidden="true">↗</span></a></section>
+</main>
+<footer class="site-footer"><div class="wrap footer-grid"><div><img src="assets/logo.png" alt="KIELS Fitness, Health &amp; Wellness" loading="lazy" width="524" height="237"><p>Grasweg 48 · 24118 Kiel<br><a href="tel:043154020">0431 540 20</a><br><a href="mailto:mail@kiel-fitness.de">mail@kiel-fitness.de</a></p><div class="social-links"><a href="https://www.facebook.com/kielsfitness/?locale=de_DE">Facebook ↗</a><a href="https://www.instagram.com/kielsfitness/?hl=de">Instagram ↗</a></div></div><nav aria-label="Bereiche"><a href="index.html">Home</a><a href="fitness.html">Fitness</a><a href="health.html">Gesundheit</a><a href="kurse.html">Kurse</a><a href="wellness.html">Wellness</a><a href="index.html#mitgliedschaft">Mitgliedschaft</a></nav><nav aria-label="Kontakt und Rechtliches"><a href="kontakt.html">Kontakt &amp; Anfahrt</a><a href="agbs.html">AGB</a><a href="impressum.html">Impressum</a><a href="datenschutz.html">Datenschutz</a></nav></div><div class="wrap footer-bottom"><span>KIELS Next · lokaler Firmenfitness-Entwurf</span><a href="kontakt.html">Kontakt &amp; Anfahrt</a></div></footer>
+<nav class="mobile-actions" aria-label="Schnellkontakt"><a class="button primary" href="#vorschlag">Vorschlagen</a><a class="button secondary" href="tel:043154020">Anrufen</a></nav>
+</body></html>

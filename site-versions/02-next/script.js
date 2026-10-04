@@ -5,12 +5,14 @@ if (header && toggle && nav) {
  const updateHeaderState = () => header.classList.toggle("is-scrolled", window.scrollY > 16);
  updateHeaderState();
  window.addEventListener("scroll", updateHeaderState, { passive: true });
- const mobile = window.matchMedia("(max-width: 760px)");
+ const mobile = window.matchMedia("(max-width: 900px)");
  function setNavigationOpen(open, restoreFocus = false) {
   toggle.setAttribute("aria-expanded", String(open));
   toggle.setAttribute("aria-label", open ? "Men\u00fc schlie\u00dfen" : "Men\u00fc \u00f6ffnen");
   nav.classList.toggle("open", open);
+  document.body.classList.toggle("navigation-open", open && mobile.matches);
   if (restoreFocus) toggle.focus();
+  else if (open && mobile.matches) nav.querySelector("a")?.focus();
  }
  header.classList.add("nav-enhanced");
  toggle.addEventListener("click", () => {
@@ -22,6 +24,19 @@ if (header && toggle && nav) {
  document.addEventListener("keydown", event => {
   if (event.key === "Escape" && toggle.getAttribute("aria-expanded") === "true") {
    setNavigationOpen(false, true);
+   return;
+  }
+  if (event.key === "Tab" && mobile.matches && toggle.getAttribute("aria-expanded") === "true") {
+   const focusable = [toggle, ...nav.querySelectorAll("a[href]:not([tabindex='-1'])")];
+   const first = focusable[0];
+   const last = focusable[focusable.length - 1];
+   if (event.shiftKey && document.activeElement === first) {
+    event.preventDefault();
+    last.focus();
+   } else if (!event.shiftKey && document.activeElement === last) {
+    event.preventDefault();
+    first.focus();
+   }
   }
  });
  document.addEventListener("click", event => {
@@ -36,9 +51,6 @@ if (header && toggle && nav) {
   const focusWasInNav = nav.contains(document.activeElement);
   setNavigationOpen(false);
   if (mobile.matches && focusWasInNav) toggle.focus();
-  if (!mobile.matches && document.activeElement === toggle) {
-   nav.querySelector('[aria-current="page"], a')?.focus();
-  }
  });
 }
 const courseTabs=document.querySelectorAll("[data-course-tab]");
@@ -48,6 +60,26 @@ function showCourseCategory(category){
  courseItems.forEach(el=>{el.hidden=el.dataset.courseCategory!==category;});
 }
 if(courseTabs.length){courseTabs.forEach(b=>b.addEventListener("click",()=>showCourseCategory(b.dataset.courseTab)));showCourseCategory("kraft");}
+
+const courseJumps = document.querySelector(".course-jumps");
+if (courseJumps && "IntersectionObserver" in window) {
+ const links = [...courseJumps.querySelectorAll('a[href^="#"]')];
+ const targets = links.map(link => document.getElementById(decodeURIComponent(link.hash.slice(1)))).filter(Boolean);
+ const updateCurrentCourse = entries => {
+  const visible = entries.filter(entry => entry.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+  if (!visible.length) return;
+  const currentId = visible[0].target.id;
+  links.forEach(link => {
+   if (link.hash === `#${currentId}`) link.setAttribute("aria-current", "location");
+   else link.removeAttribute("aria-current");
+  });
+ };
+ const courseObserver = new IntersectionObserver(updateCurrentCourse, {
+  rootMargin: "-112px 0px -68% 0px",
+  threshold: 0
+ });
+ targets.forEach(target => courseObserver.observe(target));
+}
 
 const contactForm = document.querySelector("[data-contact-form]");
 if (contactForm) {
@@ -118,7 +150,7 @@ if (contactForm) {
   const data = new FormData(contactForm);
   const payload = {
    firstName: data.get("firstName").trim(), lastName: data.get("lastName").trim(),
-   email: data.get("email").trim(), phone: data.get("phone").trim(), message: data.get("message").trim(),
+   email: data.get("email").trim(), phone: data.get("phone").trim(), message: data.get("message"),
    interests: data.getAll("interests"), callbackRequested: data.get("callbackRequested") === "true",
    sourcePage, website: data.get("website"), ...attribution
   };

@@ -1,243 +1,141 @@
-# Contact submission foundation
+# KIELS Next contact and HighLevel integration
 
-## Current behavior
+## Request path
 
-The static Vercel website submits JSON to its own Node.js function at
-`POST /api/contact` ([handler](api/contact.js)). A disabled, server-only
-[HighLevel webhook adapter](lib/highlevel.js) is prepared. No packages,
-secrets, persistence, cookies, local storage, analytics or production
-connection have been added. n8n is not part of this stage.
+The contact page and both Firmenfitness forms use the same endpoint:
 
-Valid requests currently return **HTTP 503**, `success: false`,
-`code: "delivery_not_configured"`. The UI explicitly says the message was
-neither sent nor stored and preserves all inputs. This is intentional:
-validation alone must never be reported as a successful contact request.
+`Website form -> POST /api/contact -> server validation -> HighLevel API v2`
 
-The success UI is ready for a future real delivery confirmation; it clears
-the form and focuses the confirmation. It is tested using a mocked response,
-not a live delivery. Without JavaScript the submit button stays disabled
-and existing telephone/email links remain available.
+The read-only `GET /api/highlevel-readiness` deployment check reports only
+whether both runtime variables are present and whether the existing contact
+field definitions/options satisfy the implemented mappings. It never returns
+credential values or field IDs, sends no lead data, and performs no write
+request. Its result is cached in a warm function instance for five minutes.
 
-## Request contract
+The browser only calls the KIELS endpoint. HighLevel credentials and API
+requests are confined to `lib/highlevel.js`; the browser never receives the
+private token, location ID, or provider response. The local preview is
+deliberately configured with an empty environment and cannot deliver leads,
+even if the developer shell has HighLevel credentials.
 
-```json
-{
-  "firstName": "Erika",
-  "lastName": "Muster",
-  "email": "erika@example.test",
-  "phone": "0431 54020",
-  "message": "Bitte um ein Probetraining.",
-  "interests": ["trial"],
-  "callbackRequested": false,
-  "sourcePage": "Fitness",
-  "website": ""
-}
+The Vercel build packages the regular server handler and reads configuration
+from the function's runtime environment. It does not embed, copy, or print
+credential values. Delivery fails closed unless both
+`HIGHLEVEL_PRIVATE_TOKEN` and `HIGHLEVEL_LOCATION_ID` are non-empty.
+`HIGHLEVEL_ENABLED` and webhook URL variables are not used.
+
+## HighLevel API v2 calls
+
+The adapter uses `https://services.leadconnectorhq.com` with Bearer
+authorization and `Version: 2021-07-28`.
+
+1. `GET /locations/{locationId}/customFields` loads existing contact-field
+   definitions. Field IDs and allowed dropdown values are resolved from the
+   returned definitions at runtime; no IDs are guessed and no fields are
+   created.
+2. `GET /contacts/?locationId=...&query=...&limit=100` searches by submitted
+   email and, when present, phone. Candidate records are fetched through
+   `GET /contacts/{contactId}` and compared exactly after case-insensitive
+   email and normalized phone comparison.
+3. A single unambiguous match is updated with `PUT /contacts/{contactId}`.
+   If no exact match exists, `POST /contacts/upsert` creates/upserts with
+   `createNewIfDuplicateAllowed: false`.
+
+If email and phone resolve to different contacts, multiple exact matches
+exist, a search result is incomplete, or a required HighLevel field/value
+cannot be resolved, the adapter stops without updating or creating a
+contact. HighLevel's upsert endpoint is a final duplicate safeguard for
+contacts created concurrently after the search. No opportunity, workflow,
+email, SMS, or marketing action is triggered.
+
+Requests have a 12-second overall timeout and redirects are rejected.
+Provider response bodies and exceptions are not logged or returned. Logs
+contain only a generic operation category and HTTP status. The endpoint only
+returns success after HighLevel confirms the contact operation with a
+contact ID. A timeout can have an uncertain provider outcome; a retry
+searches by email/phone rather than relying on the browser submission ID.
+
+## Mapping
+
+Only server-controlled values are used for source and campaign attribution:
+
+| KIELS data | HighLevel destination |
+| --- | --- |
+| Lead source | Standard `source` and existing `Lead-Quelle` field: `Website` |
+| Ordinary contact, trial selected | `Kampagne / Lead-Detail`: `Probetraining` |
+| Other ordinary contact request | `Kampagne / Lead-Detail`: `Kontaktformular` |
+| Employer inquiry | `Kampagne / Lead-Detail`: `Firmenfitness` |
+| Employee referral | `Kampagne / Lead-Detail`: `Firmenfitness Empfehlung` |
+| Interest selections | Existing `Interesse / Anliegen`, mapped to the listed German options |
+| Message | Existing `Nachricht / Anfrage`, passed as entered (no trimming) |
+| Checked callback checkbox | Existing `Rückruf erwünscht`, mapped to an actual available affirmative option; unchecked is omitted |
+| Company name | Standard HighLevel `companyName` |
+| Firmenfitness location, employee size, existing offer | Existing `Standort`, `Beschäftigtengröße`, and `Bestehendes Firmenfitness-Angebot` fields, when submitted |
+
+The Firmenfitness-specific field names/options must be present in the live
+contact-field definitions. If they are not, those submissions fail closed;
+the integration will neither create substitute fields nor report success
+after dropping supplied form data. Missing optional values are omitted.
+Phone is omitted when not entered. No preferred-contact-time, priority,
+closing-interest, or marketing-consent values are invented. No attribution
+or arbitrary client-supplied lead source is forwarded as a trusted source.
+
+Interest options are:
+`Probetraining`, `Mitgliedschaft & Tarife`, `Kurse`,
+`Gesundheit & Körperanalyse`, `Sauna & Wellness`,
+`Bestehende Mitgliedschaft`, and `Sonstiges`.
+Multi-select values are sent only to a compatible existing HighLevel field;
+an unsupported selection/type fails closed.
+
+## Validation and error behavior
+
+The shared handler keeps its same-origin check, JSON content-type check,
+16 KiB request limit, honeypot and server-side field validation. Normal
+contact requests require first name, last name, email, phone and message.
+Firmenfitness validates its own request schema and only requires a phone
+when a callback is requested. Message line breaks and surrounding whitespace
+are preserved.
+
+| Code | HTTP | Meaning |
+| --- | ---: | --- |
+| `validation_error` / `spam_rejected` | 400 | Invalid input; no HighLevel call |
+| `invalid_origin` | 403 | Cross-origin or invalid browser origin |
+| `method_not_allowed` | 405 | Only POST is accepted |
+| `body_too_large` | 413 | Request exceeds the size limit |
+| `invalid_content_type` | 415 | JSON is required |
+| `delivery_not_configured` | 503 | Token or location ID missing |
+| `delivery_timeout` | 504 | HighLevel did not confirm within the timeout |
+| `delivery_failed` | 502 | HighLevel/API response could not be confirmed |
+| `delivery_success` | 200 | HighLevel confirmed a contact ID |
+
+On failure the browser retains form values and does not show success. The
+contact and Firmenfitness clients only clear a form after a confirmed 2xx
+response with `success: true` and a message.
+
+## Verification
+
+Run from the repository root:
+
+```text
+node --test site-versions\02-next\tests\contact.test.cjs
 ```
 
-- Required: first/last name (80 characters each), email (254), telephone
-  (32 input characters, 6 or more digits, maximum 15 normalized digits),
-  message (5000). The existing asterisks and visible fields are unchanged.
-- Optional interests: `trial`, `membership`, `courses`, `health`, `wellness`,
-  `existing-membership`, `other`. No checkbox is preselected.
-- `callbackRequested` is a boolean, separate from interests.
-- `website` is an empty, off-screen, non-focusable honeypot.
-- `sourcePage`: Home, Fitness, Wellness, Health, Kurse or Kontakt, derived
-  from a same-origin referrer. Direct visits default to Kontakt.
-  This is untrusted attribution metadata, not an identity/security signal.
-- Submitted timestamps are generated on the server, not accepted from
-  clients. No browser timestamp or personal data is kept in local storage.
+Tests inject mocked HighLevel responses. They cover required/invalid fields,
+missing configuration, API v2 headers/endpoints, new and existing contacts,
+ambiguous matches, custom-field resolution/mapping, contact and both
+Firmenfitness request types, provider errors, timeouts and secret/data
+redaction. The readiness check is a GET-only field/schema read. No
+automated test sends a real lead.
 
-[Server validation](lib/contact.js) creates:
-`firstName`, `lastName`, `name`, `email`, `phone`, `message`, `interests`,
-`callbackRequested`, `preferredContact`, `sourcePage`, `submittedAt`,
-`submissionId`, and the optional attribution fields below.
-Phone numbers are normalized using the displayed German default prefix;
-explicit `+`/`00` international prefixes are respected.
-`preferredContact` is derived: phone for a callback, email otherwise. It
-does not represent a separate marketing consent or explicit preference field.
+The local environment was checked for variable presence only; neither
+HighLevel variable is available to the local process. No live API request,
+production lead, Vercel deployment or push has been made. Although Vercel
+environment variables are reported as configured, runtime recognition by
+the newly built function cannot be verified until an approved deployment.
 
-## Responses
-
-All handler responses use JSON, `success` and `message`, with `no-store`.
-Optional `errors` maps field names to validation messages.
-
-| HTTP | Meaning |
-| --- | --- |
-| 400 | Invalid JSON/fields, or non-empty honeypot |
-| 403 | Invalid or cross-origin browser origin |
-| 405 | Method other than POST (`Allow: POST`) |
-| 413 | Body exceeds 16 KiB |
-| 415 | Content type other than application/json |
-| 503 | Validated but no delivery/storage adapter configured |
-| 502 | Configured webhook could not confirm acceptance |
-| 504 | Configured webhook exceeded the 10-second timeout |
-| 200 | Configured webhook accepted the request (2xx response) |
-
-Browser requests carry a same-origin `Origin`. Requests without Origin
-are still allowed for server tools, so origin checks and the honeypot are
-only basic protections, not an authentication or reliable anti-bot system.
-Do not add an in-memory serverless rate limiter and assume it is global.
-
-## Local verification
-
-Run `node tools/preview.cjs` and visit `http://127.0.0.1:8766/kontakt.html`.
-This loopback-only preview serves the existing static site and calls the
-same API handler. It is not a production server. The old static preview
-on port 8765 cannot execute the Node.js API.
-
-Run `node --test tests/contact.test.cjs`. No install is required.
-Use a currently supported Node.js LTS version. On Vercel use the native
-static deployment with Node.js functions; no SPA rewrite should mask `/api`.
-The project has no build step or framework. Actual Vercel deployment and
-environment settings must be checked before production activation.
-
-## Planned HighLevel route
-
-Website/landing page -> KIELS `/api/contact` -> adapter -> HighLevel inbound
-webhook -> Contact -> linked Opportunity -> notifications/follow-up workflows.
-MAC CenterCom remains the future leading membership/contract system.
-No own personal lead database and no n8n integration are introduced.
-The frontend knows only the KIELS API; it never receives the webhook URL.
-
-This stage prepares the **inbound webhook variant**, not the direct
-HighLevel Contacts/Opportunities REST API. The central mapper emits a
-versioned **KIELS contract**, which the approved HighLevel workflow must map.
-No HighLevel field, location, pipeline or stage ID is invented. A future
-direct API variant would require a separately approved adapter/configuration.
-
-### Server configuration
-
-| Environment variable | Purpose |
-| --- | --- |
-| `HIGHLEVEL_ENABLED` | Only the exact string `true` enables the adapter |
-| `HIGHLEVEL_WEBHOOK_URL` | Actual approved HighLevel inbound webhook URL |
-
-No values have been set or committed. Missing, disabled or invalid
-configuration gives `delivery_not_configured` and makes **zero** external
-requests. The URL must be HTTPS, without URL-user/password credentials or
-fragment. If the HighLevel URL contains a secret in its path/query it is
-still server-only. Store it in the approved Vercel server environment, never
-in public/client-prefixed variables, HTML, Git or browser JavaScript.
-
-The request is JSON POST with redirects rejected and a fixed 10-second
-abort timeout (shorter than the browser's 15-second timeout). The adapter
-does not retry automatically, parse provider bodies, or log exceptions,
-URLs, headers or personal data. Operational logs contain only fixed generic
-failure/timeout messages. Browser responses contain only KIELS messages.
-
-### Attribution
-
-Optional internal fields:
-`leadSource`, `leadSourceDetail`, `utmSource`, `utmMedium`, `utmCampaign`,
-`utmContent`, `utmTerm`, `landingPage`, `referrer`, `gclid`, `fbclid`.
-Absent, empty or null values become `null`; values are not invented.
-`leadSource` and `leadSourceDetail` currently stay null in the frontend;
-they are ready for a later approved source assignment.
-
-The browser reads UTM/click IDs **only from the current contact-page URL**.
-`landingPage` means the current submission page, not a reconstructed
-first-touch page. `referrer` is the available browser referrer.
-Both URL values retain only HTTP(S) origin and pathname: query strings,
-fragments and URL credentials are deliberately not forwarded. Only the
-explicit UTM/click-ID allowlist is sent separately, preventing unrelated
-query secrets/contact data from being copied wholesale.
-
-No cookies, local/session storage or cross-page attribution tracking is
-introduced. UTM values on an earlier page that are not present on the
-contact-page URL are therefore unavailable and remain null. Browser
-referrer policy may omit or truncate the referrer. Attribution is untrusted
-metadata, not identity, consent, verified source or proof of conversion.
-
-Server limits: leadSource 120; leadSourceDetail and each UTM field 250;
-landingPage/referrer 2048; gclid/fbclid 512 characters. Invalid types,
-control characters, oversized values and non-HTTP(S)/non-sanitized URLs
-are rejected with validation_error. `submittedAt` is always generated on
-the server, irrespective of supplied client timestamps.
-
-### Central mapping
-
-`mapHighLevelPayload` is the only HighLevel-specific mapping boundary:
-
-- `schemaVersion: 1`, `submissionId`: contract version and correlation.
-- `contact`: firstName, lastName, name, email, normalized phone.
-- `lead`: message, interests, callbackRequested, preferredContact,
-  sourcePage, submittedAt and all attribution fields.
-- `opportunity`: `initialStageName: "Neuer Lead"` and
-  `contactReference: { submissionId }`.
-
-`initialStageName` is an instruction for the future workflow, **not** a
-HighLevel stage ID. The workflow must upsert/identify the Contact using the
-agreed matching rules, then use the returned Contact ID to create/update
-the Opportunity in the configured KIELS pipeline/stage. The submission
-reference correlates both actions; it is not itself a HighLevel Contact ID.
-KIELS lead information is mapped centrally to approved custom fields or
-workflow variables after their actual keys/IDs/types are known.
-
-HTTP 2xx from the configured webhook means **provider acceptance only**.
-It does not prove completed Contact/Opportunity creation, downstream
-workflow execution or email delivery. Monitoring and verified workflow
-acceptance semantics are activation prerequisites. No success is returned
-for timeouts, HTTP errors, redirects or network failures.
-
-### Error contract
-
-| Code | Behavior |
-| --- | --- |
-| `validation_error` | Invalid lead/attribution/JSON; no adapter call |
-| `spam_rejected` | Non-empty honeypot; no adapter call |
-| `delivery_not_configured` | Disabled/incomplete configuration; HTTP 503 |
-| `delivery_timeout` | Abort timeout; HTTP 504; outcome may be uncertain |
-| `delivery_failed` | HTTP/network/redirect failure; HTTP 502 |
-| `delivery_success` | Confirmed webhook 2xx acceptance; HTTP 200 |
-
-Existing method/content-type/body-size/origin protections remain.
-Error submissions retain inputs. The frontend never displays success
-for external failure or leaks technical provider responses.
-
-### Submission IDs and duplicate handling
-
-The browser generates a UUID v4 per unchanged form/context payload and
-reuses it for manual retries in the same loaded page. Editing the payload
-or a confirmed success causes the next attempt to use a new ID. The ID is
-held only in memory, alongside the already entered form values. Double
-clicks/parallel browser submits remain blocked.
-
-For older clients without an ID the server generates a UUID. IDs supplied
-by clients must be UUID v4. The ID is forwarded, but **is not a guaranteed
-HighLevel idempotency key**. Reloads, separate tabs and server-side repeats
-are not deduplicated here. HighLevel matching/idempotent workflow rules
-must be confirmed before activation, particularly for ambiguous timeouts.
-No persistent deduplication store, queue or automatic retry was added.
-
-### Required HighLevel account decisions and activation checklist
-
-1. Identify the correct KIELS sub-account/location and approved workflow
-   owner. No location ID is presently required for the webhook call.
-2. Create/approve the inbound webhook trigger and retrieve its real URL;
-   confirm access/authentication and documented acceptance semantics.
-3. Map contact fields and agree on Contact lookup/upsert rules
-   (email/phone), including existing contacts and repeated submissions.
-4. Create/select the KIELS pipeline and its **Neuer Lead** stage; retrieve
-   real pipeline/stage IDs for workflow configuration, not the browser.
-5. Define Opportunity naming, duplicate/update rules, assignment and
-   linkage using the actual Contact ID.
-6. Retrieve/create the actual custom field keys/IDs/types for message,
-   interests, callback, preferred contact, source, attribution, timestamp
-   and submission ID where those values should persist. Decide which
-   values remain workflow-only variables.
-7. Configure recipients/owners, workflow notifications/follow-up and
-   failure monitoring. Do not interpret a contact request as marketing
-   consent or automatically enable unapproved marketing workflows.
-8. Confirm provider agreement, appropriate privacy information,
-   retention/deletion, production rate limiting and abuse handling.
-   Existing privacy texts have not been rewritten or legally certified.
-9. Verify the approved test workflow with controlled test data, including
-   Contact/Opportunity linkage, duplicates, ambiguous failures and all
-   mapped data; obtain explicit production approval.
-10. Only then set the approved URL and `HIGHLEVEL_ENABLED=true` in the
-    appropriate Vercel server environment and deploy. Keep preview/test
-    environments disabled unless explicitly approved. No real request
-    was made as part of this stage.
-
-Tests use dependency-injected fetch mocks and reserved `.invalid` test
-URLs; no test needs a real credential or makes an external request.
+Before production approval, verify the actual KIELS custom-field definitions
+and options in the target location, the Vercel runtime variable scopes, and
+the privacy information/processing agreement, legal basis and retention
+period. The website privacy wording describes the technical transfer but
+has not been legally reviewed. A controlled test lead still requires the
+owner's approval.

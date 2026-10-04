@@ -1,5 +1,6 @@
 const INTERESTS = ["trial", "membership", "courses", "health", "wellness", "existing-membership", "other"];
-const SOURCE_PAGES = ["Home", "Fitness", "Wellness", "Health", "Kurse", "Kontakt"];
+const SOURCE_PAGES = ["Home", "Fitness", "Wellness", "Health", "Kurse", "Kontakt", "Firmenfitness", "Arbeitgeberempfehlen"];
+const FIRM_FITNESS_REQUEST_TYPES = ["employer_inquiry", "employer_referral"];
 const MAX_BODY_BYTES = 16384;
 const { randomUUID } = require("node:crypto");
 const ATTRIBUTION_LIMITS = {
@@ -12,14 +13,17 @@ function validateContact(input) {
  if (!input || typeof input !== "object" || Array.isArray(input)) {
   return { valid: false, errors: {} };
  }
+ if (Object.hasOwn(input, "requestType")) return validateFirmFitnessRequest(input);
  const errors = {};
  const text = (key, max) => {
   const controls = key === "message" ? /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/ : /[\u0000-\u001f\u007f]/;
-  if (typeof input[key] !== "string" || !input[key].trim() || input[key].trim().length > max || controls.test(input[key])) {
+  const value = typeof input[key] === "string" ? input[key] : "";
+  const normalized = key === "message" ? value : value.trim();
+  if (typeof input[key] !== "string" || !normalized || normalized.length > max || controls.test(value)) {
    errors[key] = "Bitte f\u00fclle dieses Feld g\u00fcltig aus.";
    return "";
   }
-  return input[key].trim();
+  return key === "message" ? value : normalized;
  };
  const firstName = text("firstName", 80);
  const lastName = text("lastName", 80);
@@ -77,4 +81,102 @@ function validateContact(input) {
  };
 }
 
-module.exports = { validateContact, MAX_BODY_BYTES, ATTRIBUTION_LIMITS };
+function validateFirmFitnessRequest(input) {
+ const errors = {};
+ const text = (key, max, required = false) => {
+  const value = input[key];
+  if ((value === undefined || value === null || (typeof value === "string" && !value.trim())) && !required) return "";
+  const normalized = typeof value === "string" ? (key === "message" ? value : value.trim()) : "";
+  const controls = key === "message" ? /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/ : /[\u0000-\u001f\u007f]/;
+  if (typeof value !== "string" || (required && !normalized.trim()) || normalized.length > max || controls.test(value)) {
+   errors[key] = "Bitte überprüfe dieses Feld.";
+   return "";
+  }
+  return normalized;
+ };
+ const requestType = input.requestType;
+ if (!FIRM_FITNESS_REQUEST_TYPES.includes(requestType)) errors.requestType = "Bitte lade das Formular erneut.";
+ if (input.schemaVersion !== 1) errors.schemaVersion = "Bitte lade das Formular erneut.";
+ const sourcePage = requestType === "employer_referral" ? "Arbeitgeberempfehlen" : "Firmenfitness";
+ if (input.sourcePage !== sourcePage) errors.sourcePage = "Bitte lade das Formular erneut.";
+ const companyName = text("companyName", 160, true);
+ const firstName = text("firstName", 80, true);
+ const lastName = text("lastName", 80, true);
+ const email = text("email", 254, true);
+ const phone = text("phone", 32);
+ const location = text("location", 120, requestType === "employer_referral");
+ const message = text("message", 2000);
+ if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = "Bitte gib eine gültige E-Mail-Adresse ein.";
+ const callbackRequested = input.callbackRequested;
+ if (typeof callbackRequested !== "boolean") errors.callbackRequested = "Bitte überprüfe den Rückrufwunsch.";
+ if (phone) {
+  const digits = phone.replace(/\D/g, "");
+  const normalized = phone.startsWith("+") ? digits : phone.startsWith("00") ? digits.slice(2) : "49" + digits.replace(/^0/, "");
+  if (!/^\+?[0-9 ()/.\-]+$/.test(phone) || digits.length < 6 || normalized.length > 15) errors.phone = "Bitte gib eine gültige Telefonnummer ein.";
+ } else if (callbackRequested === true) {
+  errors.phone = "Für einen Rückruf gib bitte eine Telefonnummer an.";
+ }
+ const employeeSize = input.employeeSize ?? "";
+ if (requestType === "employer_inquiry" && !["", "1-9", "10-49", "50-249", "250+"].includes(employeeSize)) {
+  errors.employeeSize = "Bitte wähle eine angebotene Größenklasse.";
+ }
+ const existingOffer = input.existingOffer ?? "";
+ if (requestType === "employer_inquiry" && !["", "yes", "no", "unsure"].includes(existingOffer)) {
+  errors.existingOffer = "Bitte wähle eine angebotene Antwort.";
+ }
+ if (requestType === "employer_referral" && (Object.hasOwn(input, "employeeSize") || Object.hasOwn(input, "existingOffer"))) {
+  errors.requestType = "Die Empfehlungsanfrage enthält nicht erlaubte Felder.";
+ }
+ if (typeof input.website !== "string" || input.website !== "") errors.website = "Die Anfrage konnte nicht verarbeitet werden.";
+ const allowed = new Set([
+  "schemaVersion", "requestType", "sourcePage", "companyName", "firstName", "lastName", "email", "phone",
+  "location", "employeeSize", "existingOffer", "message", "callbackRequested", "website", "submissionId",
+  ...Object.keys(ATTRIBUTION_LIMITS)
+ ]);
+ for (const key of Object.keys(input)) if (!allowed.has(key)) errors[key] = "Dieses Feld wird nicht unterstützt.";
+ const attribution = {};
+ for (const [key, max] of Object.entries(ATTRIBUTION_LIMITS)) {
+  const value = input[key];
+  if (value === undefined || value === null || value === "") {
+   attribution[key] = null;
+  } else if (typeof value !== "string" || value.length > max || /[\u0000-\u001f\u007f]/.test(value)) {
+   errors[key] = "Bitte lade die Seite erneut.";
+  } else {
+   attribution[key] = value.trim() || null;
+   if (attribution[key] && (key === "landingPage" || key === "referrer")) {
+    try {
+     const url = new URL(attribution[key]);
+     if (!["https:", "http:"].includes(url.protocol) || url.username || url.password || url.search || url.hash) {
+      errors[key] = "Bitte lade die Seite erneut.";
+     }
+    } catch (error) {
+     if (!(error instanceof TypeError)) throw error;
+     errors[key] = "Bitte lade die Seite erneut.";
+    }
+   }
+  }
+ }
+ if (input.submissionId != null && (typeof input.submissionId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(input.submissionId))) {
+  errors.submissionId = "Bitte lade die Seite erneut.";
+ }
+ if (Object.keys(errors).length) return { valid: false, errors };
+ const digits = phone.replace(/\D/g, "");
+ const normalizedDigits = phone ? phone.startsWith("+") ? digits : phone.startsWith("00") ? digits.slice(2) : "49" + digits.replace(/^0/, "") : "";
+ return {
+  valid: true,
+  lead: {
+   schemaVersion: 1, requestType, companyName, location: location || null,
+   employeeSize: requestType === "employer_inquiry" ? employeeSize || null : null,
+   existingOffer: requestType === "employer_inquiry" ? existingOffer || null : null,
+   firstName, lastName, name: firstName + " " + lastName, email,
+   phone: normalizedDigits ? "+" + normalizedDigits : null,
+   message, interests: [], callbackRequested, preferredContact: callbackRequested ? "phone" : "email",
+   sourcePage, submittedAt: new Date().toISOString(),
+   leadSource: "Website",
+   leadSourceDetail: requestType === "employer_referral" ? "Firmenfitness Empfehlung" : "Firmenfitness",
+   ...attribution, submissionId: input.submissionId || randomUUID()
+  }
+ };
+}
+
+module.exports = { validateContact, MAX_BODY_BYTES, ATTRIBUTION_LIMITS, FIRM_FITNESS_REQUEST_TYPES };
