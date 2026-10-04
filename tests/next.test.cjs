@@ -34,6 +34,7 @@ test("staging builder reads server runtime configuration without embedding crede
  assert.match(source, /fs\.writeFileSync\(path\.join\(contactFunctionRoot, "api", "contact\.js"\), handler\)/);
  assert.match(source, /highlevel-readiness\.func/);
  assert.match(source, /api\/highlevel-readiness/);
+ assert.match(source, /launcherType: "Nodejs", shouldAddHelpers: true/);
  assert.match(source, /HIGHLEVEL_PRIVATE_TOKEN and HIGHLEVEL_LOCATION_ID at runtime/);
  assert.doesNotMatch(source, /HIGHLEVEL_ENABLED:\s*["']false["']/);
  assert.doesNotMatch(source, /HIGHLEVEL_PRIVATE_TOKEN:\s*["'][^"']+["']/);

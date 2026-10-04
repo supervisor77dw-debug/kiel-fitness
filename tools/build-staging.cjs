@@ -61,7 +61,7 @@ fs.mkdirSync(path.join(readinessFunctionRoot, "api"), { recursive: true });
 copy(path.join(next, "api", "highlevel-readiness.js"), path.join(readinessFunctionRoot, "api", "highlevel-readiness.js"), "function/api/highlevel-readiness.js");
 copy(path.join(next, "lib", "highlevel.js"), path.join(readinessFunctionRoot, "lib", "highlevel.js"), "function/readiness-lib/highlevel.js");
 fs.writeFileSync(path.join(readinessFunctionRoot, "entry.cjs"), 'module.exports = require("./api/highlevel-readiness");\n');
-fs.writeFileSync(path.join(readinessFunctionRoot, ".vc-config.json"), JSON.stringify({ runtime: "nodejs22.x", handler: "entry.cjs", launcherType: "Nodejs", maxDuration: 12 }, null, 2));
+fs.writeFileSync(path.join(readinessFunctionRoot, ".vc-config.json"), JSON.stringify({ runtime: "nodejs22.x", handler: "entry.cjs", launcherType: "Nodejs", shouldAddHelpers: true, maxDuration: 12 }, null, 2));
 fs.writeFileSync(path.join(output, "config.json"), JSON.stringify({
  version: 3,
  routes: [
