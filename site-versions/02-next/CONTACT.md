@@ -12,6 +12,19 @@ field definitions/options satisfy the implemented mappings. It never returns
 credential values or field IDs, sends no lead data, and performs no write
 request. Its result is cached in a warm function instance for five minutes.
 
+Read-only error diagnostics (2026-10-04): failed custom-field reads log only
+`operation: custom_fields_read`, the actual provider HTTP status, a
+status-based error classification, and allowlisted provider codes/messages.
+401 indicates authentication; 403 cannot distinguish missing scopes from
+location access; 404 cannot distinguish an unknown location from a wrong path;
+429 indicates rate limiting; 5xx indicates a provider error. These are diagnostic
+categories, not verified root causes.
+Only UUID-shaped request/correlation IDs from the two explicit headers are
+accepted. Error JSON is limited to 4096 bytes; unknown messages, arbitrary IDs,
+credentials, location IDs and full response bodies are never logged or returned.
+The public readiness response remains unchanged. No retries, scope changes,
+mapping changes or contact writes are introduced by these diagnostics.
+
 The browser only calls the KIELS endpoint. HighLevel credentials and API
 requests are confined to `lib/highlevel.js`; the browser never receives the
 private token, location ID, or provider response. The local preview is

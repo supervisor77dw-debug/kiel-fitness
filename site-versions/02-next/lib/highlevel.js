@@ -232,6 +232,80 @@ function checkFieldDefinitions(definitions) {
  };
 }
 
+function customFieldsErrorCategory(status) {
+ if (status === 401) return "authentication";
+ if (status === 403) return "scope_or_location_access";
+ if (status === 404) return "location_or_path_not_found";
+ if (status === 429) return "rate_limit";
+ if (status >= 500) return "provider_error";
+ return "request_rejected";
+}
+
+async function logCustomFieldsFailure(response, token, locationId) {
+ const diagnostic = {
+  operation: "custom_fields_read",
+  httpStatus: response.status,
+  errorCode: customFieldsErrorCategory(response.status)
+ };
+ const safeCodes = new Set([
+  "UNAUTHORIZED", "FORBIDDEN", "INVALID_TOKEN", "TOKEN_EXPIRED",
+  "INSUFFICIENT_SCOPE", "ACCESS_DENIED", "NOT_FOUND", "LOCATION_NOT_FOUND",
+  "RATE_LIMIT_EXCEEDED", "TOO_MANY_REQUESTS", "INTERNAL_SERVER_ERROR", "SERVICE_UNAVAILABLE"
+ ]);
+ const safeMessages = new Set([
+  "Unauthorized", "Forbidden", "Invalid token", "Token expired", "Invalid JWT",
+  "jwt expired", "Not Found", "Location not found", "Too Many Requests",
+  "Internal Server Error", "Service Unavailable",
+  "The token is not authorized for this scope.",
+  "This token does not have access to this location."
+ ]);
+ const excludesSecrets = value => typeof value === "string" &&
+  !value.includes(token) && !value.includes(locationId);
+ const requestId = response.headers?.get("x-request-id") || response.headers?.get("x-correlation-id");
+ if (excludesSecrets(requestId) && /^[a-f0-9]{8}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{4}-[a-f0-9]{12}$/i.test(requestId)) {
+  diagnostic.requestId = requestId;
+ }
+ let reader;
+ try {
+  if (response.headers?.get("content-type")?.toLowerCase().includes("application/json") && response.body) {
+   reader = response.body.getReader();
+   const chunks = [];
+   let size = 0;
+   let complete = false;
+   while (size <= 4096) {
+    const { value, done } = await reader.read();
+    if (done) { complete = true; break; }
+    size += value.byteLength;
+    if (size <= 4096) chunks.push(Buffer.from(value));
+   }
+   if (complete) {
+    const body = JSON.parse(Buffer.concat(chunks).toString("utf8"));
+    if (body && typeof body === "object" && !Array.isArray(body)) {
+     for (const code of [body.code, body.errorCode, body.error]) {
+      if (excludesSecrets(code) && safeCodes.has(code)) {
+       diagnostic.errorCode += `:${code}`;
+       break;
+      }
+     }
+     if (excludesSecrets(body.message) && safeMessages.has(body.message)) {
+      diagnostic.message = body.message;
+     }
+    }
+   }
+  }
+ } catch {
+  // Unparseable or interrupted error bodies must not replace the provider status.
+ } finally {
+  try {
+   if (reader) await reader.cancel();
+   else if (response.body) await response.body.cancel();
+  } catch {
+   // Cancellation can fail for an already closed or aborted response stream.
+  }
+  console.error(JSON.stringify(diagnostic));
+ }
+}
+
 async function checkHighLevelReadiness({ env = process.env, fetchImpl = globalThis.fetch, timeoutMs = 10000 } = {}) {
  const token = typeof env.HIGHLEVEL_PRIVATE_TOKEN === "string" ? env.HIGHLEVEL_PRIVATE_TOKEN.trim() : "";
  const locationId = typeof env.HIGHLEVEL_LOCATION_ID === "string" ? env.HIGHLEVEL_LOCATION_ID.trim() : "";
@@ -257,8 +331,7 @@ async function checkHighLevelReadiness({ env = process.env, fetchImpl = globalTh
   );
   if (controller.signal.aborted) throw new IntegrationError("timeout");
   if (!response.ok) {
-   if (response.body) await response.body.cancel().catch(() => {});
-   console.error("HighLevel readiness check failed.", "custom_fields", response.status);
+   await logCustomFieldsFailure(response, token, locationId);
    return { status: 502, body: { ready: false, runtime, error: "custom_fields_unavailable" } };
   }
   let body;

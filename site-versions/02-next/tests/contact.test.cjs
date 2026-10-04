@@ -142,6 +142,67 @@ test("readiness inspection validates every existing contact field and option wit
  assert.equal(calls, 1);
 });
 
+test("readiness logs bounded allowlisted diagnostics without exposing provider bodies", async () => {
+ const logs = [];
+ const original = console.error;
+ console.error = (...args) => logs.push(args);
+ try {
+  for (const [status, category] of [
+   [401, "authentication"], [403, "scope_or_location_access"],
+   [404, "location_or_path_not_found"], [429, "rate_limit"],
+   [503, "provider_error"], [400, "request_rejected"]
+  ]) {
+   let calls = 0;
+   const result = await checkHighLevelReadiness({
+    env: TEST_ENV,
+    fetchImpl: async (url, options) => {
+     calls++;
+     assert.equal(options.method, "GET");
+     return new Response(JSON.stringify({
+      code: "ACCESS_DENIED", message: "Forbidden",
+      details: `${TEST_ENV.HIGHLEVEL_PRIVATE_TOKEN} ${TEST_ENV.HIGHLEVEL_LOCATION_ID} sensitive@example.test`
+     }), { status, headers: {
+      "content-type": "application/json",
+      "x-request-id": "550e8400-e29b-41d4-a716-446655440000",
+      "authorization": TEST_ENV.HIGHLEVEL_PRIVATE_TOKEN
+     } });
+    }
+   });
+   assert.equal(calls, 1);
+   assert.equal(result.status, 502);
+   assert.equal(result.body.error, "custom_fields_unavailable");
+   assert.equal(result.body.diagnostic, undefined);
+   assert.deepEqual(JSON.parse(logs.at(-1)[0]), {
+    operation: "custom_fields_read", httpStatus: status,
+    errorCode: `${category}:ACCESS_DENIED`, message: "Forbidden",
+    requestId: "550e8400-e29b-41d4-a716-446655440000"
+   });
+  }
+  for (const body of [
+   JSON.stringify({ code: TEST_ENV.HIGHLEVEL_PRIVATE_TOKEN, message: "sensitive@example.test" }),
+   JSON.stringify({ code: "UNAUTHORIZED", message: "Forbidden", extra: "x".repeat(5000) }),
+   "<html>private lead data</html>", "{"
+  ]) {
+   await checkHighLevelReadiness({
+    env: TEST_ENV,
+    fetchImpl: async () => new Response(body, { status: 401, headers: {
+     "content-type": "application/json", "x-request-id": TEST_ENV.HIGHLEVEL_LOCATION_ID
+    } })
+   });
+   assert.deepEqual(JSON.parse(logs.at(-1)[0]), {
+    operation: "custom_fields_read", httpStatus: 401, errorCode: "authentication"
+   });
+  }
+  const output = JSON.stringify(logs);
+  for (const forbidden of [
+   TEST_ENV.HIGHLEVEL_PRIVATE_TOKEN, TEST_ENV.HIGHLEVEL_LOCATION_ID,
+   "sensitive@example.test", "private lead data", "authorization", "details"
+  ]) assert.equal(output.includes(forbidden), false);
+ } finally {
+  console.error = original;
+ }
+});
+
 test("valid contact is normalized while the free-text message stays byte-for-byte intact", () => {
  const result = validateContact({ ...valid(), interests: ["trial", "trial"], callbackRequested: true });
  assert.equal(result.valid, true);
