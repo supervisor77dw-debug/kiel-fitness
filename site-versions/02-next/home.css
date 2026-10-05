@@ -259,6 +259,8 @@ body[data-page="firmenfitness"], body[data-page="arbeitgeber-empfehlen"] { --wor
 .goal-card[href="fitness.html"] { --surface-solid: #1a2c32; --world-rgb: 253,199,30; }
 .goal-card[href="health.html"] { --surface-solid: #183039; --world-rgb: 130,190,197; }
 .goal-card[href="wellness.html"] { --surface-solid: #292d2c; --world-rgb: 203,147,84; }
+body[data-page="index"] .goal-card:is([href="health.html"],[href="kurse.html"]) { position: relative; }
+body[data-page="index"] .goal-card:is([href="health.html"],[href="kurse.html"])::after { content: ""; position: absolute; inset: 1px; border: 1px solid rgba(255,255,255,.11); border-radius: calc(var(--radius) - 2px); pointer-events: none; }
 body[data-page="index"] .hero h1 { font-size: clamp(38px,4.2vw,60px); }
 .site-header { position: sticky; top: 0; z-index: 30; background: #071720; border-bottom: 1px solid var(--line); box-shadow: 0 8px 30px rgba(0,0,0,.12); }
 @supports (backdrop-filter: blur(12px)) {
@@ -567,6 +569,12 @@ a[href^="tel:"], a[href^="mailto:"], .privacy a, .legal-content a, .related a, .
 }
 @media (max-width: 699px) {
  .usp-grid, .footer-grid, .review-quotes { grid-template-columns: 1fr; }
+}
+@media (max-width: 374px) {
+ body[data-page="index"] .goal-card.wide .goal-copy { padding: 20px; }
+ body[data-page="index"] .goal-card.wide h3 { font-size: 21px; }
+ body[data-page="index"] .goal-card.wide .category { margin-bottom: 10px; }
+ body[data-page="index"] .goal-card.wide .goal-copy p { font-size: 14px; margin-block: 14px 20px; }
 }
 @media (hover: hover) and (pointer: fine) {
  .button:hover, .submit:not(:disabled):hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(0,0,0,.24); }

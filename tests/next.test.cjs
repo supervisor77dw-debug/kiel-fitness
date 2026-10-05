@@ -87,6 +87,13 @@ test("premium pass removes demo footers without changing approved page content o
  assert.match(css, /@media \(max-width: 699px\)/);
  assert.match(css, /\.usp-grid, \.footer-grid, \.review-quotes \{ grid-template-columns: 1fr; \}/);
 });
+test("micro polish adds only targeted card edges and compact wide cards below 375px", () => {
+ const css = fs.readFileSync(path.join(next, "home.css"), "utf8");
+ assert.match(css, /\.goal-card:is\(\[href="health\.html"\],\[href="kurse\.html"\]\)::after/);
+ assert.match(css, /border: 1px solid rgba\(255,255,255,\.11\)/);
+ assert.match(css, /@media \(max-width: 374px\)/);
+ assert.match(css, /body\[data-page="index"\] \.goal-card\.wide \.goal-copy \{ padding: 20px; \}/);
+});
 test("all Next internal page links and fragment CTA destinations resolve", () => {
  for (const file of fs.readdirSync(next).filter(name => name.endsWith(".html"))) {
   const source = fs.readFileSync(path.join(next, file), "utf8");

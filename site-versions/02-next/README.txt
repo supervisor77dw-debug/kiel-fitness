@@ -287,6 +287,25 @@ Finaler Premium-Politur-Pass, 05.10.2026 (zunächst nur lokal)
 - Die angestrebten 9+/10 sind eine subjektive visuelle Abnahme, kein messbarer
   Testwert. Echte Geräte und vollständiger Screenreadertest bleiben ausstehend.
 
+Micro-Polish, 05.10.2026 (lokal, noch nicht veroeffentlicht)
+- Nur Startseiten-Zielkarten Gesundheit/Kurse: feine helle 1-px-Innenkante
+  mit 11 % Deckkraft; vorhandene Schatten/Hover/Glow unveraendert.
+- Nur unter 375 px: breite Zielkarten mit 20 statt 24 px Innenabstand,
+  21 statt 22 px Titel und leicht kompakteren Textabstaenden/Fliesstext.
+  Diese Kompaktregeln greifen bei 375/390 px und groesser nicht.
+- Firmenfitness-Herobild offen: vorhandene Fitness-/Keiser-Motive geprueft,
+  aber keine geeignete authentische KIELS-Firmenfitness-Aufnahme belegt.
+  Studiotour zeigt Umkleiden und eignet sich nicht fuer diesen Hero.
+  Kein Ersatz-Stockshot, Download oder Bildgenerierung; Hero unveraendert.
+- Keine HTML-Inhalte, Navigation, Preise, Formulare oder Skripte veraendert.
+- QA: 73/73 Tests bestanden; 40 Ansichten bei den fuenf geforderten Breiten,
+  Anker/Navigation/Touch/No-JS/Reduced Motion und lokale fail-closed Formulare
+  erfolgreich. Keine JavaScript-Fehler, lokaler gemessener CLS 0.
+- Zusaetzlich 320/360/374 px gegen vorher verglichen: Familienkarte ca. 22 bis
+  44 px niedriger, keine abgeschnittenen Texte oder horizontalen Ueberlaeufe.
+  Bei 375/390/768/1024/1440 px Kartenmasse, Schriftgroessen, Innenabstaende
+  und Schatten exakt unveraendert. Gesundheit/Kurse nur mit neuer Innenkante.
+
 Umsetzung / Kundennutzen
 - Startseiten-Hero auf "Mehr als Fitness. Dein Fitnessstudio in Kiel." gekürzt.
   Der bestehende Intro nennt weiterhin Fläche, Kurse, Wellness, Betreuung und
