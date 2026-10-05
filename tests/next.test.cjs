@@ -66,12 +66,26 @@ test("UX trust layer uses supplied rating without fabricated testimonials or ext
  assert.match(home, /class="review-proof wrap"/);
  assert.match(home, /4,7 von 5 bei Google, 183 Bewertungen/);
  assert.match(home, /Stand: 05\.10\.2026/);
- assert.doesNotMatch(home, /<blockquote|<iframe|reviews\.js/);
+ const template = home.match(/<template id="verified-review-template">([\s\S]*?)<\/template>/);
+ assert.ok(template, "unpublished review layout is prepared");
+ assert.equal((template[1].match(/<blockquote><\/blockquote>/g) || []).length, 3);
+ assert.doesNotMatch(home.replace(template[0], ""), /<blockquote|<iframe|reviews\.js/);
  assert.match(home, /href="tel:043154020">Betreuung telefonisch klären/);
  const script = fs.readFileSync(path.join(next, "script.js"), "utf8");
  assert.match(script, /ResizeObserver\(measureHeader\)/);
  assert.match(script, /--header-offset/);
  assert.match(script, /membershipLink\.setAttribute\("aria-current", "location"\)/);
+});
+test("premium pass removes demo footers without changing approved page content or tariffs", () => {
+ for (const file of fs.readdirSync(next).filter(name => name.endsWith(".html"))) {
+  const html = fs.readFileSync(path.join(next, file), "utf8");
+  const footer = html.match(/<footer[\s\S]*?<\/footer>/)[0];
+  assert.doesNotMatch(footer, /KIELS Next|Entwicklungs-|Demonstrationsstand|lokaler Firmenfitness-Entwurf/);
+  assert.doesNotMatch(html, /Most Popular|wa\.me|whatsapp:/i);
+ }
+ const css = fs.readFileSync(path.join(next, "home.css"), "utf8");
+ assert.match(css, /@media \(max-width: 699px\)/);
+ assert.match(css, /\.usp-grid, \.footer-grid, \.review-quotes \{ grid-template-columns: 1fr; \}/);
 });
 test("all Next internal page links and fragment CTA destinations resolve", () => {
  for (const file of fs.readdirSync(next).filter(name => name.endsWith(".html"))) {

@@ -247,6 +247,46 @@ Nachträgliche freigegebene Textkorrektur am 05.10.2026: den zusätzlichen
 Late-Night-Absatz unter den Tarifkarten entfernt. Allgemeiner Vergünstigungs-
 absatz und Late-Night-Tarifkarte unverändert; keine Preis-/Design-/Logikänderung.
 
+Finaler Premium-Politur-Pass, 05.10.2026 (zunächst nur lokal)
+- Alle elf sichtbaren Demo-/Entwicklungs-Footerhinweise vollständig aus HTML
+  entfernt. Kontakt-/Rechtsnavigation und Footeraktionen unverändert.
+- Gemeinsame Dark-Layer mit oberen Lichtkanten, weichen Tiefenschatten und
+  punktuellen radialen Verläufen. Vorhandene Glasflächen und opake Fallbacks
+  erhalten, mobil ohne zusätzlichen Kartenblur.
+- Fitness goldener/dynamischer, Gesundheit blaugrün/ruhiger, Wellness warm,
+  Firmenfitness kühler/sachlicher. Bereichstokens gelten auch für Karten,
+  nicht nur für den Seitenhintergrund. Keine Animationen oder neuen Widgets.
+- Google-Rating unverändert 4,7/5, 183 Bewertungen. Eigene visuell klarere
+  Ratingfläche; drei leere Originalbewertungs-Karten in einem inaktiven
+  HTML-template vorbereitet, ohne sichtbare Platzhalter oder Rezensionen.
+  Erst nach Lieferung von drei belegten Zitaten, Autoren und Quellen befüllen
+  und bewusst einsetzen. Kein automatisches Einblenden oder Abrufen.
+- Keiser-Videos als drei getrennte, nummerierte Linkflächen statt flacher
+  Linkliste gestaltet; Namen, Ziele und Unterstützungstexte unverändert.
+- Bestehender Hamburger auch unter 760 px erhalten. Tablet-Menü bis 900 px
+  bewusst unverändert, damit bei 768 px keine überbreite Desktopnavigation
+  entsteht. Mobile Schnellaktionen und gesamte JavaScript-Logik unverändert.
+- Inhaltsgrids unter 700 px einspaltig, einschließlich Trust- und Footergrid;
+  Eingabegruppen wie Telefon-/Checkboxzeilen bleiben zusammengehörig.
+- Keine Popularitätskennzeichnung, neuen Kanäle, Preis-/Leistungsänderungen.
+- Commit und Push des gesamten Premium-Passes am 05.10.2026 freigegeben.
+  Nach ausdrücklicher Rückfrage bleiben der alte untracked Asset-Sync-Workflow
+  und fünf .bak-Sicherungen lokal; sie gehören nicht zu diesem Arbeitsstand.
+- Abschlussprüfung: 72/72 Tests bestanden. Zusätzlicher Browserlauf auf allen
+  elf Seiten bei 1440/1024/768/390/375 px und an der 699-px-Grenze: 66 Ansichten
+  ohne horizontale Überläufe, sichtbare Demo-Footer oder JavaScript-Fehler.
+  Alle sichtbaren Link-/Button-/Eingabeziele mindestens 44 x 44 px; Checkboxen
+  über ihre klickbaren Labels gemessen, aufgeklappte Menüs separat geprüft.
+  Alle Inhaltsgrids unter 700 px einspaltig. Die Review-Vorlage bleibt inert.
+- Alle elf Seiten gegen den freigegebenen HEAD verglichen: bestehender Inhalt
+  bytegleich nach Ausklammern der entfernten Footer-Spans und der neuen inaktiven
+  Review-Vorlage. Keine Skript-, API-, Formular- oder HighLevel-Datei verändert.
+- Ergänzend Navigation/Anker, Touch, Fokusumlauf, No-JS und Reduced Motion sowie
+  lokale fail-closed Formularfehler geprüft. Kein echter Lead-/Productiontest.
+  Desktop-/Mobilansichten und Trust-/Keiser-/Wellnessdetails visuell kontrolliert.
+- Die angestrebten 9+/10 sind eine subjektive visuelle Abnahme, kein messbarer
+  Testwert. Echte Geräte und vollständiger Screenreadertest bleiben ausstehend.
+
 Umsetzung / Kundennutzen
 - Startseiten-Hero auf "Mehr als Fitness. Dein Fitnessstudio in Kiel." gekürzt.
   Der bestehende Intro nennt weiterhin Fläche, Kurse, Wellness, Betreuung und
