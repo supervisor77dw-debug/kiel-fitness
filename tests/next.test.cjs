@@ -66,15 +66,31 @@ test("UX trust layer uses supplied rating without fabricated testimonials or ext
  assert.match(home, /class="review-proof wrap"/);
  assert.match(home, /4,7 von 5 bei Google, 183 Bewertungen/);
  assert.match(home, /Stand: 05\.10\.2026/);
- const template = home.match(/<template id="verified-review-template">([\s\S]*?)<\/template>/);
- assert.ok(template, "unpublished review layout is prepared");
- assert.equal((template[1].match(/<blockquote><\/blockquote>/g) || []).length, 3);
- assert.doesNotMatch(home.replace(template[0], ""), /<blockquote|<iframe|reviews\.js/);
+ assert.match(home, /Von unseren Mitgliedern empfohlen/);
+ const reviews = home.match(/<div class="review-quotes"[\s\S]*?<\/div>\s*<\/section>/);
+ assert.ok(reviews, "visible review cards exist below the overall rating");
+ assert.equal((reviews[0].match(/<figure class="review-quote">/g) || []).length, 3);
+ assert.equal((reviews[0].match(/<blockquote>/g) || []).length, 2);
+ assert.match(reviews[0], /„familiäre Stimmung und keine Massenabfertigung“/);
+ assert.match(reviews[0], /„sehr angenehmes Klientel“/);
+ assert.match(reviews[0], /Anne Ahorn/);
+ assert.match(reviews[0], /Zusammenfassung der Bewertung/);
+ assert.match(reviews[0], /Kinderbetreuung war für Anne Ahorn ein wesentlicher Grund für KIELS/);
+ assert.doesNotMatch(reviews[0], /maps\/search|<iframe|reviews\.js|<script/);
+ assert.doesNotMatch(home, /verified-review-template/);
  assert.match(home, /href="tel:043154020">Betreuung telefonisch klären/);
  const script = fs.readFileSync(path.join(next, "script.js"), "utf8");
  assert.match(script, /ResizeObserver\(measureHeader\)/);
  assert.match(script, /--header-offset/);
  assert.match(script, /membershipLink\.setAttribute\("aria-current", "location"\)/);
+});
+test("Google reviews use desktop, tablet and mobile layouts without external review links", () => {
+ const css = fs.readFileSync(path.join(next, "home.css"), "utf8");
+ assert.match(css, /\.review-quotes \{ grid-column: 1 \/ -1; display: grid; grid-template-columns: repeat\(3,minmax\(0,1fr\)\)/);
+ assert.match(css, /@media \(max-width: 1000px\) \{\s*\.review-quotes \{ grid-template-columns: repeat\(2,minmax\(0,1fr\)\); \}\s*\.review-quote:last-child \{ grid-column: 1 \/ -1; \}/);
+ assert.match(css, /@media \(max-width: 699px\) \{\s*\.usp-grid, \.footer-grid, \.review-quotes \{ grid-template-columns: 1fr; \}/);
+ const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
+ assert.doesNotMatch(home.match(/<section class="review-proof[\s\S]*?<\/section>/)[0], /google\.com\/maps\/search/);
 });
 test("premium pass removes demo footers without changing approved page content or tariffs", () => {
  for (const file of fs.readdirSync(next).filter(name => name.endsWith(".html"))) {

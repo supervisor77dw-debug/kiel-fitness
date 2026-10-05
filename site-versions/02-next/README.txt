@@ -373,6 +373,33 @@ Bewusst unverändert / offene Daten
   Gerätetest und kein vollständiger Screenreader- oder Lab-Performance-Test.
   Externe Google-/Matterport-Ziele nicht als automatisch geprüfte Inhalte ausgeben.
 
+Google-Reviews-Erweiterung, 05.10.2026 (lokal, nicht veroeffentlicht)
+- Gesamtstand 4,7/5 bei Google und 183 Bewertungen bleibt bestehen. Kein
+  Google-Reviews-API-Aufruf, Widget oder externes Script. Den bisherigen
+  Google-Maps-Suchlink entfernt; keinen Unternehmenslink geraten.
+- Drei vom Auftraggeber als bestaetigt gelieferte Bewertungen: Mareike,
+  Anne Ahorn und T. Riddle.
+- Als woertliche Zitate hervorgehoben (und nur diese zwei als Zitate gesetzt):
+  Mareike: „familiäre Stimmung und keine Massenabfertigung“;
+  T. Riddle: „sehr angenehmes Klientel“.
+- Alle weiteren Karteninhalte klar als Zusammenfassungen markiert, nicht als
+  woertliche Rede. Mareike: Studio/Trainingsbereiche, Personal, Mitglieder,
+  Sauna und Wellness. Anne Ahorn: Kinderbetreuung als wesentlicher
+  Entscheidungsgrund, Sportkindergarten, Sauberkeit, moderne Ausstattung,
+  angenehme ruhige Trainingsatmosphaere. T. Riddle: gemischtes Publikum und
+  Wohlgefuehl als Frau, Trainingsplan, Koerperanalyse, Trainer, Sauna, Bistro.
+- Ohne Slider: drei Spalten am Desktop, 2+1 am Tablet, eine Spalte auf kleinen
+  Mobilgeraeten. Keine feste Texthoehe/Abschneidung. Kein optionaler Google-Link,
+  weil keine bestaetigte direkte Unternehmens-/Rezensions-URL vorliegt.
+- Vollstaendige Testsuite: 74/74 bestanden. Browserpruefung der Trust-
+  Komponente bei 1440/1024/768/390/375/360/320 px: alle drei Karten sichtbar,
+  kein abgeschnittener Text oder horizontaler Ueberlauf; 3/3 Karten bei 1440
+  und 1024 px gleich hoch. Tablet bei 768 px 2+1, Mobil einspaltig.
+- Bewertungstexte auch ohne JavaScript sichtbar. Keine externen Reviewscripts,
+  Review-Suchlinks oder API-Aufrufe. Kein Formular- oder HighLevel-Aufruf.
+- Lokale Vorschau: http://127.0.0.1:8766/next/index.html
+- Keine Commit-/Push-/Deployment-Freigabe.
+
 Lokale Abnahmepfade
 http://127.0.0.1:8766/next/index.html
 http://127.0.0.1:8766/next/index.html#mitgliedschaft

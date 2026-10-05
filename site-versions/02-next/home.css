@@ -65,11 +65,16 @@ p + p { margin-top: 16px; }
 .review-stars { color: var(--yellow); font-size: 22px; letter-spacing: .12em; }
 .review-rating strong { color: var(--white); font-size: 48px; line-height: 1.2; letter-spacing: -.04em; }
 .review-rating small { display: block; color: var(--muted); font-size: 12px; }
-.review-quotes { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 20px; }
-.review-quote { margin: 0; padding: 24px; border: 1px solid var(--line); border-radius: 16px; background: var(--surface-solid); }
-.review-quote blockquote { margin: 0; line-height: 1.7; }
-.review-quote figcaption { margin-top: 20px; color: var(--muted); }
-.review-quote cite { display: block; font-style: normal; }
+.review-quotes { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 20px; align-items: stretch; }
+.review-quote { display: flex; flex-direction: column; align-items: flex-start; margin: 0; padding: 24px; border: 1px solid rgba(255,255,255,.15); border-radius: 16px; background: linear-gradient(145deg,rgba(255,255,255,.045),transparent 58%),var(--surface-glass); box-shadow: inset 0 1px rgba(255,255,255,.06),0 12px 28px rgba(0,0,0,.14); }
+.review-quote blockquote { margin: 0; font-size: 18px; line-height: 1.65; font-weight: 600; }
+.review-quote h3 { font-size: 19px; line-height: 1.35; }
+.review-kind { color: var(--yellow); font-size: 11px; line-height: 1.5; letter-spacing: .1em; text-transform: uppercase; font-weight: 700; }
+.review-quote > .review-kind { margin: 0 0 14px; }
+.review-summary { margin: 20px 0 0 !important; color: var(--muted); font-size: 14px; line-height: 1.7; }
+.review-summary .review-kind { display: block; margin-bottom: 8px; }
+.review-quote figcaption { display: flex; flex-direction: column; gap: 3px; margin-top: auto; padding-top: 24px; color: var(--muted); font-size: 12px; }
+.review-quote cite { color: var(--white); font-size: 14px; font-style: normal; font-weight: 700; }
 .hero-visual { border-radius: 28px; overflow: hidden; background: #000; border: 1px solid var(--line); }
 .hero-visual > img { width: 100%; height: auto; aspect-ratio: 1440 / 723; object-fit: contain; }
 .hero-caption { display: flex; flex-direction: column; gap: 8px; padding: 24px; background: linear-gradient(130deg,rgba(253,199,30,.09),rgba(255,255,255,.05)); border-top: 1px solid var(--line); }
@@ -475,6 +480,8 @@ a[href^="tel:"], a[href^="mailto:"], .privacy a, .legal-content a, .related a, .
 .site-footer a { transition: color .18s var(--ease-ui), text-shadow .18s var(--ease-ui); }
 .site-footer a:hover { color: var(--yellow); text-shadow: 0 0 16px rgba(253,199,30,.17); }
 @media (max-width: 1000px) {
+ .review-quotes { grid-template-columns: repeat(2,minmax(0,1fr)); }
+ .review-quote:last-child { grid-column: 1 / -1; }
  [data-site-nav] { gap: 1px; }
  [data-site-nav] > a:not(.button) { padding-inline: 10px; font-size: 13px; }
 }
@@ -569,6 +576,7 @@ a[href^="tel:"], a[href^="mailto:"], .privacy a, .legal-content a, .related a, .
 }
 @media (max-width: 699px) {
  .usp-grid, .footer-grid, .review-quotes { grid-template-columns: 1fr; }
+ .review-quote:last-child { grid-column: auto; }
 }
 @media (max-width: 374px) {
  body[data-page="index"] .goal-card.wide .goal-copy { padding: 20px; }
