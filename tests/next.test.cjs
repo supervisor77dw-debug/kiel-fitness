@@ -70,12 +70,14 @@ test("UX trust layer uses supplied rating without fabricated testimonials or ext
  const reviews = home.match(/<div class="review-quotes"[\s\S]*?<\/div>\s*<\/section>/);
  assert.ok(reviews, "visible review cards exist below the overall rating");
  assert.equal((reviews[0].match(/<figure class="review-quote">/g) || []).length, 3);
- assert.equal((reviews[0].match(/<blockquote>/g) || []).length, 2);
+ assert.equal((reviews[0].match(/<blockquote>/g) || []).length, 3);
  assert.match(reviews[0], /„familiäre Stimmung und keine Massenabfertigung“/);
  assert.match(reviews[0], /„sehr angenehmes Klientel“/);
- assert.match(reviews[0], /Anne Ahorn/);
- assert.match(reviews[0], /Zusammenfassung der Bewertung/);
- assert.match(reviews[0], /Kinderbetreuung war für Anne Ahorn ein wesentlicher Grund für KIELS/);
+ assert.match(reviews[0], /<cite>Mareike · Google-Bewertung<\/cite>/);
+ assert.match(reviews[0], /<cite>Anne Ahorn · Google-Bewertung<\/cite>/);
+ assert.match(reviews[0], /<cite>T\. Riddle · Google-Bewertung<\/cite>/);
+ assert.match(reviews[0], /Ich bin mittlerweile seid fast 4 Jahren Mitglied und habe mich damals für dieses Fitnessstudio Aufgrund der Möglichkeit der Kinderbetreuung entschieden\. …/);
+ assert.doesNotMatch(reviews[0], /Zusammenfassung|Weitere Eindrücke|Originalzitat|<h3|review-kind|review-summary/);
  assert.doesNotMatch(reviews[0], /maps\/search|<iframe|reviews\.js|<script/);
  assert.doesNotMatch(home, /verified-review-template/);
  assert.match(home, /href="tel:043154020">Betreuung telefonisch klären/);

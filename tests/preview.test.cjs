@@ -84,6 +84,16 @@ test("frozen resources resolve within each version without referencing live root
  }
 });
 
+test("authentic homepage studio image is served from the optimized local WebP asset", async () => {
+ const home = fs.readFileSync(path.join(versions, "02-next", "index.html"), "utf8");
+ assert.match(home, /<img src="assets\/home-studio-kiels\.webp" alt="Trainingsfläche mit Kraftgeräten im KIELS-Studio in Kiel" loading="lazy" width="2000" height="1333">/);
+ const expected = fs.readFileSync(path.join(versions, "shared", "assets", "home-studio-kiels.webp"));
+ const response = await fetch(base + "/next/assets/home-studio-kiels.webp");
+ assert.equal(response.status, 200);
+ assert.match(response.headers.get("content-type"), /image\/webp/);
+ assert.deepEqual(Buffer.from(await response.arrayBuffer()), expected);
+});
+
 test("local API aliases preserve validation/spam and cannot activate HighLevel", async () => {
  const previousToken = process.env.HIGHLEVEL_PRIVATE_TOKEN;
  const previousLocation = process.env.HIGHLEVEL_LOCATION_ID;

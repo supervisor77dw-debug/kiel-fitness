@@ -377,17 +377,14 @@ Google-Reviews-Erweiterung, 05.10.2026 (lokal, nicht veroeffentlicht)
 - Gesamtstand 4,7/5 bei Google und 183 Bewertungen bleibt bestehen. Kein
   Google-Reviews-API-Aufruf, Widget oder externes Script. Den bisherigen
   Google-Maps-Suchlink entfernt; keinen Unternehmenslink geraten.
-- Drei vom Auftraggeber als bestaetigt gelieferte Bewertungen: Mareike,
-  Anne Ahorn und T. Riddle.
-- Als woertliche Zitate hervorgehoben (und nur diese zwei als Zitate gesetzt):
-  Mareike: „familiäre Stimmung und keine Massenabfertigung“;
-  T. Riddle: „sehr angenehmes Klientel“.
-- Alle weiteren Karteninhalte klar als Zusammenfassungen markiert, nicht als
-  woertliche Rede. Mareike: Studio/Trainingsbereiche, Personal, Mitglieder,
-  Sauna und Wellness. Anne Ahorn: Kinderbetreuung als wesentlicher
-  Entscheidungsgrund, Sportkindergarten, Sauberkeit, moderne Ausstattung,
-  angenehme ruhige Trainingsatmosphaere. T. Riddle: gemischtes Publikum und
-  Wohlgefuehl als Frau, Trainingsplan, Koerperanalyse, Trainer, Sauna, Bistro.
+- Drei vom Auftraggeber bestaetigte Google-Bewertungen: Mareike, Anne Ahorn
+  und T. Riddle. Karten enthalten ausschliesslich die gelieferten
+  Originalauszuege, ohne redaktionelle Zusammenfassungen oder Labels.
+- Mareike: „familiäre Stimmung und keine Massenabfertigung“.
+- Anne Ahorn: zusammenhaengender Originalsatz zum Entscheidungsgrund
+  Kinderbetreuung; Auslassung danach mit „…“ markiert. Originalwortlaut
+  innerhalb des Auszugs einschliesslich seiner Schreibweise unveraendert.
+- T. Riddle: „sehr angenehmes Klientel“.
 - Ohne Slider: drei Spalten am Desktop, 2+1 am Tablet, eine Spalte auf kleinen
   Mobilgeraeten. Keine feste Texthoehe/Abschneidung. Kein optionaler Google-Link,
   weil keine bestaetigte direkte Unternehmens-/Rezensions-URL vorliegt.
@@ -411,3 +408,21 @@ http://127.0.0.1:8766/next/wellness.html
 http://127.0.0.1:8766/next/kontakt.html
 http://127.0.0.1:8766/next/firmenfitness.html
 http://127.0.0.1:8766/next/arbeitgeber-empfehlen.html
+
+Authentische Homepage-Fotografie
+- Gegenueberstellung der Homepage-Bilder mit allen 13 vorbereiteten JPEGs:
+  Nur Foto "Kiels Fitness, Hohe Auflösung-7.jpg" ersetzt das bisherige
+  Umkleidefoto im Studio-/Rundgangbereich. Es zeigt die Trainingsflaeche mit
+  Geraeten und mehr raeumlicher Tiefe; der Rundgang-Text und das Layout bleiben
+  unveraendert.
+- Optimierte Ableitung: assets/home-studio-kiels.webp, 2000x1333, WebP Q86;
+  Original 15,938,598 Bytes, Ableitung 350,214 Bytes (-97.8%).
+- Bewusst nicht eingesetzt: Fitness-Aufnahmen -3, -4, -5, -10, -11, -12, -13
+  und -16; Wellness-Aufnahmen -3 bis -6; beide neuen Logo-SVGs.
+- Hero sowie Fitness-, Gesundheit-, Kurs-, Wellness- und Familienkarten
+  unveraendert: kein authentischer Kandidat bot dort eine klare Verbesserung
+  bei Motivpassung und Bildwirkung. Keine neuen Gruppen-, Gesundheits-,
+  Kinderbetreuungs- oder Firmenfitnessmotive belegt. Wellness-Kandidaten wegen
+  des nicht bestaetigten aktuellen Zustands nicht eingesetzt.
+- Logo-Dateien nicht eingesetzt; vorhandene Logos bleiben unveraendert.
+- Keine Commits, Pushes oder Deployments in dieser Etappe.
