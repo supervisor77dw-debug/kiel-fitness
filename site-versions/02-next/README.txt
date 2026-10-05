@@ -237,6 +237,12 @@ Vor Veröffentlichung ausschließlich "Kennst du schon die KIELS App?" aus dem
 allgemeinen Tariftext entfernt. Dort war kein weiterer App-Absatz vorhanden;
 die folgende Late-Night-Tarifinformation bleibt unverändert. Keine künstliche
 neue App-Platzierung und keine weiteren Designänderungen.
+Production-Smoke nach erstem UX-Deployment: firmenfitness.js wurde vom
+bestehenden Build nicht kopiert (HTTP 404 auf beiden Firmenfitness-Seiten).
+Mit separater ausdrücklicher Freigabe ausschließlich die Build-Dateiliste
+ergänzt; vorhandenes JavaScript und Formularlogik unverändert. Neue Regression
+prüft alle von HTML referenzierten lokalen JS-/CSS-Dateien im frischen Artefakt.
+Vollständiger Testlauf einschließlich dieser Artefakt-Regression: 71/71 bestanden.
 
 Umsetzung / Kundennutzen
 - Startseiten-Hero auf "Mehr als Fitness. Dein Fitnessstudio in Kiel." gekürzt.

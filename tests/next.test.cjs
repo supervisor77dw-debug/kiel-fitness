@@ -3,6 +3,7 @@ const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
 const crypto = require("node:crypto");
+const { execFileSync } = require("node:child_process");
 const root = path.resolve(__dirname, "..");
 const next = path.join(root, "site-versions", "02-next");
 test("archive exactly matches frozen current checksums without duplicating shared resources", () => {
@@ -41,6 +42,24 @@ test("staging builder reads server runtime configuration without embedding crede
  assert.doesNotMatch(source, /HIGHLEVEL_LOCATION_ID:\s*["'][^"']+["']/);
  assert.match(source, /noindex, nofollow/);
  assert.doesNotMatch(source, /--prod|HIGHLEVEL_WEBHOOK_URL:/);
+});
+test("fresh deployment artifact includes every local script and stylesheet referenced by Next pages", async () => {
+ const output = path.join(root, ".vercel", `output-test-${crypto.randomUUID()}`);
+ try {
+  execFileSync(process.execPath, [path.join(root, "tools", "build-staging.cjs"), "--output", output]);
+  const staticRoot = path.join(output, "static");
+  for (const file of fs.readdirSync(next).filter(name => name.endsWith(".html"))) {
+   const html = fs.readFileSync(path.join(staticRoot, file), "utf8");
+   for (const match of html.matchAll(/(?:src|href)="([^"]+\.(?:js|css))"/g)) {
+    const resource = match[1];
+    if (/^https?:/.test(resource)) continue;
+    assert.ok(fs.existsSync(path.join(staticRoot, resource)), `${file}: missing bundled ${resource}`);
+    assert.deepEqual(fs.readFileSync(path.join(staticRoot, resource)), fs.readFileSync(path.join(next, resource)));
+   }
+  }
+ } finally {
+  await fs.promises.rm(output, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
+ }
 });
 test("UX trust layer uses supplied rating without fabricated testimonials or external widgets", () => {
  const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
