@@ -2,6 +2,24 @@ const header = document.querySelector("[data-site-header]");
 const toggle = header?.querySelector(".nav-toggle");
 const nav = header?.querySelector("[data-site-nav]");
 if (header && toggle && nav) {
+ const measureHeader = () => document.documentElement.style.setProperty("--header-offset", `${header.getBoundingClientRect().height}px`);
+ measureHeader();
+ if ("ResizeObserver" in window) new ResizeObserver(measureHeader).observe(header);
+ else window.addEventListener("resize", measureHeader, { passive: true });
+ const homeLink = nav.querySelector('a[href="index.html"]');
+ const membershipLink = nav.querySelector('a[href="index.html#mitgliedschaft"]');
+ const updateHomeLocation = () => {
+  if (document.body.dataset.page !== "index" || !homeLink || !membershipLink) return;
+  if (location.hash === "#mitgliedschaft") {
+   homeLink.removeAttribute("aria-current");
+   membershipLink.setAttribute("aria-current", "location");
+  } else {
+   homeLink.setAttribute("aria-current", "page");
+   membershipLink.removeAttribute("aria-current");
+  }
+ };
+ updateHomeLocation();
+ window.addEventListener("hashchange", updateHomeLocation);
  const updateHeaderState = () => header.classList.toggle("is-scrolled", window.scrollY > 16);
  updateHeaderState();
  window.addEventListener("scroll", updateHeaderState, { passive: true });

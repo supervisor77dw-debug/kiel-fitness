@@ -42,8 +42,42 @@ test("staging builder reads server runtime configuration without embedding crede
  assert.match(source, /noindex, nofollow/);
  assert.doesNotMatch(source, /--prod|HIGHLEVEL_WEBHOOK_URL:/);
 });
+test("UX trust layer uses supplied rating without fabricated testimonials or external widgets", () => {
+ const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
+ assert.match(home, /class="review-proof wrap"/);
+ assert.match(home, /4,7 von 5 bei Google, 183 Bewertungen/);
+ assert.match(home, /Stand: 05\.10\.2026/);
+ assert.doesNotMatch(home, /<blockquote|<iframe|reviews\.js/);
+ assert.match(home, /href="tel:043154020">Betreuung telefonisch klären/);
+ const script = fs.readFileSync(path.join(next, "script.js"), "utf8");
+ assert.match(script, /ResizeObserver\(measureHeader\)/);
+ assert.match(script, /--header-offset/);
+ assert.match(script, /membershipLink\.setAttribute\("aria-current", "location"\)/);
+});
+test("all Next internal page links and fragment CTA destinations resolve", () => {
+ for (const file of fs.readdirSync(next).filter(name => name.endsWith(".html"))) {
+  const source = fs.readFileSync(path.join(next, file), "utf8");
+  for (const match of source.matchAll(/href="([^"]+)"/g)) {
+   const href = match[1];
+   if (/^(?:https?:|mailto:|tel:)/.test(href)) continue;
+   assert.notEqual(href, "#", `${file}: dummy link`);
+   const [destination, fragment] = href.split("#");
+   const filename = destination.split("?")[0] || file;
+   if (!filename.endsWith(".html")) continue;
+   const targetPath = path.join(next, filename);
+   assert.ok(fs.existsSync(targetPath), `${file}: missing ${href}`);
+   if (fragment) {
+    const target = fs.readFileSync(targetPath, "utf8");
+    assert.ok(target.includes(`id="${decodeURIComponent(fragment)}"`), `${file}: missing anchor ${href}`);
+   }
+  }
+ }
+});
 test("approved Late-Night terms are complete and missing course PDF is not fabricated", () => {
  const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
+ const membership = home.match(/<section\b[^>]*id="mitgliedschaft"[\s\S]*?<\/section>/);
+ assert.ok(membership, "membership section exists");
+ assert.doesNotMatch(membership[0], /KIELS App|KIELS-App/);
  for (const price of ["23,90", "30,90", "27,90"]) assert.ok(home.includes(price));
  assert.match(home, /20:00 bis 22:00 Uhr/);
  assert.match(home, /27,90 € <span>\/14-tägig<\/span>/);

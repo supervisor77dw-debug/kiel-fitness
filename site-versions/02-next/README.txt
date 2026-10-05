@@ -1,4 +1,4 @@
-KIELS Next – aktiver Website-Arbeitsstand, Etappe 5D, 03.10.2026
+KIELS Next – aktiver Website-Arbeitsstand, UX-Finishing, 05.10.2026
 
 Alle Website-Optimierungen erfolgen hier. Current/Archiv und shared bleiben
 eingefroren. Eigene Ressourcen unter assets oder wix-clone haben Vorrang vor
@@ -8,7 +8,8 @@ Gemeinsames freigegebenes Designsystem
 home.css gilt für alle neun Seiten, script.js für Navigation und Formular.
 1240 px maximale Contentbreite; 64 px Abschnittsabstand, mobil 40 px.
 Trebuchet MS/Systemfallback; Navy, Weiß, Gelb; Primär-CTA: Probetraining.
-Sticky Header: 96 px Desktop/80 px Mobil, Glas-/opaker Fallback.
+Sticky Header: 96 px Desktop/80 px Mobil innen, jeweils plus 1 px Kontur.
+Der tatsächliche Header-Offset wird für Sprungziele per ResizeObserver gemessen.
 Scrollzustand ändert Hintergrunddeckung, nicht Geometrie.
 Mobile Menü bis 760 px, Escape/Fokus/No-JS; Safe-Area, reduced-motion.
 Etappe 5D verändert weder CSS noch Header/Footer, Bilder oder Formulartechnik.
@@ -35,7 +36,7 @@ Vercel bleibt ausdrücklich noindex/nofollow, trotz vervollständigter Metadaten
 Keine SEO-Scores, keine neuen medizinischen Versprechen oder Schema-Fakten.
 
 Seite | Fokus | H1 | Title | Meta Description | Canonical | Interne Links | Alt-Texte | Befund
-Home | Fitnessstudio Kiel | Dein Fitnessstudio in Kiel für Training, Gesundheit und echte Erholung. | Fitnessstudio Kiel – Sauna, Kurse & Kinderbetreuung | Vorhandene lokale Angebotsbeschreibung beibehalten | index.html | Leistungsseiten, Mitgliedschaft, Kinderbetreuung; Firmenfitness jetzt direkt #firmenfitness | Beschreibende Hauptbilder; leere Alt-Texte nur bei dekorativen verlinkten Kartenbildern mit gleichem Textziel | Tarif vollständig, sonst kein unnötiger Textnachzug
+Home | Fitnessstudio Kiel | Mehr als Fitness. Dein Fitnessstudio in Kiel. | Fitnessstudio Kiel – Sauna, Kurse & Kinderbetreuung | Vorhandene lokale Angebotsbeschreibung beibehalten | index.html | Leistungsseiten, Mitgliedschaft, Kinderbetreuung; Firmenfitness direkt #firmenfitness | Beschreibende Hauptbilder; leere Alt-Texte nur bei dekorativen verlinkten Kartenbildern mit gleichem Textziel | Kürzerer Hero, Google-Rating, unveränderte Tarife
 Fitness | Fitnesstraining Kiel | Fitnesstraining in Kiel. Dein Trainingsweg. | Fitnesstraining Kiel – Personal, Ausdauer & Zirkel | Vorhandene Beschreibung beibehalten | fitness.html | Gesundheit, Zirkel, Firmenfitness, Kontakt | Hero/Trainingsbereich konkretisiert | Suchintention in H1; Trainingswege/Betreuung/Zirkel klar
 Gesundheit | Gesundheitstraining Kiel | Gesundheitstraining in Kiel. Individuell begleitet. | Gesundheitstraining Kiel – Analyse & Betreuung | Neu: Körperanalyse, Sportdiagnostik, Trainingsplanung, Rückenfit | health.html | Fitness-Trainingswege, Gesundheitskurse, Rückbildung-Anker, Firmenfitness, Kontakt | Gesundheitsmotiv und Arztporträt konkretisiert | H1/Title/Description/Canonical vollständig; InBody 770, Planung und Betreuung erläutert
 Kurse | Fitnesskurse Kiel | Fitnesskurse in Kiel. Deinen Kurs finden. | Fitnesskurse Kiel – LES MILLS, Yoga & Rückenfit | Neu: Kursangebot einschließlich Rückbildung; Kursplan anfragen | kurse.html | Sechs Kurswelten, Kursplan, Rückenfit/Gesundheit, Kontakt | Alle Karten mit Kursmotiv bezeichnet | 25 Angebote; acht ergänzende offizielle LES-MILLS-Links
@@ -228,3 +229,90 @@ HighLevel-API-v2-Integration, 04.10.2026
   Vercel-Scopes prüfen sowie Rechtsgrundlage, Auftragsverarbeitung und
   Aufbewahrungsfristen in der Datenschutzerklärung bestätigen.
   Technische Einzelheiten: CONTACT.md.
+
+UX- und Design-Finishing – lokaler Abnahmestand, 05.10.2026
+Zunächst lokal abgenommen; Commit, Push auf main und Production-Deployment
+am 05.10.2026 ausdrücklich freigegeben. Visuelle Production-Endabnahme folgt separat.
+Vor Veröffentlichung ausschließlich "Kennst du schon die KIELS App?" aus dem
+allgemeinen Tariftext entfernt. Dort war kein weiterer App-Absatz vorhanden;
+die folgende Late-Night-Tarifinformation bleibt unverändert. Keine künstliche
+neue App-Platzierung und keine weiteren Designänderungen.
+
+Umsetzung / Kundennutzen
+- Startseiten-Hero auf "Mehr als Fitness. Dein Fitnessstudio in Kiel." gekürzt.
+  Der bestehende Intro nennt weiterhin Fläche, Kurse, Wellness, Betreuung und
+  Kinderbetreuung. Kostenloses Probetraining und Studio-Einstieg bleiben sichtbar.
+- Früher Google-Trust-Layer mit 4,7/5 und 183 Bewertungen, vom Auftraggeber
+  am 05.10.2026 bereitgestellt. Kein Live-Abruf, Drittanbieter-Widget, Tracking,
+  Bewertungszitat oder erfundener Autor. Rating, Anzahl, Stand und Link sind
+  zusammen in der einzelnen review-proof-Sektion von index.html editierbar.
+  Der Google-Maps-Suchlink identifiziert KIELS und die Adresse; kein direkter
+  Review-Permalink oder Live-Synchronisation behauptet.
+- Bestehendes "Warum KIELS?" als Trust-Ebene beibehalten; keine neue
+  Mitgliederzahl oder unbestätigte Eigenschaft ergänzt.
+- Zentrale Dark-Oberflächen differenziert: Gesundheit etwas ruhiger,
+  Kurse dynamischer, Wellness wärmer, Firmenfitness sachlicher. Keine neue
+  Stylesammlung; vorhandene Tokens, Bilder und Seitenaufteilung bleiben.
+- Gemeinsame Tarifleistungen sichtbarer eingerahmt. Preise, Laufzeiten und
+  einmalige Pauschale unverändert; keine Monatsumrechnung und keine unbestätigte
+  Zuordnung einzelner Leistungen zu einem bestimmten Tarif.
+- Telefon direkt am Startseiten-Hero und beim bestehenden Kinderbetreuungs-
+  Zeitblock erreichbar. Altersgruppen, Kosten und Ansprechpartner nicht geraten.
+- Desktop-CTA jetzt auch bei 1024 px sichtbar; mobile Schnellaktionen bei
+  768 px ebenfalls außerhalb des Menüs erreichbar. Hamburger-/Schließen-Symbol
+  im gesamten mobilen Menübereich definiert. Menüscrollraum berücksichtigt
+  die unten stehenden Aktionen.
+- Headeroffset statt zusätzlichem Pixelabstand aus tatsächlicher Höhe ermittelt;
+  Mitgliedschaft als aktives Sprungziel markiert. No-JS-Menü bleibt sichtbar,
+  der hohe No-JS-Header ist mobil nicht sticky.
+- Bildzoom/Anhebung nur bei Maus mit geeignetem Pointer; Bildgrenzen bleiben
+  erhalten. Informative Kacheln haben nur eine dezente Konturreaktion, keine
+  Button-Anhebung. Fokus bleibt auch ohne Hover erkennbar.
+
+QA / Ergebnis
+- Eigenständiges vorhandenes Playwright/Chrome, exakt gemessene 1440/1024/768/
+  390/375 px; 40 Seitenansichten auf Home, Fitness, Gesundheit, Kurse, Wellness,
+  Kontakt, Firmenfitness und Arbeitgeberempfehlung. Keine horizontalen
+  Überläufe, abgeschnittenen Textboxen oder fehlenden Bildern festgestellt.
+- Fünf Auflösungen mit direktem Mitgliedschaftsaufruf und In-Page-Navigation:
+  Zielbeginn unter gemessenem Header, aktive Markierung korrekt. Mobil:
+  Öffnen, Fokus auf erstem Link, Tab-/Shift-Tab-Fokusumlauf, Escape/Fokusrückgabe
+  und Scrollsperre geprüft. Touch-Menü und Navigation erfolgreich.
+- Reduced Motion und No-JS geprüft. Gemessener Layout-Shift im lokalen
+  automatisierten Lauf: 0. Keine neuen JavaScript-Laufzeitfehler.
+- Lokale Formularprüfung: leere Pflichtfelder blockieren; Kontakt, Firmenfitness
+  und Empfehlung liefern mit gültigen Dummy-Eingaben weiterhin kontrolliert
+  503 delivery_not_configured, Eingaben bleiben erhalten. Diese drei Anfragen
+  gingen nur an die fail-closed lokale Vorschau, nicht an HighLevel/Production.
+- Gesamte bestehende Testsuite einschließlich neuer Link-/Trust-Regressionen:
+  70/70 bestanden. Interne .html-Links und Sprungziele vollständig geprüft.
+- Exakte Vorher-/Nachher-Screenshots bei 1440/390 px sowie Nachher-Ansichten
+  aller fünf Größen und weitere Bereichs-/Menübilder im lokalen Abnahmebericht.
+  Keine Screenshot-Dateien oder QA-Werkzeuge in den Website-Ordner kopiert.
+
+Bewusst unverändert / offene Daten
+- HighLevel-Adapter, API, Scopes, Versand, Attribution, Validierung und
+  Firmenfitnessformularlogik unverändert. Keine neuen Pflichtklicks.
+- Logos, Bildmaterial, Preise, rechtliche Texte und historische Wix-Snapshots
+  unverändert; bestehende shared/wix-clone-Löschungen nicht übernommen.
+- TODO Inhalt: drei belegte Google-Originalstimmen mit Autoren/Quelle liefern.
+  Bis dahin werden mit ausdrücklicher Zustimmung nur Rating und Anzahl gezeigt.
+- TODO Inhalt: Kinderbetreuungs-Altersgruppen, genauer Anmeldeweg, Kosten/
+  Tarifumfang und verantwortlicher Ansprechpartner verbindlich klären.
+  Vorhandene veröffentlichte Zeiten und Hinweis "Mit Anmeldung" bleiben.
+- Aktuelle Kursplan-PDF und andere schon dokumentierte Betriebsdaten bleiben offen.
+- Einschränkung: lokale Chromium-/Touch-Emulation, kein echter iOS-/Android-
+  Gerätetest und kein vollständiger Screenreader- oder Lab-Performance-Test.
+  Externe Google-/Matterport-Ziele nicht als automatisch geprüfte Inhalte ausgeben.
+
+Lokale Abnahmepfade
+http://127.0.0.1:8766/next/index.html
+http://127.0.0.1:8766/next/index.html#mitgliedschaft
+http://127.0.0.1:8766/next/index.html#kinderbetreuung
+http://127.0.0.1:8766/next/fitness.html
+http://127.0.0.1:8766/next/health.html
+http://127.0.0.1:8766/next/kurse.html
+http://127.0.0.1:8766/next/wellness.html
+http://127.0.0.1:8766/next/kontakt.html
+http://127.0.0.1:8766/next/firmenfitness.html
+http://127.0.0.1:8766/next/arbeitgeber-empfehlen.html
