@@ -243,6 +243,9 @@ Mit separater ausdrücklicher Freigabe ausschließlich die Build-Dateiliste
 ergänzt; vorhandenes JavaScript und Formularlogik unverändert. Neue Regression
 prüft alle von HTML referenzierten lokalen JS-/CSS-Dateien im frischen Artefakt.
 Vollständiger Testlauf einschließlich dieser Artefakt-Regression: 71/71 bestanden.
+Nachträgliche freigegebene Textkorrektur am 05.10.2026: den zusätzlichen
+Late-Night-Absatz unter den Tarifkarten entfernt. Allgemeiner Vergünstigungs-
+absatz und Late-Night-Tarifkarte unverändert; keine Preis-/Design-/Logikänderung.
 
 Umsetzung / Kundennutzen
 - Startseiten-Hero auf "Mehr als Fitness. Dein Fitnessstudio in Kiel." gekürzt.

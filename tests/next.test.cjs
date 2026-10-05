@@ -97,6 +97,10 @@ test("approved Late-Night terms are complete and missing course PDF is not fabri
  const membership = home.match(/<section\b[^>]*id="mitgliedschaft"[\s\S]*?<\/section>/);
  assert.ok(membership, "membership section exists");
  assert.doesNotMatch(membership[0], /KIELS App|KIELS-App/);
+ const notes = home.match(/<div class="tariff-notes">([\s\S]*?)<\/div>/);
+ assert.ok(notes, "general tariff notes exist");
+ assert.doesNotMatch(notes[1], /Late-Night|27,90|20:00|22:00/);
+ assert.match(notes[1], /Für Schüler, Studenten, Rentner und Angestellte unserer Kooperationspartner gibt es besondere Vergünstigungen/);
  for (const price of ["23,90", "30,90", "27,90"]) assert.ok(home.includes(price));
  assert.match(home, /20:00 bis 22:00 Uhr/);
  assert.match(home, /27,90 € <span>\/14-tägig<\/span>/);
