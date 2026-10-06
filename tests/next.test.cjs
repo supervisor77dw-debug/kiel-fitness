@@ -148,6 +148,26 @@ test("homepage places the complete trust and review block before Why KIELS and i
   assert.match(references, new RegExp(`src="assets/${asset}"[^>]*alt="[^"]+"[^>]*loading="lazy"[^>]*width="1800" height="(?:1200|1013)"`));
  }
 });
+test("Biosauna uses Wellness 3 consistently while the mixed sauna and health diagnostics stay distinct", () => {
+ const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
+ const wellness = fs.readFileSync(path.join(next, "wellness.html"), "utf8");
+ const styles = fs.readFileSync(path.join(next, "styles.css"), "utf8");
+ const health = fs.readFileSync(path.join(next, "health.html"), "utf8");
+ const biosaunaAsset = "wellness-biosauna-authentic.webp";
+ assert.match(home, new RegExp(`src="assets/${biosaunaAsset}"`));
+ assert.match(wellness, new RegExp(`<img src="assets/${biosaunaAsset}" alt="Biosauna-Bereich im KIELS mit Blick auf den Saunazugang" loading="lazy" width="1800" height="1012">`));
+ assert.doesNotMatch(`${home}\n${wellness}\n${styles}`, /assets\/biosauna\.png/);
+ assert.match(wellness, /wellness-mixed-sauna-authentic\.webp/);
+ assert.match(wellness, /wellness-women-sauna-authentic\.webp/);
+ assert.match(health, /Körperanalyse mit InBody 770/);
+ assert.match(health, /Eingangsdiagnostik bilden sie eine nachvollziehbare Grundlage für deinen individuellen Trainingsplan/);
+ assert.match(health, /health-dr-hosch-original\.png/);
+ assert.match(health, /<h1>Gesundheitstraining in Kiel/);
+ assert.match(fs.readFileSync(path.join(next, "home.css"), "utf8"), /body\[data-page="health"\] \.page-hero h1 \{ font-size: clamp\(28px,8vw,34px\); \}/);
+ const image = fs.readFileSync(path.join(next, "assets", biosaunaAsset));
+ assert.equal(image.toString("ascii", 8, 12), "WEBP");
+ assert.ok(image.length < 500_000);
+});
 test("premium pass removes demo footers without changing approved page content or tariffs", () => {
  for (const file of fs.readdirSync(next).filter(name => name.endsWith(".html"))) {
   const html = fs.readFileSync(path.join(next, file), "utf8");

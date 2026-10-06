@@ -273,6 +273,7 @@ p + p { margin-top: 16px; }
  html { scroll-padding-bottom: calc(88px + env(safe-area-inset-bottom)); }
 }
 @media (max-width: 430px) {
+ body[data-page="health"] .page-hero h1 { font-size: clamp(28px,8vw,34px); }
  .usp-grid { grid-template-columns: 1fr; }
  .usp { display: grid; grid-template-columns: 24px 1fr; gap: 8px 12px; padding: 20px; }
  .usp-number { grid-row: span 2; margin: 0; align-self: start; line-height: 1.7; }

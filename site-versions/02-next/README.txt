@@ -506,3 +506,20 @@ Homepage-Trust-Flow und authentische Studiofotos, 06.10.2026
 - Vercel verwendet weiterhin ausdruecklich den bestehenden Staging-Build mit
   X-Robots-Tag noindex/nofollow. Production-Smoke erfolgt nach dem Push mit
   dieser Build-Konfiguration.
+
+Gezielte Biosauna- und Gesundheitsrunde, 06.10.2026
+- Wellness 3 aus assets/kiels-authentic/Kiels Fitness, Wellness-3.jpg ist
+  als wellness-biosauna-authentic.webp (1800 x 1012, WebP) fuer den
+  Biosauna-Eintrag und den Wellness-Teaser eingebunden. Die Originaldatei
+  bleibt unveraendert.
+- Die grosse gemischte Sauna bleibt beim vorhandenen Motiv aus Wellness 5;
+  das Biosauna-Bild wird nicht dieser Sauna zugeordnet. Die separate
+  Wellness-4/5/6-Zuordnung fuer die gemischte Sauna bleibt unberuehrt.
+- Auf der Gesundheitsseite wird die InBody 770 deutlicher als Teil der
+  Eingangsdiagnostik und individuellen Trainingsplanung erklaert. Das
+  vorhandene authentische KIELS-Portrait aus dem Bereich Orthopaedie und
+  Sportmedizin stuetzt den Gesundheits-/Betreuungskontext; ein externes
+  Herstellerbild wurde nicht uebernommen.
+- Keine Aenderungen an Formularen, HighLevel, Preisen oder Tracking.
+- Geprueft: Zielseiten, Bildzuordnung, WebP-Format/-Groesse, responsive
+  Ansichten sowie lokale Build- und Regressionstests.
