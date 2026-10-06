@@ -327,6 +327,18 @@ body[data-page="kurse"] .page-hero { align-items: start; }
 .info-card .text-link, .media-card .text-link { margin-top: 16px; }
 .plain-list { color: var(--muted); padding-left: 22px; margin: 20px 0; }
 .plain-list li + li { margin-top: 10px; }
+.health-analysis { display: grid; grid-template-columns: minmax(0,.95fr) minmax(0,1.05fr); gap: 24px; align-items: stretch; }
+.inbody-visual { display: flex; min-width: 0; flex-direction: column; margin: 0; padding: 14px; border: 1px solid var(--line); border-radius: var(--radius); background: linear-gradient(145deg,rgba(255,255,255,.035),transparent 58%),var(--surface-deep); box-shadow: inset 0 1px rgba(255,255,255,.06); }
+.inbody-visual img { display: block; width: 100%; height: auto; aspect-ratio: 1.5; border-radius: 12px; }
+.inbody-visual figcaption { padding: 12px 6px 2px; color: var(--muted); font-size: 12px; line-height: 1.45; }
+.health-analysis-copy { min-width: 0; }
+.health-analysis-copy > p { color: var(--muted); margin-top: 14px; }
+.metric-tags { display: flex; flex-wrap: wrap; gap: 9px; margin: 20px 0 0; padding: 0; list-style: none; }
+.metric-tags li { max-width: 100%; padding: 7px 11px; border: 1px solid rgba(var(--world-rgb),.22); border-radius: 999px; color: var(--text); background: rgba(var(--world-rgb),.055); font-size: 13px; line-height: 1.35; overflow-wrap: anywhere; }
+.analysis-flow { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 12px; margin: 22px 0 0; padding: 0; list-style: none; }
+.analysis-flow li { display: flex; min-width: 0; flex-direction: column; gap: 5px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.025); }
+.analysis-flow li span { color: var(--yellow); font-size: 11px; font-weight: 700; letter-spacing: .1em; }
+.analysis-flow li strong { font-size: 14px; line-height: 1.35; }
 .portrait-card img { width: 160px; height: 190px; object-fit: contain; margin-bottom: 24px; }
 .wellness-grid, .course-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
 .media-card { overflow: hidden; border-radius: var(--radius); background: var(--navy-soft); border: 1px solid var(--line); }
@@ -385,6 +397,9 @@ body[data-page="kurse"] .page-hero { align-items: start; }
  .page-hero { padding-block: 32px 40px; }
  .page-visual img { aspect-ratio: 1.5; }
  .split-grid, .wellness-grid, .course-grid, .contact-grid { grid-template-columns: 1fr; }
+ .health-analysis { grid-template-columns: 1fr; }
+ .analysis-flow { grid-template-columns: 1fr; gap: 8px; }
+ .analysis-flow li { display: grid; grid-template-columns: 34px minmax(0,1fr); align-items: baseline; }
  .info-card, .contact-form { padding: 24px; }
  .choices { grid-template-columns: 1fr; }
  .media-card > div { padding: 24px; }

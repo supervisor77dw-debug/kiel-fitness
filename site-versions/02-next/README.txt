@@ -523,3 +523,10 @@ Gezielte Biosauna- und Gesundheitsrunde, 06.10.2026
 - Keine Aenderungen an Formularen, HighLevel, Preisen oder Tracking.
 - Geprueft: Zielseiten, Bildzuordnung, WebP-Format/-Groesse, responsive
   Ansichten sowie lokale Build- und Regressionstests.
+- InBody 770 auf der Gesundheitsseite: zweispaltiger Analyseblock mit
+  Messwerten und dem Ablauf Analyse -> Eingangsdiagnostik -> Trainingsplan.
+  Da fuer das offizielle Herstellerbild keine passende kommerzielle
+  Nutzungsfreigabe belegt ist, wird assets/health/inbody-770-placeholder.svg
+  als neutrale, klar markierte Infografik genutzt. Sie zeigt keine echte
+  Messung und kein Produktfoto; spaeter kann sie durch ein eigenes KIELS-Foto
+  mit Trainer und Mitglied am Geraet ersetzt werden.

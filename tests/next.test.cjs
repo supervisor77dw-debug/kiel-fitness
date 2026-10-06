@@ -168,6 +168,24 @@ test("Biosauna uses Wellness 3 consistently while the mixed sauna and health dia
  assert.equal(image.toString("ascii", 8, 12), "WEBP");
  assert.ok(image.length < 500_000);
 });
+test("health page presents the InBody 770 with a local neutral placeholder and responsive assessment flow", () => {
+ const health = fs.readFileSync(path.join(next, "health.html"), "utf8");
+ const css = fs.readFileSync(path.join(next, "home.css"), "utf8");
+ const asset = "assets/health/inbody-770-placeholder.svg";
+ assert.match(health, new RegExp(`<img src="${asset}" alt="Neutrales Infovisual zur Körperanalyse mit InBody 770, kein Produktfoto" loading="lazy" width="960" height="640">`));
+ assert.match(health, /Übergangsvisual – ein eigenes KIELS-Foto folgt/);
+ assert.match(health, /Körperfettanteil/);
+ assert.match(health, /Muskelmasse/);
+ assert.match(health, /Körperwasser · ECW\/ICW/);
+ assert.match(health, /Viszerales Fett/);
+ assert.match(health, /Phasenwinkel/);
+ assert.match(health, /<strong>Analyse<\/strong>[\s\S]*<strong>Eingangsdiagnostik<\/strong>[\s\S]*<strong>Individueller Trainingsplan<\/strong>/);
+ assert.match(css, /\.health-analysis \{ display: grid; grid-template-columns: minmax\(0,\.95fr\) minmax\(0,1\.05fr\);/);
+ assert.match(css, /\.health-analysis \{ grid-template-columns: 1fr; \}/);
+ const placeholder = fs.readFileSync(path.join(next, asset), "utf8");
+ assert.match(placeholder, /kein Produktfoto und keine individuellen Messwerte/);
+ assert.doesNotMatch(placeholder, /<image\b[^>]*(?:href|xlink:href)="https?:\/\//);
+});
 test("premium pass removes demo footers without changing approved page content or tariffs", () => {
  for (const file of fs.readdirSync(next).filter(name => name.endsWith(".html"))) {
   const html = fs.readFileSync(path.join(next, file), "utf8");
