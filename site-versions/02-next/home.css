@@ -916,3 +916,116 @@ body[data-page="kurse"] .closing h2 { color: var(--white); }
 body[data-page="kurse"] .site-footer { --muted: #c3cdd1; color: var(--white); }
 body[data-page="kurse"] .mobile-actions { color: var(--white); }
 body[data-page="kurse"] .mobile-actions .secondary { color: var(--white); border-color: rgba(255,255,255,.4); }
+
+/* Restrained light diffusion and satin surfaces; dark-surface glows stay intact. */
+.site-header {
+ background: linear-gradient(180deg,rgba(255,255,255,.055),transparent 72%),rgba(7,23,32,.66);
+ border-bottom-color: rgba(255,255,255,.2);
+ box-shadow: 0 12px 34px rgba(3,12,17,.2),inset 0 1px rgba(255,255,255,.08);
+}
+.site-header.is-scrolled {
+ background: linear-gradient(180deg,rgba(255,255,255,.055),transparent 72%),rgba(7,23,32,.84);
+ border-bottom-color: rgba(255,255,255,.22);
+ box-shadow: 0 12px 34px rgba(3,12,17,.25),inset 0 1px rgba(255,255,255,.08);
+}
+@supports (backdrop-filter: blur(1px)) {
+ .site-header {
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+ }
+ .site-header.is-scrolled {
+  backdrop-filter: blur(24px) saturate(145%);
+  -webkit-backdrop-filter: blur(24px) saturate(145%);
+ }
+}
+
+body[data-page="index"] .trust-section {
+ background:
+  radial-gradient(ellipse 72% 68% at 18% 0,rgba(255,255,255,.3),transparent 76%),
+  radial-gradient(ellipse 58% 74% at 88% 100%,rgba(200,168,78,.035),transparent 78%),
+  linear-gradient(180deg,#e8e3d9,var(--light-main));
+}
+body[data-page="index"] .why::before,
+body[data-page="index"] .support::before,
+body[data-page="index"] .opening::before {
+ background-image:
+  radial-gradient(ellipse 68% 82% at 16% 0,rgba(255,255,255,.34),transparent 78%),
+  radial-gradient(ellipse 60% 88% at 88% 100%,rgba(200,168,78,.035),transparent 80%);
+ background-repeat: no-repeat;
+}
+body[data-page="index"] .why::before { background-color: var(--light-main); }
+body[data-page="index"] .support::before { background-color: #e8e3d9; }
+body[data-page="index"] .opening::before { background-color: var(--light-warm); }
+
+body[data-page="index"] .trust-section .review-quote {
+ --review-card-bg: rgba(250,248,243,.86);
+ background: linear-gradient(145deg,rgba(255,255,255,.62),transparent 62%),var(--review-card-bg);
+ border-color: rgba(255,255,255,.78);
+ box-shadow: inset 0 1px rgba(255,255,255,.88),0 8px 22px rgba(83,67,41,.055);
+ transition: border-color .2s var(--ease-ui),box-shadow .2s var(--ease-ui),background-color .2s var(--ease-ui);
+}
+body[data-page="index"] .trust-section .review-quote::before { background: rgba(118,92,24,.58); }
+body[data-page="index"] .trust-section .has-full-review::after {
+ background: linear-gradient(transparent,rgba(248,246,240,.96));
+}
+body[data-page="index"] .usp,
+body[data-page="index"] .support-panel,
+body[data-page="index"] .hours,
+body[data-page="health"] .info-card,
+body[data-page="health"] .inbody-visual,
+body[data-page="kurse"] .info-card,
+body[data-page="kurse"] .media-card {
+ background-color: rgba(250,248,243,.84);
+ border-color: rgba(255,255,255,.76);
+ box-shadow: inset 0 1px rgba(255,255,255,.9),0 8px 22px rgba(83,67,41,.055);
+}
+body[data-page="index"] .usp,
+body[data-page="index"] .support-panel,
+body[data-page="index"] .hours,
+body[data-page="health"] .info-card,
+body[data-page="health"] .inbody-visual,
+body[data-page="kurse"] .info-card,
+body[data-page="kurse"] .media-card {
+ transition: transform .2s var(--ease-ui),border-color .2s var(--ease-ui),box-shadow .2s var(--ease-ui),background-color .2s var(--ease-ui);
+}
+@supports (backdrop-filter: blur(1px)) {
+ body[data-page="index"] .trust-section .review-quote,
+ body[data-page="index"] .usp,
+ body[data-page="index"] .support-panel,
+ body[data-page="index"] .hours,
+ body[data-page="health"] .info-card,
+ body[data-page="health"] .inbody-visual,
+ body[data-page="kurse"] .info-card,
+ body[data-page="kurse"] .media-card {
+  backdrop-filter: blur(8px) saturate(108%);
+  -webkit-backdrop-filter: blur(8px) saturate(108%);
+ }
+}
+@media (hover: hover) and (pointer: fine) {
+ body[data-page="index"] .trust-section .review-quote:hover,
+ body[data-page="index"] .usp:hover,
+ body[data-page="health"] .info-card:has(.text-link):hover,
+ body[data-page="health"] .inbody-visual:hover,
+ body[data-page="kurse"] .info-card:has(.text-link):hover,
+ body[data-page="kurse"] .media-card:has(a):hover {
+  transform: translateY(-1px);
+  border-color: rgba(118,92,24,.28);
+  box-shadow: inset 0 1px rgba(255,255,255,.94),0 8px 22px rgba(83,67,41,.075),0 0 18px rgba(200,168,78,.055);
+ }
+ body[data-page="index"] .support-panel:has(.text-link):hover,
+ body[data-page="index"] .hours:has(.text-link):hover {
+  transform: translateY(-1px);
+  border-color: rgba(118,92,24,.28);
+  box-shadow: inset 0 1px rgba(255,255,255,.94),0 8px 22px rgba(83,67,41,.075),0 0 18px rgba(200,168,78,.055);
+ }
+}
+@media (prefers-reduced-motion: reduce) {
+ body[data-page="index"] .trust-section .review-quote,
+ body[data-page="index"] .usp,
+ body[data-page="index"] .support-panel,
+ body[data-page="index"] .hours,
+ body[data-page="health"] .info-card,
+ body[data-page="health"] .inbody-visual,
+ body[data-page="kurse"] .info-card,
+ body[data-page="kurse"] .media-card { transition: none; }
+}
