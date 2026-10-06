@@ -669,3 +669,249 @@ a[href^="tel:"], a[href^="mailto:"], .privacy a, .legal-content a, .related a, .
   animation-iteration-count: 1 !important;
  }
 }
+
+/* Warm light rhythm for the approved homepage and differentiated page worlds. */
+:root {
+ --light-main: #eeeae2;
+ --light-warm: #e4ded2;
+ --light-card: #f7f4ee;
+ --light-text: #20282c;
+ --light-muted: #4d595d;
+ --light-gold: #765c18;
+ --light-line: rgba(32,40,44,.14);
+}
+
+body[data-page="index"] .trust-section {
+ color: var(--light-text);
+ border-color: rgba(32,40,44,.1);
+ background: linear-gradient(180deg,#e8e3d9,var(--light-main));
+}
+body[data-page="index"] .trust-section .review-proof h2,
+body[data-page="index"] .trust-section .review-rating strong,
+body[data-page="index"] .trust-section .review-quote cite { color: var(--light-text); }
+body[data-page="index"] .trust-section .review-rating {
+ border-color: rgba(118,92,24,.2);
+ background: rgba(247,244,238,.9);
+ box-shadow: inset 0 1px rgba(255,255,255,.8),0 10px 24px rgba(32,40,44,.06);
+}
+body[data-page="index"] .trust-section .review-rating small,
+body[data-page="index"] .trust-section .review-quote figcaption,
+body[data-page="index"] .trust-section .review-quote figcaption span,
+body[data-page="index"] .trust-section .review-counter { color: var(--light-muted); }
+body[data-page="index"] .trust-section .review-quote {
+ --review-card-bg: #f7f4ee;
+ color: var(--light-text);
+ border-color: rgba(32,40,44,.13);
+ background: linear-gradient(145deg,rgba(255,255,255,.65),transparent 58%),var(--review-card-bg);
+ box-shadow: inset 0 1px rgba(255,255,255,.9),0 12px 28px rgba(32,40,44,.08);
+}
+body[data-page="index"] .trust-section .review-excerpt { color: var(--light-text); }
+body[data-page="index"] .trust-section .has-full-review::after {
+ background: linear-gradient(transparent,var(--review-card-bg));
+}
+body[data-page="index"] .trust-section .review-read-more,
+body[data-page="index"] .trust-section .review-arrow:hover,
+body[data-page="index"] .trust-section .review-autoplay:hover { color: var(--light-gold); }
+body[data-page="index"] .trust-section .review-arrow,
+body[data-page="index"] .trust-section .review-autoplay {
+ color: #566267;
+ border-color: rgba(32,40,44,.17);
+}
+body[data-page="index"] .trust-section .review-progress { background: rgba(32,40,44,.16); }
+body[data-page="index"] .trust-section .review-progress span { background: var(--light-gold); }
+
+body[data-page="index"] .why,
+body[data-page="index"] .support,
+body[data-page="index"] .opening {
+ position: relative;
+ isolation: isolate;
+}
+body[data-page="index"] .why::before,
+body[data-page="index"] .support::before,
+body[data-page="index"] .opening::before {
+ position: absolute;
+ z-index: -1;
+ inset: 0;
+ content: "";
+}
+body[data-page="index"] .why::before { background: var(--light-main); box-shadow: 0 0 0 100vmax var(--light-main); }
+body[data-page="index"] .support::before { background: #e8e3d9; box-shadow: 0 0 0 100vmax #e8e3d9; }
+body[data-page="index"] .opening::before { background: var(--light-warm); box-shadow: 0 0 0 100vmax var(--light-warm); }
+body[data-page="index"] .why { border-top-color: var(--light-line); }
+body[data-page="index"] .why .section-heading > p,
+body[data-page="index"] .support-grid > div > p:not(.eyebrow),
+body[data-page="index"] .support-panel > p,
+body[data-page="index"] .hours dt { color: var(--light-muted); }
+body[data-page="index"] .why .section-heading h2,
+body[data-page="index"] .support h2,
+body[data-page="index"] .support-panel h3,
+body[data-page="index"] .hours h3,
+body[data-page="index"] .hours dd { color: var(--light-text); }
+body[data-page="index"] .why .eyebrow,
+body[data-page="index"] .support .eyebrow,
+body[data-page="index"] .opening .eyebrow,
+body[data-page="index"] .support .text-link,
+body[data-page="index"] .support-panel a,
+body[data-page="index"] .hours-note,
+body[data-page="index"] .opening .text-link { color: var(--light-gold); }
+body[data-page="index"] .support-panel .video-links a {
+ color: var(--light-text);
+ border-color: var(--light-line);
+ background: var(--light-card);
+}
+body[data-page="index"] .support-panel .video-links a::before { color: var(--light-gold); }
+body[data-page="index"] .support-panel .video-links a:hover {
+ color: var(--light-gold);
+ border-color: rgba(118,92,24,.38);
+ background: #fff;
+}
+body[data-page="index"] .usp,
+body[data-page="index"] .support-panel,
+body[data-page="index"] .hours {
+ color: var(--light-text);
+ border-color: var(--light-line);
+ background: var(--light-card);
+ box-shadow: inset 0 1px rgba(255,255,255,.85),0 12px 28px rgba(32,40,44,.07);
+}
+body[data-page="index"] .usp-number { color: var(--light-gold); }
+body[data-page="index"] .usp p { color: var(--light-muted); }
+body[data-page="index"] .goal-copy {
+ color: var(--light-text);
+ background: linear-gradient(145deg,rgba(255,255,255,.28),transparent),var(--light-warm);
+}
+body[data-page="index"] .goal-copy h3,
+body[data-page="index"] .goal-copy p { color: var(--light-text); }
+body[data-page="index"] .goal-copy .category,
+body[data-page="index"] .goal-copy .card-link,
+body[data-page="index"] .goal-card:hover .card-link { color: var(--light-gold); }
+body[data-page="index"] .goal-card { border-color: rgba(32,40,44,.18); }
+body[data-page="index"] .goal-card:hover { border-color: var(--light-gold); }
+
+body[data-page="health"] {
+ --muted: #4d595d;
+ --line: rgba(32,40,44,.14);
+ --navy-soft: #f7f4ee;
+ --surface-solid: #f7f4ee;
+ --surface-glass: rgba(247,244,238,.94);
+ --surface-deep: #dfe7e4;
+ color: var(--light-text);
+ background: radial-gradient(ellipse 85% 700px at 85% 120px,rgba(117,156,151,.14),transparent),var(--light-main);
+}
+body[data-page="health"] .hero,
+body[data-page="health"] main > .section:not(.closing) { color: var(--light-text); }
+body[data-page="health"] h1,
+body[data-page="health"] h2,
+body[data-page="health"] h3 { color: var(--light-text); }
+body[data-page="health"] h1 em,
+body[data-page="health"] .eyebrow,
+body[data-page="health"] .text-link,
+body[data-page="health"] .metric-tags li,
+body[data-page="health"] .analysis-flow li span { color: var(--light-gold); }
+body[data-page="health"] .intro,
+body[data-page="health"] .intro-text,
+body[data-page="health"] .section-heading > p,
+body[data-page="health"] .info-card p,
+body[data-page="health"] .health-analysis-copy > p,
+body[data-page="health"] .studio-copy > p,
+body[data-page="health"] .plain-list,
+body[data-page="health"] .portrait-card p { color: var(--light-muted); }
+body[data-page="health"] .info-card,
+body[data-page="health"] .inbody-visual {
+ color: var(--light-text);
+ border-color: var(--light-line);
+ background: var(--light-card);
+ box-shadow: inset 0 1px rgba(255,255,255,.85),0 12px 28px rgba(32,40,44,.07);
+}
+body[data-page="health"] .inbody-visual figcaption { color: var(--light-muted); }
+body[data-page="health"] .metric-tags li {
+ border-color: rgba(118,92,24,.24);
+ background: rgba(118,92,24,.06);
+}
+body[data-page="health"] .analysis-flow li {
+ color: var(--light-text);
+ border-color: var(--light-line);
+ background: rgba(247,244,238,.78);
+}
+body[data-page="health"] .studio-band {
+ border-color: rgba(32,40,44,.1);
+ background: linear-gradient(125deg,#dfe7e4,#e9e7dc);
+}
+body[data-page="health"] .page-visual { border-color: var(--light-line); background: var(--light-card); }
+body[data-page="health"] .button.secondary {
+ color: var(--light-text);
+ border-color: rgba(32,40,44,.35);
+ background: rgba(255,255,255,.28);
+}
+body[data-page="health"] .button.secondary:hover { background: rgba(255,255,255,.6); }
+body[data-page="health"] .closing {
+ --muted: #c3cdd1;
+ color: var(--white);
+ background: radial-gradient(ellipse at 50% 0,rgba(var(--world-rgb),.1),transparent 70%),#122630;
+}
+body[data-page="health"] .closing h2 { color: var(--white); }
+body[data-page="health"] .site-footer { --muted: #c3cdd1; color: var(--white); }
+body[data-page="health"] .mobile-actions { color: var(--white); }
+body[data-page="health"] .mobile-actions .secondary { color: var(--white); border-color: rgba(255,255,255,.4); }
+
+body[data-page="wellness"] {
+ --world-rgb: 194,150,91;
+ --world-light: rgba(var(--world-rgb),.12);
+ --navy-soft: #393832;
+ --surface-solid: #393832;
+ --surface-glass: rgba(57,56,50,.92);
+ --surface-deep: #252823;
+ --surface-warm: #393832;
+ --line: rgba(232,219,196,.2);
+ --muted: #d2cbbf;
+ background: radial-gradient(ellipse 85% 700px at 85% 120px,var(--world-light),transparent),#262722;
+}
+body[data-page="wellness"] .site-footer { --muted: #c3cdd1; }
+
+body[data-page="kurse"] {
+ --world-rgb: 180,143,65;
+ --world-light: rgba(var(--world-rgb),.1);
+ --navy-soft: #f7f4ee;
+ --surface-solid: #f7f4ee;
+ --surface-glass: rgba(247,244,238,.94);
+ --surface-deep: #e4ded2;
+ --muted: #4d595d;
+ --line: rgba(32,40,44,.14);
+ color: var(--light-text);
+ background: radial-gradient(ellipse 85% 700px at 85% 120px,var(--world-light),transparent),var(--light-main);
+}
+body[data-page="kurse"] h1,
+body[data-page="kurse"] h2,
+body[data-page="kurse"] h3 { color: var(--light-text); }
+body[data-page="kurse"] .eyebrow,
+body[data-page="kurse"] .text-link,
+body[data-page="kurse"] .course-note { color: var(--light-gold); }
+body[data-page="kurse"] .intro,
+body[data-page="kurse"] .intro-text,
+body[data-page="kurse"] .section-heading > p,
+body[data-page="kurse"] .info-card p,
+body[data-page="kurse"] .media-card p,
+body[data-page="kurse"] .plain-list { color: var(--light-muted); }
+body[data-page="kurse"] .info-card,
+body[data-page="kurse"] .media-card {
+ color: var(--light-text);
+ border-color: var(--light-line);
+ background: var(--light-card);
+ box-shadow: inset 0 1px rgba(255,255,255,.85),0 12px 28px rgba(32,40,44,.07);
+}
+body[data-page="kurse"] .button.secondary,
+body[data-page="kurse"] .course-jumps .button {
+ color: var(--light-text);
+ border-color: rgba(32,40,44,.3);
+ background: rgba(255,255,255,.3);
+}
+body[data-page="kurse"] .button.secondary:hover,
+body[data-page="kurse"] .course-jumps .button:hover { background: rgba(255,255,255,.65); }
+body[data-page="kurse"] .closing {
+ --muted: #c3cdd1;
+ color: var(--white);
+ background: radial-gradient(ellipse at 50% 0,rgba(var(--world-rgb),.1),transparent 70%),#122630;
+}
+body[data-page="kurse"] .closing h2 { color: var(--white); }
+body[data-page="kurse"] .site-footer { --muted: #c3cdd1; color: var(--white); }
+body[data-page="kurse"] .mobile-actions { color: var(--white); }
+body[data-page="kurse"] .mobile-actions .secondary { color: var(--white); border-color: rgba(255,255,255,.4); }
