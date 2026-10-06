@@ -732,6 +732,7 @@ body[data-page="index"] .opening::before {
  position: absolute;
  z-index: -1;
  inset: 0;
+ clip-path: inset(0 -100vmax);
  content: "";
 }
 body[data-page="index"] .why::before { background: var(--light-main); box-shadow: 0 0 0 100vmax var(--light-main); }
