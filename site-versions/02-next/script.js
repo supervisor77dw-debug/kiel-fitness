@@ -79,6 +79,124 @@ function showCourseCategory(category){
 }
 if(courseTabs.length){courseTabs.forEach(b=>b.addEventListener("click",()=>showCourseCategory(b.dataset.courseTab)));showCourseCategory("kraft");}
 
+document.querySelectorAll("[data-review-carousel]").forEach(carousel => {
+ const viewport = carousel.querySelector("[data-review-viewport]");
+ const track = carousel.querySelector("[data-review-track]");
+ const controls = carousel.querySelector("[data-review-controls]");
+ const dotsContainer = carousel.querySelector("[data-review-dots]");
+ const position = carousel.querySelector("[data-review-position]");
+ const previous = carousel.querySelector("[data-review-previous]");
+ const next = carousel.querySelector("[data-review-next]");
+ const slides = [...(track?.querySelectorAll(".review-quote") || [])];
+ if (!viewport || !track || !controls || !dotsContainer || !position || !previous || !next || !slides.length) return;
+
+ let currentIndex = 0;
+ let visibleCount = 0;
+ let pages = [];
+ let scrollFrame = 0;
+ const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+ const pageOffset = index => pages[index].offsetLeft - pages[0].offsetLeft;
+
+ function buildPages() {
+  pages = [];
+  for (let start = 0; start < slides.length; start += visibleCount) {
+   const page = document.createElement("div");
+   page.className = "review-page";
+   page.setAttribute("role", "group");
+   page.setAttribute("aria-roledescription", "Karussellseite");
+   page.setAttribute("aria-label", `Bewertungen ${start + 1} bis ${Math.min(start + visibleCount, slides.length)} von ${slides.length}`);
+   page.append(...slides.slice(start, start + visibleCount));
+   pages.push(page);
+  }
+  track.replaceChildren(...pages);
+ }
+
+ function renderDots() {
+  dotsContainer.replaceChildren(...pages.map((_, index) => {
+   const dot = document.createElement("button");
+   dot.className = "review-dot";
+   dot.type = "button";
+   dot.setAttribute("aria-label", `Bewertungen ab ${slides[index * visibleCount].querySelector("cite").textContent} anzeigen`);
+   dot.addEventListener("click", () => moveTo(index));
+   return dot;
+  }));
+ }
+
+ function setActivePageHeight() {
+  if (!pages[currentIndex]) return;
+  const height = `${Math.ceil(pages[currentIndex].getBoundingClientRect().height + 14)}px`;
+  viewport.style.height = height;
+  track.style.height = height;
+ }
+
+ function updateState(announce = true) {
+  const previousIndex = currentIndex;
+  const nearest = pages.reduce((best, page, index) => {
+   const distance = Math.abs(viewport.scrollLeft - pageOffset(index));
+   return distance < best.distance ? { index, distance } : best;
+  }, { index: 0, distance: Number.POSITIVE_INFINITY }).index;
+  currentIndex = nearest;
+  previous.disabled = currentIndex === 0;
+  next.disabled = currentIndex === pages.length - 1;
+  [...dotsContainer.children].forEach((dot, index) => {
+   if (index === currentIndex) dot.setAttribute("aria-current", "true");
+   else dot.removeAttribute("aria-current");
+  });
+  if (announce && currentIndex !== previousIndex) {
+   const start = currentIndex * visibleCount;
+   position.textContent = `Bewertungen ${start + 1} bis ${Math.min(start + visibleCount, slides.length)} von ${slides.length}`;
+  }
+  setActivePageHeight();
+ }
+
+ function moveTo(index) {
+  currentIndex = Math.max(0, Math.min(index, pages.length - 1));
+  viewport.scrollTo({
+   left: pageOffset(currentIndex),
+   behavior: reducedMotion.matches ? "auto" : "smooth"
+  });
+  updateState(false);
+  const start = currentIndex * visibleCount;
+  position.textContent = `Bewertungen ${start + 1} bis ${Math.min(start + visibleCount, slides.length)} von ${slides.length}`;
+ }
+
+ function measure() {
+  const configuredVisible = Number.parseInt(getComputedStyle(carousel).getPropertyValue("--review-visible"), 10);
+  const nextVisibleCount = Math.max(1, Math.min(configuredVisible || 1, slides.length));
+  if (nextVisibleCount === visibleCount) {
+   setActivePageHeight();
+   return;
+  }
+  const firstVisibleSlide = currentIndex * visibleCount;
+  visibleCount = nextVisibleCount;
+  buildPages();
+  currentIndex = Math.min(Math.floor(firstVisibleSlide / visibleCount), pages.length - 1);
+  renderDots();
+  moveTo(currentIndex);
+  updateState(false);
+ }
+
+ previous.addEventListener("click", () => moveTo(currentIndex - 1));
+ next.addEventListener("click", () => moveTo(currentIndex + 1));
+ viewport.addEventListener("keydown", event => {
+  if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+  event.preventDefault();
+  moveTo(currentIndex + (event.key === "ArrowRight" ? 1 : -1));
+ });
+ viewport.addEventListener("scroll", () => {
+  if (scrollFrame) cancelAnimationFrame(scrollFrame);
+  scrollFrame = requestAnimationFrame(() => {
+   scrollFrame = 0;
+   updateState();
+  });
+ }, { passive: true });
+ carousel.dataset.enhanced = "true";
+ controls.hidden = false;
+ measure();
+ if ("ResizeObserver" in window) new ResizeObserver(measure).observe(viewport);
+ else window.addEventListener("resize", measure, { passive: true });
+});
+
 const courseJumps = document.querySelector(".course-jumps");
 if (courseJumps && "IntersectionObserver" in window) {
  const links = [...courseJumps.querySelectorAll('a[href^="#"]')];

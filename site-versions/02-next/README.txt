@@ -373,7 +373,7 @@ Bewusst unverändert / offene Daten
   Gerätetest und kein vollständiger Screenreader- oder Lab-Performance-Test.
   Externe Google-/Matterport-Ziele nicht als automatisch geprüfte Inhalte ausgeben.
 
-Google-Reviews-Erweiterung, 05.10.2026 (lokal, nicht veroeffentlicht)
+Google-Reviews-Erweiterung, 05.10.2026 (frueherer statischer Stand)
 - Gesamtstand 4,7/5 bei Google und 183 Bewertungen bleibt bestehen. Kein
   Google-Reviews-API-Aufruf, Widget oder externes Script. Den bisherigen
   Google-Maps-Suchlink entfernt; keinen Unternehmenslink geraten.
@@ -396,6 +396,37 @@ Google-Reviews-Erweiterung, 05.10.2026 (lokal, nicht veroeffentlicht)
   Review-Suchlinks oder API-Aufrufe. Kein Formular- oder HighLevel-Aufruf.
 - Lokale Vorschau: http://127.0.0.1:8766/next/index.html
 - Keine Commit-/Push-/Deployment-Freigabe.
+
+Google-Review-Karussell, 06.10.2026 (lokal, nicht veroeffentlicht)
+- Trust-Kopf gekuerzt auf „Was unsere Mitglieder über KIELS sagen“ und den
+  bestaetigten Google-Gesamtwert 4,7/5 bei 183 Bewertungen (Stand 05.10.2026).
+- Sechs ausschliesslich vom Auftraggeber bestaetigte Stimmen, ohne
+  Zusammenfassungen, erfundene Einzelsterne oder redaktionelle Labels:
+  Mareike („familiäre Stimmung und keine Massenabfertigung“), Anne Ahorn
+  (vollstaendige Bewertung einschliesslich der gelieferten Schreibweise),
+  T. Riddle („Mega nettes Team, sehr angenehmes Klientel dort.“), Robert Loos
+  („Seit 2006 meine Sport- und Begegnungsstätte. Meine 2. Familie.“),
+  Michael S. („Super Gym. Sehr nettes Personal und faire Mitgliedschaft.“)
+  und Jonas Lennart („Bestes Gym in Kiel wenn einem wichtig ist in einer
+  absolut familiären Atmosphäre zu trainieren.“).
+- Nur Anne Ahorns Bewertung ist vollstaendig; die uebrigen Stimmen sind die
+  gelieferten zusammenhaengenden Originalauszuege. Trust-Kopf bleibt frueh
+  sichtbar; Karussell steht nach „Warum KIELS?“, um den Einstieg kompakt zu
+  halten.
+- Manuelle Steuerung ohne Autoplay: Gruppen aus 3 Karten ab 1001 px, 2 ab
+  700 px und eine Karte unter 700 px. Pfeile blättern gruppenweise;
+  Positionspunkte springen direkt zur Gruppe. Tastaturpfeile bei Fokus im
+  Karussell und native Touch-Swipe-Steuerung. Sichtbarer Fokus, angesagte
+  aktive Position und Beachtung von prefers-reduced-motion. Kartenhoehe passt
+  sich der aktiven Gruppe an, damit kurze Mobilkarten nicht auf die Hoehe der
+  vollstaendigen Anne-Bewertung gestreckt werden.
+- Keine Google-API, kein Widget und kein externes Script.
+- Lokal bei 1440/1024/768/390/375/360/320 px geprueft: korrekte Zahl sichtbarer
+  Karten, vollstaendige Texte, kein Seiten-Overflow. Pfeile, Punkte,
+  Tastatur, Touch-Swipe und reduced-motion geprueft; keine JavaScript-Fehler
+  oder Formular-/HighLevel-Aufrufe. Testsuite: 37/37 bestanden.
+- Vorschau: http://127.0.0.1:8766/next/index.html
+- Kein Commit, Push oder Deployment.
 
 Lokale Abnahmepfade
 http://127.0.0.1:8766/next/index.html

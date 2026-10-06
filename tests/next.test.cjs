@@ -64,20 +64,27 @@ test("fresh deployment artifact includes every local script and stylesheet refer
 test("UX trust layer uses supplied rating without fabricated testimonials or external widgets", () => {
  const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
  assert.match(home, /class="review-proof wrap"/);
+ assert.match(home, /Was unsere Mitglieder über KIELS sagen/);
  assert.match(home, /4,7 von 5 bei Google, 183 Bewertungen/);
  assert.match(home, /Stand: 05\.10\.2026/);
- assert.match(home, /Von unseren Mitgliedern empfohlen/);
- const reviews = home.match(/<div class="review-quotes"[\s\S]*?<\/div>\s*<\/section>/);
+ assert.doesNotMatch(home, /Ein gutes Gefühl vor dem ersten Besuch|Entdecke die Erfahrungen mit unserem Studio auf Google/);
+ const reviews = home.match(/<section class="section review-carousel-section[\s\S]*?<\/section>/);
  assert.ok(reviews, "visible review cards exist below the overall rating");
- assert.equal((reviews[0].match(/<figure class="review-quote">/g) || []).length, 3);
- assert.equal((reviews[0].match(/<blockquote>/g) || []).length, 3);
- assert.match(reviews[0], /„familiäre Stimmung und keine Massenabfertigung“/);
- assert.match(reviews[0], /„sehr angenehmes Klientel“/);
- assert.match(reviews[0], /<cite>Mareike · Google-Bewertung<\/cite>/);
- assert.match(reviews[0], /<cite>Anne Ahorn · Google-Bewertung<\/cite>/);
- assert.match(reviews[0], /<cite>T\. Riddle · Google-Bewertung<\/cite>/);
- assert.match(reviews[0], /Ich bin mittlerweile seid fast 4 Jahren Mitglied und habe mich damals für dieses Fitnessstudio Aufgrund der Möglichkeit der Kinderbetreuung entschieden\. …/);
- assert.doesNotMatch(reviews[0], /Zusammenfassung|Weitere Eindrücke|Originalzitat|<h3|review-kind|review-summary/);
+ assert.equal((reviews[0].match(/class="review-quote"/g) || []).length, 6);
+ assert.equal((reviews[0].match(/<blockquote>/g) || []).length, 6);
+ for (const author of ["Mareike", "Anne Ahorn", "T. Riddle", "Robert Loos", "Michael S.", "Jonas Lennart"]) {
+  assert.match(reviews[0], new RegExp(`<cite>${author.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}<\\/cite>[\\s\\S]*?<span>Google-Bewertung<\\/span>`));
+ }
+ assert.match(reviews[0], /familiäre Stimmung und keine Massenabfertigung/);
+ assert.match(reviews[0], /Ich bin mittlerweile seid fast 4 Jahren Mitglied und habe mich damals für dieses Fitnessstudio Aufgrund der Möglichkeit der Kinderbetreuung entschieden\. Meine Kinder freuen sich jedes Mal auf den "Sportkindergarten" und ich bin dankbar für 1 Stunde "Metime"\. Neben diesem Angebot überzeugt dieses Studio durch Sauberkeit, moderne Sportgeräte sowie Sanitäranlagen und eine sehr ruhige und angenehme Atmosphäre zum fokussierten trainieren\. Ich fühle mich hier sehr wohl und merke das dem Eigentümer seine Mitglieder und sein Studio am Herzen liegt\./);
+ assert.match(reviews[0], /Mega nettes Team, sehr angenehmes Klientel dort\./);
+ assert.match(reviews[0], /Seit 2006 meine Sport- und Begegnungsstätte\. Meine 2\. Familie\./);
+ assert.match(reviews[0], /Super Gym\. Sehr nettes Personal und faire Mitgliedschaft\./);
+ assert.match(reviews[0], /Bestes Gym in Kiel wenn einem wichtig ist in einer absolut familiären Atmosphäre zu trainieren\./);
+ assert.doesNotMatch(reviews[0], /Zusammenfassung|Weitere Eindrücke|Originalzitat|<h3|review-kind|review-summary|★/);
+ assert.match(reviews[0], /aria-roledescription="Karussell"/);
+ assert.match(reviews[0], /aria-label="Vorherige Bewertungen"/);
+ assert.match(reviews[0], /aria-label="Nächste Bewertungen"/);
  assert.doesNotMatch(reviews[0], /maps\/search|<iframe|reviews\.js|<script/);
  assert.doesNotMatch(home, /verified-review-template/);
  assert.match(home, /href="tel:043154020">Betreuung telefonisch klären/);
@@ -85,12 +92,18 @@ test("UX trust layer uses supplied rating without fabricated testimonials or ext
  assert.match(script, /ResizeObserver\(measureHeader\)/);
  assert.match(script, /--header-offset/);
  assert.match(script, /membershipLink\.setAttribute\("aria-current", "location"\)/);
+ assert.match(script, /data-review-carousel/);
+ assert.match(script, /ArrowLeft/);
+ assert.match(script, /prefers-reduced-motion/);
 });
 test("Google reviews use desktop, tablet and mobile layouts without external review links", () => {
  const css = fs.readFileSync(path.join(next, "home.css"), "utf8");
- assert.match(css, /\.review-quotes \{ grid-column: 1 \/ -1; display: grid; grid-template-columns: repeat\(3,minmax\(0,1fr\)\)/);
- assert.match(css, /@media \(max-width: 1000px\) \{\s*\.review-quotes \{ grid-template-columns: repeat\(2,minmax\(0,1fr\)\); \}\s*\.review-quote:last-child \{ grid-column: 1 \/ -1; \}/);
- assert.match(css, /@media \(max-width: 699px\) \{\s*\.usp-grid, \.footer-grid, \.review-quotes \{ grid-template-columns: 1fr; \}/);
+ assert.match(css, /\.review-carousel \{ --review-visible: 3; \}/);
+ assert.match(css, /@media \(max-width: 1000px\) \{\s*\.review-carousel \{ --review-visible: 2; \}/);
+ assert.match(css, /\.review-page \{ display: grid; flex: 0 0 100%; grid-template-columns: repeat\(3,minmax\(0,1fr\)\)/);
+ assert.match(css, /@media \(max-width: 1000px\) \{\s*\.review-carousel \{ --review-visible: 2; \}\s*\.review-page \{ grid-template-columns: repeat\(2,minmax\(0,1fr\)\); \}/);
+ assert.match(css, /@media \(max-width: 699px\) \{\s*\.usp-grid, \.footer-grid \{ grid-template-columns: 1fr; \}\s*\.review-carousel \{ --review-visible: 1; \}\s*\.review-page \{ grid-template-columns: 1fr; \}/);
+ assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
  const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
  assert.doesNotMatch(home.match(/<section class="review-proof[\s\S]*?<\/section>/)[0], /google\.com\/maps\/search/);
 });
@@ -103,7 +116,7 @@ test("premium pass removes demo footers without changing approved page content o
  }
  const css = fs.readFileSync(path.join(next, "home.css"), "utf8");
  assert.match(css, /@media \(max-width: 699px\)/);
- assert.match(css, /\.usp-grid, \.footer-grid, \.review-quotes \{ grid-template-columns: 1fr; \}/);
+ assert.match(css, /\.usp-grid, \.footer-grid \{ grid-template-columns: 1fr; \}/);
 });
 test("micro polish adds only targeted card edges and compact wide cards below 375px", () => {
  const css = fs.readFileSync(path.join(next, "home.css"), "utf8");
