@@ -456,7 +456,7 @@ http://127.0.0.1:8766/next/kontakt.html
 http://127.0.0.1:8766/next/firmenfitness.html
 http://127.0.0.1:8766/next/arbeitgeber-empfehlen.html
 
-Authentische Homepage-Fotografie
+Authentische Homepage-Fotografie (frueherer Zwischenstand)
 - Gegenueberstellung der Homepage-Bilder mit allen 13 vorbereiteten JPEGs:
   Nur Foto "Kiels Fitness, Hohe Auflösung-7.jpg" ersetzt das bisherige
   Umkleidefoto im Studio-/Rundgangbereich. Es zeigt die Trainingsflaeche mit
@@ -473,3 +473,36 @@ Authentische Homepage-Fotografie
   des nicht bestaetigten aktuellen Zustands nicht eingesetzt.
 - Logo-Dateien nicht eingesetzt; vorhandene Logos bleiben unveraendert.
 - Keine Commits, Pushes oder Deployments in dieser Etappe.
+
+Homepage-Trust-Flow und authentische Studiofotos, 06.10.2026
+- Ratingflaeche, sechs bestaetigte Mitgliederstimmen und Review-Karussell
+  bilden jetzt einen durchgehenden Trust-Abschnitt. Die Reihenfolge ist Rating,
+  Karussell, danach „Mehr als Geräte / Warum KIELS?“.
+- Der kompakte Homepage-Atmosphaerenblock zeigt echte Motive fuer Ankommen,
+  Trainieren und Entspannen. Auf der Fitnessseite ergaenzen zwei weitere
+  authentische Ansichten (Kraftbereich und Geraetebereich) den bestehenden
+  Rundgang; das Rundgangbild selbst wird nicht nochmals in der Galerie benutzt.
+- Wellness: Wellness-4.jpg ist der Damensauna, Wellness-5.jpg der grossen
+  gemischten finnischen Sauna zugeordnet. Die Lounge-Aufnahme wurde fuer
+  „Platz fuer eine Pause“ durch Hohe Aufloesung-10.jpg ersetzt.
+- Biosauna bleibt unveraendert: Wellness-3.jpg zeigt auf der geprueften
+  Aufnahme einen Sitz-/Ruhebereich und keine erkennbare Saunakabine. Die
+  geforderten Bilddateien Wellness-2.jpg, Fitness-9.jpg und Kursraeume-
+  Wellness-6 bis -10.jpg waren im gelieferten lokalen Bestand nicht vorhanden;
+  fehlende Motive wurden nicht simuliert. Kursbilder bleiben deshalb bestehen.
+- Originale unter assets/kiels-authentic bleiben unangetastet. Acht
+  WebP-Ableitungen (1800 px, 1012/1200 px hoch, Qualitaet 84) liegen in
+  site-versions/02-next/assets; die eingefrorenen Shared- und Current-Bestaende
+  bleiben unveraendert. Die Einzeldateien sind kleiner als 500 KB.
+- Die vorherige Notiz zur nicht erfolgten Bildaenderung bezog sich auf den
+  frueheren Pruefstand und wird durch diese gezielte Bildrunde ersetzt.
+- Lokale Pruefung: Homepage 1440/1024/768/390/375/360/320 px mit 3/3/2/1/1/1/1
+  Reviewkarten gleicher 300-px-Hoehe und ohne horizontalen Ueberlauf. Fitness-
+  und Wellnessseiten in denselben Breiten ohne horizontalen Ueberlauf;
+  authentische Fotos laden, Fitness-Galerie bleibt bei zwei unterschiedlichen
+  Motiven plus einer eigenstaendigen Flaechenansicht statt des Rundgangfotos.
+- Alle vier Repository-Testdateien: 38/38 Tests bestanden; lokaler WebP-Build
+  und Asset-Auslieferung erfolgreich.
+- Vercel verwendet weiterhin ausdruecklich den bestehenden Staging-Build mit
+  X-Robots-Tag noindex/nofollow. Production-Smoke erfolgt nach dem Push mit
+  dieser Build-Konfiguration.

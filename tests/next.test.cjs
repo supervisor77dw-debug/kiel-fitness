@@ -114,7 +114,39 @@ test("Google reviews use desktop, tablet and mobile layouts without external rev
  assert.match(css, /@media \(max-width: 699px\)[\s\S]*?\.review-carousel \{ --review-visible: 1; \}/);
  assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
  const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
- assert.doesNotMatch(home.match(/<section class="review-proof[\s\S]*?<\/section>/)[0], /google\.com\/maps\/search/);
+ assert.doesNotMatch(home.match(/<div class="review-proof[\s\S]*?<\/div>/)[0], /google\.com\/maps\/search/);
+});
+test("homepage places the complete trust and review block before Why KIELS and includes authentic optimized imagery", () => {
+ const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
+ const ratingIndex = home.indexOf("Was unsere Mitglieder über KIELS sagen");
+ const carouselIndex = home.indexOf("data-review-carousel");
+ const whyIndex = home.indexOf('id="why-title"');
+ assert.ok(ratingIndex >= 0 && ratingIndex < carouselIndex && carouselIndex < whyIndex);
+ const trustBlock = home.slice(home.indexOf('class="trust-section"'), whyIndex);
+ assert.match(trustBlock, /4,7 von 5 bei Google, 183 Bewertungen/);
+ assert.match(trustBlock, /Stand: 05\.10\.2026/);
+ assert.match(home, /So fühlt sich KIELS an\./);
+ const fitness = fs.readFileSync(path.join(next, "fitness.html"), "utf8");
+ assert.match(fitness, /fitness-spaces-title/);
+ assert.match(fitness, /fitness-strength-authentic\.webp/);
+ assert.match(fitness, /fitness-equipment-authentic\.webp/);
+ const wellness = fs.readFileSync(path.join(next, "wellness.html"), "utf8");
+ assert.match(wellness, /wellness-mixed-sauna-authentic\.webp/);
+ assert.match(wellness, /wellness-women-sauna-authentic\.webp/);
+ assert.match(wellness, /wellness-lounge-authentic\.webp/);
+ const assets = [
+  "home-arrival-authentic.webp", "home-training-authentic.webp", "home-lounge-authentic.webp",
+  "fitness-strength-authentic.webp", "fitness-equipment-authentic.webp",
+  "wellness-mixed-sauna-authentic.webp", "wellness-women-sauna-authentic.webp",
+  "wellness-lounge-authentic.webp"
+ ];
+ for (const asset of assets) {
+  const file = path.join(next, "assets", asset);
+  assert.ok(fs.statSync(file).size < 500_000, `${asset} is optimized for web delivery`);
+  assert.equal(fs.readFileSync(file).toString("ascii", 8, 12), "WEBP", `${asset} is WebP`);
+  const references = [home, fitness, wellness].join("\n");
+  assert.match(references, new RegExp(`src="assets/${asset}"[^>]*alt="[^"]+"[^>]*loading="lazy"[^>]*width="1800" height="(?:1200|1013)"`));
+ }
 });
 test("premium pass removes demo footers without changing approved page content or tariffs", () => {
  for (const file of fs.readdirSync(next).filter(name => name.endsWith(".html"))) {

@@ -57,14 +57,15 @@ p + p { margin-top: 16px; }
 .hero .intro { font-size: 18px; line-height: 1.65; color: var(--muted); max-width: 510px; margin-top: 24px; }
 .hero-address { color: var(--muted); font-size: 13px; margin-top: 24px; display: flex; align-items: center; flex-wrap: wrap; column-gap: 6px; }
 .hero-address a { display: inline-flex; align-items: center; min-height: 44px; text-decoration: underline; text-underline-offset: 4px; }
-.review-proof { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 32px; align-items: center; padding: 28px 36px; margin-block: 0 16px; border: 1px solid rgba(253,199,30,.24); border-radius: var(--radius); background: radial-gradient(ellipse at 0 0,rgba(253,199,30,.1),transparent 65%),linear-gradient(125deg,#142a32,#0b1e28); box-shadow: inset 0 1px rgba(255,255,255,.07),0 18px 48px rgba(0,0,0,.22); }
+.trust-section { padding-block: 42px 48px; border-block: 1px solid rgba(255,255,255,.08); background: radial-gradient(ellipse at 15% 0,rgba(253,199,30,.055),transparent 58%),linear-gradient(180deg,#0c202a,#0a1b24); }
+.review-proof { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 32px; align-items: center; padding: 0; margin: 0 auto 20px; border: 0; background: none; box-shadow: none; }
 .review-proof h2 { font-size: clamp(26px,2.5vw,34px); max-width: 520px; }
 .review-rating { padding: 24px 28px; border: 1px solid rgba(253,199,30,.18); border-radius: 16px; background: rgba(7,23,32,.5); }
 .review-rating p { margin-top: 8px; }
 .review-stars { color: var(--yellow); font-size: 22px; letter-spacing: .12em; }
 .review-rating strong { color: var(--white); font-size: 48px; line-height: 1.2; letter-spacing: -.04em; }
 .review-rating small { display: block; color: var(--muted); font-size: 12px; }
-.review-carousel-section { padding-top: 24px; }
+.review-carousel-section { padding-top: 0; }
 .review-carousel { --review-visible: 3; --review-card-width: calc((100% - 40px) / 3); }
 .review-viewport { overflow: hidden; overscroll-behavior-inline: contain; border-radius: 16px; touch-action: pan-y; }
 .review-viewport::-webkit-scrollbar { display: none; }
@@ -131,6 +132,12 @@ p + p { margin-top: 16px; }
 .studio-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 64px; align-items: center; }
 .studio-image { position: relative; border-radius: var(--radius); overflow: hidden; }
 .studio-image img { aspect-ratio: 1.7; object-fit: cover; width: 100%; }
+.atmosphere-grid,.studio-photo-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 20px; }
+.atmosphere-card { position: relative; min-width: 0; margin: 0; overflow: hidden; aspect-ratio: 1.55; border: 1px solid rgba(255,255,255,.14); border-radius: var(--radius); background: var(--navy-soft); box-shadow: inset 0 1px rgba(255,255,255,.08),var(--shadow-soft); }
+.atmosphere-card::after { position: absolute; inset: 35% 0 0; background: linear-gradient(transparent,rgba(5,17,23,.78)); content: ""; }
+.atmosphere-card img { width: 100%; height: 100%; object-fit: cover; }
+.atmosphere-card figcaption { position: absolute; z-index: 1; bottom: 18px; left: 20px; color: var(--white); font-size: 18px; font-weight: 700; }
+.studio-photo-grid .media-card > img { aspect-ratio: 1.55; }
 .image-label { position: absolute; bottom: 16px; left: 16px; right: 16px; padding: 10px 14px; background: rgba(7,23,32,.88); border: 1px solid var(--line); border-radius: 8px; font-size: 12px; }
 .studio-copy > p:not(.eyebrow) { color: var(--muted); margin-top: 24px; }
 .studio-copy .button { margin-top: 24px; }
@@ -600,15 +607,17 @@ a[href^="tel:"], a[href^="mailto:"], .privacy a, .legal-content a, .related a, .
   -webkit-backdrop-filter: none;
  }
  .contact-form { backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px); }
- .review-proof { grid-template-columns: 1fr; padding: 24px; gap: 18px; margin-bottom: 8px; }
- .review-rating { padding: 22px; }
- .review-carousel-section { padding-top: 16px; }
+ .trust-section { padding-block: 32px 40px; }
+ .review-proof { grid-template-columns: 1fr; padding: 0; gap: 18px; margin-bottom: 18px; }
+ .review-rating { padding: 18px 22px; }
  .membership-details { padding: 22px; }
  .hours .text-link { font-size: 14px; }
  .mobile-actions { box-shadow: 0 -8px 24px rgba(0,0,0,.2); }
 }
 @media (max-width: 699px) {
  .usp-grid, .footer-grid { grid-template-columns: 1fr; }
+ .atmosphere-grid,.studio-photo-grid { grid-template-columns: 1fr; gap: 14px; }
+ .atmosphere-card { aspect-ratio: 1.8; }
  .review-carousel { --review-visible: 1; }
  .review-carousel { --review-card-width: 100%; }
  .review-quote { height: 300px; }
