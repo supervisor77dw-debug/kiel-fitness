@@ -126,19 +126,27 @@ test("homepage places the complete trust and review block before Why KIELS and i
  assert.match(trustBlock, /4,7 von 5 bei Google, 183 Bewertungen/);
  assert.match(trustBlock, /Stand: 05\.10\.2026/);
  assert.match(home, /So fühlt sich KIELS an\./);
+ const bistroIndex = home.indexOf('id="bistro-lounge"');
+ const extrasIndex = home.indexOf('id="extras-title"');
+ const openingIndex = home.indexOf('id="opening-title"');
+ assert.ok(extrasIndex >= 0 && extrasIndex < bistroIndex && bistroIndex < openingIndex);
+ assert.match(home, /href="#bistro-lounge">Bistro &amp; Lounge ansehen/);
+ assert.match(home, /src="assets\/home-lounge-authentic\.webp" alt="Lounge mit Sitzgruppen im KIELS" loading="lazy" width="1800" height="1200"/);
+ assert.doesNotMatch(home, /Bistro im Wellnessbereich|href="wellness\.html">Bistro/);
+ const wellness = fs.readFileSync(path.join(next, "wellness.html"), "utf8");
+ assert.match(wellness, /Bistro &amp; Lounge findest du direkt beim Empfang/);
+ assert.match(wellness, /href="index\.html#bistro-lounge"/);
+ assert.doesNotMatch(wellness, /<h2>Bistro &amp; Lounge<\/h2>|Zwischen den Saunagängen/);
  const fitness = fs.readFileSync(path.join(next, "fitness.html"), "utf8");
  assert.match(fitness, /fitness-spaces-title/);
  assert.match(fitness, /fitness-strength-authentic\.webp/);
  assert.match(fitness, /fitness-equipment-authentic\.webp/);
- const wellness = fs.readFileSync(path.join(next, "wellness.html"), "utf8");
  assert.match(wellness, /wellness-mixed-sauna-authentic\.webp/);
  assert.match(wellness, /wellness-women-sauna-authentic\.webp/);
- assert.match(wellness, /wellness-lounge-authentic\.webp/);
  const assets = [
   "home-arrival-authentic.webp", "home-training-authentic.webp", "home-lounge-authentic.webp",
   "fitness-strength-authentic.webp", "fitness-equipment-authentic.webp",
-  "wellness-mixed-sauna-authentic.webp", "wellness-women-sauna-authentic.webp",
-  "wellness-lounge-authentic.webp"
+  "wellness-mixed-sauna-authentic.webp", "wellness-women-sauna-authentic.webp"
  ];
  for (const asset of assets) {
   const file = path.join(next, "assets", asset);
