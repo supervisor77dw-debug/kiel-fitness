@@ -83,116 +83,219 @@ document.querySelectorAll("[data-review-carousel]").forEach(carousel => {
  const viewport = carousel.querySelector("[data-review-viewport]");
  const track = carousel.querySelector("[data-review-track]");
  const controls = carousel.querySelector("[data-review-controls]");
- const dotsContainer = carousel.querySelector("[data-review-dots]");
  const position = carousel.querySelector("[data-review-position]");
+ const counter = carousel.querySelector("[data-review-counter]");
+ const progress = carousel.querySelector("[data-review-progress-fill]");
  const previous = carousel.querySelector("[data-review-previous]");
  const next = carousel.querySelector("[data-review-next]");
+ const autoplayButton = carousel.querySelector("[data-review-autoplay]");
  const slides = [...(track?.querySelectorAll(".review-quote") || [])];
- if (!viewport || !track || !controls || !dotsContainer || !position || !previous || !next || !slides.length) return;
+ const dialog = carousel.closest(".review-carousel-section")?.querySelector("[data-review-dialog]");
+ const dialogAuthor = dialog?.querySelector("[data-review-dialog-author]");
+ const dialogText = dialog?.querySelector("[data-review-dialog-text]");
+ const dialogClose = dialog?.querySelector("[data-review-dialog-close]");
+ if (!viewport || !track || !controls || !position || !counter || !progress || !previous || !next || !autoplayButton || !dialog || !dialogAuthor || !dialogText || !dialogClose || !slides.length) return;
 
+ const interval = 8000;
  let currentIndex = 0;
  let visibleCount = 0;
- let pages = [];
- let scrollFrame = 0;
+ let clones = [];
+ let autoplayTimer = 0;
+ let manualPauseTimer = 0;
+ let manualPauseUntil = 0;
+ let settleTimer = 0;
+ let hovered = false;
+ let focused = false;
+ let touched = false;
+ let userPaused = false;
+ let transitioning = false;
+ let touchStartX = null;
+ let dialogOpener = null;
  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
- const pageOffset = index => pages[index].offsetLeft - pages[0].offsetLeft;
+ const realIndex = () => ((currentIndex - visibleCount) % slides.length + slides.length) % slides.length;
+ const offsetFor = index => track.children[index].getBoundingClientRect().left - track.getBoundingClientRect().left;
 
- function buildPages() {
-  pages = [];
-  for (let start = 0; start < slides.length; start += visibleCount) {
-   const page = document.createElement("div");
-   page.className = "review-page";
-   page.setAttribute("role", "group");
-   page.setAttribute("aria-roledescription", "Karussellseite");
-   page.setAttribute("aria-label", `Bewertungen ${start + 1} bis ${Math.min(start + visibleCount, slides.length)} von ${slides.length}`);
-   page.append(...slides.slice(start, start + visibleCount));
-   pages.push(page);
-  }
-  track.replaceChildren(...pages);
+ function setTrackPosition(animated) {
+  track.style.transition = animated && !reducedMotion.matches ? "transform 700ms cubic-bezier(.22,.61,.36,1)" : "none";
+  track.style.transform = `translate3d(${-offsetFor(currentIndex)}px,0,0)`;
  }
 
- function renderDots() {
-  dotsContainer.replaceChildren(...pages.map((_, index) => {
-   const dot = document.createElement("button");
-   dot.className = "review-dot";
-   dot.type = "button";
-   dot.setAttribute("aria-label", `Bewertungen ab ${slides[index * visibleCount].querySelector("cite").textContent} anzeigen`);
-   dot.addEventListener("click", () => moveTo(index));
-   return dot;
-  }));
- }
-
- function setActivePageHeight() {
-  if (!pages[currentIndex]) return;
-  const height = `${Math.ceil(pages[currentIndex].getBoundingClientRect().height + 14)}px`;
-  viewport.style.height = height;
-  track.style.height = height;
- }
-
- function updateState(announce = true) {
-  const previousIndex = currentIndex;
-  const nearest = pages.reduce((best, page, index) => {
-   const distance = Math.abs(viewport.scrollLeft - pageOffset(index));
-   return distance < best.distance ? { index, distance } : best;
-  }, { index: 0, distance: Number.POSITIVE_INFINITY }).index;
-  currentIndex = nearest;
-  previous.disabled = currentIndex === 0;
-  next.disabled = currentIndex === pages.length - 1;
-  [...dotsContainer.children].forEach((dot, index) => {
-   if (index === currentIndex) dot.setAttribute("aria-current", "true");
-   else dot.removeAttribute("aria-current");
+ function updateStatus() {
+  const index = realIndex();
+  counter.textContent = `${index + 1} / ${slides.length}`;
+  progress.style.transform = `scaleX(${(index + 1) / slides.length})`;
+  position.textContent = `Bewertung ${index + 1} von ${slides.length}`;
+  slides.forEach((slide, slideIndex) => {
+   const visible = (slideIndex - index + slides.length) % slides.length < visibleCount;
+   slide.setAttribute("aria-label", `${slideIndex + 1} von ${slides.length}`);
+   slide.setAttribute("aria-hidden", String(!visible));
+   slide.inert = !visible;
+   if (slideIndex === index) slide.setAttribute("aria-current", "true");
+   else slide.removeAttribute("aria-current");
   });
-  if (announce && currentIndex !== previousIndex) {
-   const start = currentIndex * visibleCount;
-   position.textContent = `Bewertungen ${start + 1} bis ${Math.min(start + visibleCount, slides.length)} von ${slides.length}`;
-  }
-  setActivePageHeight();
  }
 
- function moveTo(index) {
-  currentIndex = Math.max(0, Math.min(index, pages.length - 1));
-  viewport.scrollTo({
-   left: pageOffset(currentIndex),
-   behavior: reducedMotion.matches ? "auto" : "smooth"
-  });
-  updateState(false);
-  const start = currentIndex * visibleCount;
-  position.textContent = `Bewertungen ${start + 1} bis ${Math.min(start + visibleCount, slides.length)} von ${slides.length}`;
+ function settleLoop() {
+  if (currentIndex >= visibleCount + slides.length) {
+   currentIndex -= slides.length;
+   setTrackPosition(false);
+  } else if (currentIndex < visibleCount) {
+   currentIndex += slides.length;
+   setTrackPosition(false);
+  }
+  transitioning = false;
+  updateStatus();
+ }
+
+ function moveTo(index, animated = true) {
+  currentIndex = index;
+  transitioning = animated && !reducedMotion.matches;
+  setTrackPosition(transitioning);
+  updateStatus();
+  if (transitioning) {
+   window.clearTimeout(settleTimer);
+   settleTimer = window.setTimeout(settleLoop, 850);
+  } else settleLoop();
+ }
+
+ function addManualPause() {
+  manualPauseUntil = Date.now() + interval;
+  window.clearTimeout(manualPauseTimer);
+  manualPauseTimer = window.setTimeout(() => {
+   manualPauseUntil = 0;
+   if (!autoplayBlocked()) moveTo(currentIndex + 1);
+   scheduleAutoplay();
+  }, interval);
+  scheduleAutoplay();
+ }
+
+ function autoplayBlocked() {
+  return userPaused || hovered || focused || touched || dialog.open || document.hidden || reducedMotion.matches || Date.now() < manualPauseUntil;
+ }
+
+ function scheduleAutoplay() {
+  window.clearTimeout(autoplayTimer);
+  autoplayTimer = 0;
+  if (autoplayBlocked()) return;
+  autoplayTimer = window.setTimeout(() => {
+   autoplayTimer = 0;
+   moveTo(currentIndex + 1);
+   scheduleAutoplay();
+  }, interval);
+ }
+
+ function buildLoop(nextVisibleCount) {
+  const previousRealIndex = realIndex();
+  visibleCount = nextVisibleCount;
+  clones.forEach(clone => clone.remove());
+  clones = [];
+  for (let index = slides.length - visibleCount; index < slides.length; index++) {
+   const clone = slides[index].cloneNode(true);
+   clone.setAttribute("aria-hidden", "true");
+   clone.inert = true;
+   clones.push(clone);
+   track.prepend(clone);
+  }
+  for (let index = 0; index < visibleCount; index++) {
+   const clone = slides[index].cloneNode(true);
+   clone.setAttribute("aria-hidden", "true");
+   clone.inert = true;
+   clones.push(clone);
+   track.append(clone);
+  }
+  currentIndex = visibleCount + previousRealIndex;
+  setTrackPosition(false);
+  updateStatus();
  }
 
  function measure() {
-  const configuredVisible = Number.parseInt(getComputedStyle(carousel).getPropertyValue("--review-visible"), 10);
-  const nextVisibleCount = Math.max(1, Math.min(configuredVisible || 1, slides.length));
-  if (nextVisibleCount === visibleCount) {
-   setActivePageHeight();
-   return;
-  }
-  const firstVisibleSlide = currentIndex * visibleCount;
-  visibleCount = nextVisibleCount;
-  buildPages();
-  currentIndex = Math.min(Math.floor(firstVisibleSlide / visibleCount), pages.length - 1);
-  renderDots();
-  moveTo(currentIndex);
-  updateState(false);
+  const configured = Number.parseInt(getComputedStyle(carousel).getPropertyValue("--review-visible"), 10);
+  const nextVisibleCount = Math.max(1, Math.min(configured || 1, slides.length));
+  if (nextVisibleCount !== visibleCount) buildLoop(nextVisibleCount);
+  else setTrackPosition(false);
  }
 
- previous.addEventListener("click", () => moveTo(currentIndex - 1));
- next.addEventListener("click", () => moveTo(currentIndex + 1));
+ function openReview(button) {
+  const card = button.closest(".review-quote");
+  const fullText = card?.querySelector(".review-excerpt")?.textContent;
+  const author = card?.querySelector("cite")?.textContent;
+  if (!fullText || !author || dialog.open) return;
+  dialogOpener = button;
+  dialogAuthor.textContent = author;
+  dialogText.textContent = fullText;
+  dialog.showModal();
+  dialogClose.focus();
+  scheduleAutoplay();
+ }
+
+ previous.addEventListener("click", () => { addManualPause(); moveTo(currentIndex - 1); });
+ next.addEventListener("click", () => { addManualPause(); moveTo(currentIndex + 1); });
+ autoplayButton.addEventListener("click", () => {
+  userPaused = !userPaused;
+  autoplayButton.textContent = userPaused ? "▶" : "Ⅱ";
+  autoplayButton.setAttribute("aria-label", userPaused ? "Automatischen Wechsel fortsetzen" : "Automatischen Wechsel pausieren");
+  scheduleAutoplay();
+ });
+ carousel.querySelectorAll("[data-review-read-full]").forEach(button => button.addEventListener("click", () => openReview(button)));
+ dialogClose.addEventListener("click", () => dialog.close());
+ dialog.addEventListener("click", event => {
+  if (event.target === dialog) dialog.close();
+ });
+ dialog.addEventListener("keydown", event => {
+  if (event.key === "Escape") {
+   event.preventDefault();
+   dialog.close();
+  }
+ });
+ dialog.addEventListener("close", () => {
+  if (dialogOpener?.isConnected) dialogOpener.focus();
+  dialogOpener = null;
+  addManualPause();
+  scheduleAutoplay();
+ });
+ track.addEventListener("transitionend", event => {
+  if (event.target === track && event.propertyName === "transform") settleLoop();
+ });
  viewport.addEventListener("keydown", event => {
   if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
   event.preventDefault();
+  addManualPause();
   moveTo(currentIndex + (event.key === "ArrowRight" ? 1 : -1));
  });
- viewport.addEventListener("scroll", () => {
-  if (scrollFrame) cancelAnimationFrame(scrollFrame);
-  scrollFrame = requestAnimationFrame(() => {
-   scrollFrame = 0;
-   updateState();
-  });
- }, { passive: true });
+ carousel.addEventListener("mouseenter", () => { hovered = true; scheduleAutoplay(); });
+ carousel.addEventListener("mouseleave", () => { hovered = false; scheduleAutoplay(); });
+ carousel.addEventListener("focusin", () => { focused = true; scheduleAutoplay(); });
+ carousel.addEventListener("focusout", event => {
+  if (!carousel.contains(event.relatedTarget)) {
+   focused = false;
+   scheduleAutoplay();
+  }
+ });
+ carousel.addEventListener("pointerdown", event => {
+  if (event.pointerType === "touch") {
+   touched = true;
+   touchStartX = event.clientX;
+   if (viewport.setPointerCapture) viewport.setPointerCapture(event.pointerId);
+   addManualPause();
+  }
+ });
+ ["pointerup", "pointercancel"].forEach(type => carousel.addEventListener(type, event => {
+  if (touched) {
+   if (type === "pointerup" && touchStartX !== null && Math.abs(event.clientX - touchStartX) > 45) {
+    moveTo(currentIndex + (event.clientX < touchStartX ? 1 : -1));
+   }
+   touchStartX = null;
+   touched = false;
+   scheduleAutoplay();
+  }
+ }));
+ viewport.addEventListener("touchstart", addManualPause, { passive: true });
+ document.addEventListener("visibilitychange", scheduleAutoplay);
+ reducedMotion.addEventListener("change", scheduleAutoplay);
  carousel.dataset.enhanced = "true";
  controls.hidden = false;
  measure();
+ scheduleAutoplay();
  if ("ResizeObserver" in window) new ResizeObserver(measure).observe(viewport);
  else window.addEventListener("resize", measure, { passive: true });
 });

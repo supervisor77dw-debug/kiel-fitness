@@ -58,41 +58,52 @@
 
   <section class="section review-carousel-section wrap" aria-label="Mitgliederstimmen">
    <div class="review-carousel" data-review-carousel role="region" aria-roledescription="Karussell" aria-label="Google-Bewertungen von KIELS-Mitgliedern">
-    <div class="review-viewport" data-review-viewport tabindex="0" aria-label="Bewertungen. Mit den Pfeiltasten kannst du zwischen den Bewertungen wechseln.">
+    <div class="review-viewport" data-review-viewport tabindex="0" aria-label="Bewertungen. Mit den Pfeiltasten kannst du zwischen den Bewertungen wechseln." aria-live="off">
      <div class="review-quotes" data-review-track>
       <figure class="review-quote" role="group" aria-roledescription="Bewertung" aria-label="1 von 6">
-       <blockquote>familiäre Stimmung und keine Massenabfertigung</blockquote>
+       <div class="review-copy"><blockquote class="review-excerpt">familiäre Stimmung und keine Massenabfertigung</blockquote></div>
        <figcaption><cite>Mareike</cite><span>Google-Bewertung</span></figcaption>
       </figure>
       <figure class="review-quote" role="group" aria-roledescription="Bewertung" aria-label="2 von 6">
-       <blockquote>Ich bin mittlerweile seid fast 4 Jahren Mitglied und habe mich damals für dieses Fitnessstudio Aufgrund der Möglichkeit der Kinderbetreuung entschieden. Meine Kinder freuen sich jedes Mal auf den "Sportkindergarten" und ich bin dankbar für 1 Stunde "Metime". Neben diesem Angebot überzeugt dieses Studio durch Sauberkeit, moderne Sportgeräte sowie Sanitäranlagen und eine sehr ruhige und angenehme Atmosphäre zum fokussierten trainieren. Ich fühle mich hier sehr wohl und merke das dem Eigentümer seine Mitglieder und sein Studio am Herzen liegt.</blockquote>
+       <div class="review-copy has-full-review"><blockquote class="review-excerpt">Ich bin mittlerweile seid fast 4 Jahren Mitglied und habe mich damals für dieses Fitnessstudio Aufgrund der Möglichkeit der Kinderbetreuung entschieden. Meine Kinder freuen sich jedes Mal auf den "Sportkindergarten" und ich bin dankbar für 1 Stunde "Metime". Neben diesem Angebot überzeugt dieses Studio durch Sauberkeit, moderne Sportgeräte sowie Sanitäranlagen und eine sehr ruhige und angenehme Atmosphäre zum fokussierten trainieren. Ich fühle mich hier sehr wohl und merke das dem Eigentümer seine Mitglieder und sein Studio am Herzen liegt.</blockquote><button class="review-read-more" type="button" data-review-read-full>Vollständige Bewertung lesen</button></div>
        <figcaption><cite>Anne Ahorn</cite><span>Google-Bewertung</span></figcaption>
       </figure>
       <figure class="review-quote" role="group" aria-roledescription="Bewertung" aria-label="3 von 6">
-       <blockquote>Mega nettes Team, sehr angenehmes Klientel dort.</blockquote>
+       <div class="review-copy"><blockquote class="review-excerpt">Mega nettes Team, sehr angenehmes Klientel dort.</blockquote></div>
        <figcaption><cite>T. Riddle</cite><span>Google-Bewertung</span></figcaption>
       </figure>
       <figure class="review-quote" role="group" aria-roledescription="Bewertung" aria-label="4 von 6">
-       <blockquote>Seit 2006 meine Sport- und Begegnungsstätte. Meine 2. Familie.</blockquote>
+       <div class="review-copy"><blockquote class="review-excerpt">Seit 2006 meine Sport- und Begegnungsstätte. Meine 2. Familie.</blockquote></div>
        <figcaption><cite>Robert Loos</cite><span>Google-Bewertung</span></figcaption>
       </figure>
       <figure class="review-quote" role="group" aria-roledescription="Bewertung" aria-label="5 von 6">
-       <blockquote>Super Gym. Sehr nettes Personal und faire Mitgliedschaft.</blockquote>
+       <div class="review-copy"><blockquote class="review-excerpt">Super Gym. Sehr nettes Personal und faire Mitgliedschaft.</blockquote></div>
        <figcaption><cite>Michael S.</cite><span>Google-Bewertung</span></figcaption>
       </figure>
       <figure class="review-quote" role="group" aria-roledescription="Bewertung" aria-label="6 von 6">
-       <blockquote>Bestes Gym in Kiel wenn einem wichtig ist in einer absolut familiären Atmosphäre zu trainieren.</blockquote>
+       <div class="review-copy"><blockquote class="review-excerpt">Bestes Gym in Kiel wenn einem wichtig ist in einer absolut familiären Atmosphäre zu trainieren.</blockquote></div>
        <figcaption><cite>Jonas Lennart</cite><span>Google-Bewertung</span></figcaption>
       </figure>
      </div>
     </div>
     <div class="review-carousel-controls" data-review-controls hidden>
-     <button class="review-arrow" type="button" data-review-previous aria-label="Vorherige Bewertungen">←</button>
-     <div class="review-dots" data-review-dots role="group" aria-label="Bewertungsposition"></div>
-     <button class="review-arrow" type="button" data-review-next aria-label="Nächste Bewertungen">→</button>
+     <button class="review-arrow" type="button" data-review-previous aria-label="Vorherige Bewertung">←</button>
+     <div class="review-progress" data-review-progress aria-hidden="true"><span data-review-progress-fill></span></div>
+     <span class="review-counter" data-review-counter aria-hidden="true">1 / 6</span>
+     <button class="review-arrow" type="button" data-review-next aria-label="Nächste Bewertung">→</button>
+     <button class="review-autoplay" type="button" data-review-autoplay aria-label="Automatischen Wechsel pausieren">Ⅱ</button>
      <p class="review-position" data-review-position role="status" aria-live="polite" aria-atomic="true"></p>
     </div>
    </div>
+   <dialog class="review-dialog" data-review-dialog aria-labelledby="review-dialog-author" aria-describedby="review-dialog-source">
+    <div class="review-dialog-card">
+     <button class="review-dialog-close" type="button" data-review-dialog-close aria-label="Vollständige Bewertung schließen">×</button>
+     <p class="eyebrow">Google-Bewertung</p>
+     <h2 id="review-dialog-author" data-review-dialog-author></h2>
+     <blockquote data-review-dialog-text></blockquote>
+     <p id="review-dialog-source" class="review-dialog-source">Vollständiger Originaltext der Bewertung</p>
+    </div>
+   </dialog>
   </section>
 
   <section class="section goals wrap" aria-labelledby="goals-title">

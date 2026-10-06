@@ -71,7 +71,7 @@ test("UX trust layer uses supplied rating without fabricated testimonials or ext
  const reviews = home.match(/<section class="section review-carousel-section[\s\S]*?<\/section>/);
  assert.ok(reviews, "visible review cards exist below the overall rating");
  assert.equal((reviews[0].match(/class="review-quote"/g) || []).length, 6);
- assert.equal((reviews[0].match(/<blockquote>/g) || []).length, 6);
+ assert.equal((reviews[0].match(/<blockquote class="review-excerpt">/g) || []).length, 6);
  for (const author of ["Mareike", "Anne Ahorn", "T. Riddle", "Robert Loos", "Michael S.", "Jonas Lennart"]) {
   assert.match(reviews[0], new RegExp(`<cite>${author.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")}<\\/cite>[\\s\\S]*?<span>Google-Bewertung<\\/span>`));
  }
@@ -83,8 +83,12 @@ test("UX trust layer uses supplied rating without fabricated testimonials or ext
  assert.match(reviews[0], /Bestes Gym in Kiel wenn einem wichtig ist in einer absolut familiären Atmosphäre zu trainieren\./);
  assert.doesNotMatch(reviews[0], /Zusammenfassung|Weitere Eindrücke|Originalzitat|<h3|review-kind|review-summary|★/);
  assert.match(reviews[0], /aria-roledescription="Karussell"/);
- assert.match(reviews[0], /aria-label="Vorherige Bewertungen"/);
- assert.match(reviews[0], /aria-label="Nächste Bewertungen"/);
+ assert.match(reviews[0], /aria-label="Vorherige Bewertung"/);
+ assert.match(reviews[0], /aria-label="Nächste Bewertung"/);
+ assert.match(reviews[0], /data-review-dialog/);
+ assert.match(reviews[0], /Vollständige Bewertung lesen/);
+ assert.match(reviews[0], /data-review-autoplay/);
+ assert.match(reviews[0], /data-review-progress-fill/);
  assert.doesNotMatch(reviews[0], /maps\/search|<iframe|reviews\.js|<script/);
  assert.doesNotMatch(home, /verified-review-template/);
  assert.match(home, /href="tel:043154020">Betreuung telefonisch klären/);
@@ -95,14 +99,19 @@ test("UX trust layer uses supplied rating without fabricated testimonials or ext
  assert.match(script, /data-review-carousel/);
  assert.match(script, /ArrowLeft/);
  assert.match(script, /prefers-reduced-motion/);
+ assert.match(script, /const interval = 8000/);
+ assert.match(script, /showModal\(\)/);
+ assert.match(script, /transitionend/);
+ assert.match(script, /pointerup/);
+ assert.match(script, /dialog\.open/);
 });
 test("Google reviews use desktop, tablet and mobile layouts without external review links", () => {
  const css = fs.readFileSync(path.join(next, "home.css"), "utf8");
- assert.match(css, /\.review-carousel \{ --review-visible: 3; \}/);
- assert.match(css, /@media \(max-width: 1000px\) \{\s*\.review-carousel \{ --review-visible: 2; \}/);
- assert.match(css, /\.review-page \{ display: grid; flex: 0 0 100%; grid-template-columns: repeat\(3,minmax\(0,1fr\)\)/);
- assert.match(css, /@media \(max-width: 1000px\) \{\s*\.review-carousel \{ --review-visible: 2; \}\s*\.review-page \{ grid-template-columns: repeat\(2,minmax\(0,1fr\)\); \}/);
- assert.match(css, /@media \(max-width: 699px\) \{\s*\.usp-grid, \.footer-grid \{ grid-template-columns: 1fr; \}\s*\.review-carousel \{ --review-visible: 1; \}\s*\.review-page \{ grid-template-columns: 1fr; \}/);
+ assert.match(css, /\.review-carousel \{ --review-visible: 3; --review-card-width: calc\(\(100% - 40px\) \/ 3\); \}/);
+ assert.match(css, /@media \(max-width: 1000px\)[\s\S]*?\.review-carousel \{ --review-visible: 2; \}/);
+ assert.match(css, /\.review-quote \{[^}]*height: 300px;/);
+ assert.match(css, /-webkit-line-clamp: 5/);
+ assert.match(css, /@media \(max-width: 699px\)[\s\S]*?\.review-carousel \{ --review-visible: 1; \}/);
  assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
  const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
  assert.doesNotMatch(home.match(/<section class="review-proof[\s\S]*?<\/section>/)[0], /google\.com\/maps\/search/);

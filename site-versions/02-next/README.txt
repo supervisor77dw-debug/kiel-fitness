@@ -413,18 +413,34 @@ Google-Review-Karussell, 06.10.2026 (lokal, nicht veroeffentlicht)
   gelieferten zusammenhaengenden Originalauszuege. Trust-Kopf bleibt frueh
   sichtbar; Karussell steht nach „Warum KIELS?“, um den Einstieg kompakt zu
   halten.
-- Manuelle Steuerung ohne Autoplay: Gruppen aus 3 Karten ab 1001 px, 2 ab
-  700 px und eine Karte unter 700 px. Pfeile blättern gruppenweise;
-  Positionspunkte springen direkt zur Gruppe. Tastaturpfeile bei Fokus im
-  Karussell und native Touch-Swipe-Steuerung. Sichtbarer Fokus, angesagte
-  aktive Position und Beachtung von prefers-reduced-motion. Kartenhoehe passt
-  sich der aktiven Gruppe an, damit kurze Mobilkarten nicht auf die Hoehe der
-  vollstaendigen Anne-Bewertung gestreckt werden.
+- Kontinuierlicher Slider: drei Karten ab 1001 px, zwei von 700 bis 1000 px,
+  eine unter 700 px. Jede Aktion schiebt exakt eine Bewertung weiter;
+  Klonkarten ermoeglichen den nahtlosen Wechsel am Anfang und Ende.
+- Alle Karten sind an jedem Breakpoint 300 px hoch. Lange Anne-Ahorn-
+  Bewertung bleibt vollstaendig im Originaltext und wird in der Karte nach
+  fuenf Zeilen als Teaser mit „Vollstaendige Bewertung lesen“ angeboten.
+  Der native Dialog zeigt den vollstaendigen Text, ist intern scrollbar und
+  schliesst per X, Escape oder Klick auf den Hintergrund.
+- Autoplay wechselt alle 8 Sekunden. Pause bei Hover, Tastaturfokus,
+  Touch-/Swipe-Interaktion, manuelle Bedienung und offenem Dialog; die
+  manuelle Pause dauert mindestens ein Intervall. Autoplay ist bei
+  prefers-reduced-motion deaktiviert und kann per Steuerbutton pausiert werden.
+- Pfeile, sichtbarer Fokus und Tastaturpfeile bleiben verfuegbar. Touch-Swipe,
+  kompakter Fortschrittsbalken/Zaehler und Screenreader-Status (aktive
+  Bewertung von sechs) sind eingebaut. Nicht sichtbare Karten werden fuer
+  Screenreader und Tastaturzugriff ausgeblendet. Ohne JavaScript bleiben
+  saemtliche Texte als statische Liste lesbar.
 - Keine Google-API, kein Widget und kein externes Script.
-- Lokal bei 1440/1024/768/390/375/360/320 px geprueft: korrekte Zahl sichtbarer
-  Karten, vollstaendige Texte, kein Seiten-Overflow. Pfeile, Punkte,
-  Tastatur, Touch-Swipe und reduced-motion geprueft; keine JavaScript-Fehler
-  oder Formular-/HighLevel-Aufrufe. Testsuite: 37/37 bestanden.
+- Lokal bei 1440/1024/768/390/375/360/320 px geprueft: durchgehend 300 px
+  Kartenhoehe, 3/2/1 sichtbare Karten und kein horizontaler Seiten-Overflow.
+  Getestet: kontinuierlicher Vor-/Ruecklauf mit Wrap-around, Tastaturpfeile,
+  Touch-Swipe-Logik per synthetischem Pointer-Event, Dialog-Volltext
+  (546 Zeichen), Escape, X, Backdrop und Fokus-Rueckkehr. Autoplay nach
+  8 Sekunden, Pause bei Hover und Fokus sowie
+  kein Autoplay bei prefers-reduced-motion verifiziert. Keine JS-Fehler.
+- Relevante Next-Testsuite: 14/14 bestanden.
+- Vorschau: http://127.0.0.1:8766/next/index.html
+- Kein Commit, Push oder Deployment.
 - Vorschau: http://127.0.0.1:8766/next/index.html
 - Kein Commit, Push oder Deployment.
 
