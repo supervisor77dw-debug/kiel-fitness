@@ -16,12 +16,12 @@ test("archive exactly matches frozen current checksums without duplicating share
 });
 test("all Next pages share one header/footer and stylesheet, no clone transitions or embeds", () => {
  const files = fs.readdirSync(next).filter(n => n.endsWith(".html"));
- assert.equal(files.length, 11);
+ assert.equal(files.length, 12);
  let commonHeader, commonFooter;
  for (const file of files) {
   const text = fs.readFileSync(path.join(next, file), "utf8");
-  const header = text.match(/<header[\s\S]*?<\/header>/)[0].replace(/\r\n/g, "\n").replace(/ aria-current="page"/g, "");
-  const footer = text.match(/<footer[\s\S]*?<\/footer>/)[0].replace(/\r\n/g, "\n").replace(/<div class="wrap footer-bottom">[\s\S]*?<\/div>/, "<div class=\"wrap footer-bottom\"></div>");
+  const header = text.match(/<header[\s\S]*?<\/header>/)[0].replace(/\r\n/g, "\n").replace(/>\s+</g, "><").replace(/ aria-current="page"/g, "");
+  const footer = text.match(/<footer[\s\S]*?<\/footer>/)[0].replace(/\r\n/g, "\n").replace(/>\s+</g, "><").replace(/<div class="wrap footer-bottom">[\s\S]*?<\/div>/, "<div class=\"wrap footer-bottom\"></div>");
   commonHeader ??= header; commonFooter ??= footer;
   assert.equal(header, commonHeader, file);
   assert.equal(footer, commonFooter, file);
@@ -69,7 +69,7 @@ test("fresh deployment artifact includes every local script and stylesheet refer
 });
 test("go-live SEO files, canonicals and intent routing are complete", () => {
  const pages = fs.readdirSync(next).filter(name => name.endsWith(".html"));
- assert.equal(pages.length, 11);
+ assert.equal(pages.length, 12);
  for (const file of pages) {
   const html = fs.readFileSync(path.join(next, file), "utf8");
   assert.doesNotMatch(html, /noindex|nofollow/i, file);
@@ -92,6 +92,48 @@ test("go-live SEO files, canonicals and intent routing are complete", () => {
  assert.match(script, /requestedInterest/);
  assert.match(script, /interestInput\.checked = true/);
  assert.match(script, /kontakt\.html\?interest=\$\{interest\}/);
+});
+test("house rules mirror the approved working draft and are wired into legal navigation", () => {
+ const pages = fs.readdirSync(next).filter(name => name.endsWith(".html"));
+ const rules = fs.readFileSync(path.join(next, "hausordnung.html"), "utf8");
+ const terms = fs.readFileSync(path.join(next, "agbs.html"), "utf8");
+ assert.match(rules, /<title>Hausordnung \| KIELS Fitness GmbH<\/title>/);
+ assert.match(rules, /href="https:\/\/www\.kiel-fitness\.de\/hausordnung\.html" rel="canonical"|rel="canonical" href="https:\/\/www\.kiel-fitness\.de\/hausordnung\.html"/);
+ assert.equal((rules.match(/<section class="legal-section">/g) || []).length, 13);
+ for (const text of [
+  "Die Nutzung von Smartphones ist grundsätzlich erlaubt, solange andere Personen nicht beeinträchtigt werden.",
+  "Foto-, Video- oder Tonaufnahmen, auf denen andere Mitglieder, Gäste oder Mitarbeitende erkennbar sind, dürfen nur mit deren vorheriger Einwilligung angefertigt und verwendet werden.",
+  "Eigene Aufgüsse sowie das Mitbringen oder Verwenden eigener Saunaöle, Duftstoffe, ätherischer Öle oder sonstiger Zusätze sind ausdrücklich untersagt.",
+  "Die Maßnahmen müssen verhältnismäßig sein; weitergehende gesetzliche Rechte bleiben unberührt.",
+  "Arbeitsfassung V1 · Stand 07.10.2026 · Vor produktiver Einführung rechtlich final prüfen."
+ ]) assert.match(rules, new RegExp(text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+ assert.match(rules, /<nav class="related"[^>]*><a href="agbs\.html">AGB<\/a><a href="datenschutz\.html">Datenschutz<\/a><\/nav>/);
+ assert.match(terms, /<a href="hausordnung\.html">Hausordnung<\/a> dient Sicherheit/);
+ for (const page of pages) {
+  const html = fs.readFileSync(path.join(next, page), "utf8");
+  const footer = html.match(/<footer[\s\S]*?<\/footer>/)?.[0] || "";
+  assert.match(footer, /href="hausordnung\.html">Hausordnung<\/a>/, page);
+ }
+});
+test("membership publication remains compatible with the contract master", () => {
+ const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
+ const membership = home.match(/<section class="section membership[\s\S]*?<\/section>/)?.[0] || "";
+ for (const term of ["24 Monate Laufzeit", "12 Monate Laufzeit", "6 Monate Laufzeit", "/14-tägig"]) {
+  assert.match(membership, new RegExp(term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+ }
+ assert.match(membership, /Zusätzlich wird einmalig eine Betreuungspauschale fällig\./);
+ assert.doesNotMatch(membership, /Betreuungspauschale[^.]*enthalten|Kündig|verlänger|Vertragsabschluss|Jetzt Mitglied werden/i);
+ const terms = fs.readFileSync(path.join(next, "agbs.html"), "utf8");
+ for (const legacy of [
+  "6 Wochen zum Ablauf",
+  "stillschweigend jeweils um ein Jahr",
+  "bedürfen der Schriftform",
+  "Gebühr von 3,00 €",
+  "sofort zur Zahlung fällig",
+  "leichte Fahrlässigkeit ausgeschlossen",
+  "Umkreis von 3 km",
+  "Übertragung des Vertragsgegenstandes auf Dritte ist jederzeit möglich"
+ ]) assert.doesNotMatch(terms, new RegExp(legacy.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
 });
 test("UX trust layer uses supplied rating without fabricated testimonials or external widgets", () => {
  const home = fs.readFileSync(path.join(next, "index.html"), "utf8");

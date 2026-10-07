@@ -77,7 +77,7 @@ function createPreviewServer() {
   const selector = pathname === "/";
   const relative = version ? match[2] || "index.html" : prototype ? "previews/home-prototype.html" : selector ? "tools/preview-index.html" : pathname.slice(1);
   if (selector || prototype || relative.startsWith("previews/")) res.setHeader("X-Robots-Tag", "noindex, nofollow");
-  const permitted = /^(?:assets\/|wix-clone\/|(?:index|fitness|wellness|health|kurse|kontakt|agbs|impressum|datenschutz|firmenfitness|arbeitgeber-empfehlen)\.html$|(?:script\.js|firmenfitness\.js|responsive\.css|styles\.css|home\.css)$|previews\/home-prototype\.(?:html|css)$)/;
+  const permitted = /^(?:assets\/|wix-clone\/|(?:index|fitness|wellness|health|kurse|kontakt|agbs|hausordnung|impressum|datenschutz|firmenfitness|arbeitgeber-empfehlen)\.html$|(?:script\.js|firmenfitness\.js|responsive\.css|styles\.css|home\.css)$|previews\/home-prototype\.(?:html|css)$)/;
   if ((!selector && !permitted.test(relative)) || /(?:^|\/)\.\.(?:\/|$)|\\/.test(relative) || relative.endsWith(".bak")) {
    res.status(404).end("Not found");
    return;

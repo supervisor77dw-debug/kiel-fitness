@@ -62,7 +62,7 @@ test("selection, directory redirects and both complete sites are served", async 
   assert.equal(redirect.status, 302);
   assert.equal(redirect.headers.get("location"), "/" + version + "/");
   const pages = ["", "fitness.html", "health.html", "kurse.html", "wellness.html", "kontakt.html", "agbs.html", "impressum.html", "datenschutz.html", "script.js", "responsive.css"];
-  if (version === "next") pages.push("firmenfitness.html", "arbeitgeber-empfehlen.html", "firmenfitness.js");
+  if (version === "next") pages.push("hausordnung.html", "firmenfitness.html", "arbeitgeber-empfehlen.html", "firmenfitness.js");
   for (const page of pages) {
    const response = await fetch(base + "/" + version + "/" + page);
    assert.equal(response.status, 200, version + "/" + page);
