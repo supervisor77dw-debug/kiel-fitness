@@ -121,6 +121,12 @@ function customFieldValue(field, value, aliases = [value]) {
  return { id: field.id, field_value: fieldValue };
 }
 
+function exactOptionValue(field, value) {
+ const result = customFieldValue(field, value);
+ if (result.field_value !== value) throw new IntegrationError("custom_field_option_unavailable");
+ return result;
+}
+
 function callbackValue(field, callbackRequested) {
  const dataType = String(field.dataType || "").toUpperCase();
  const aliases = callbackRequested
@@ -195,10 +201,10 @@ function checkFieldDefinitions(definitions) {
    }
   }],
   ["Beschäftigtengröße", field => {
-   for (const value of ["1-9", "10-49", "50-249", "250+"]) customFieldValue(field, value);
+   for (const value of ["1-9", "10-49", "50-249", "250+"]) exactOptionValue(field, value);
   }],
   ["Bestehendes Firmenfitness-Angebot", field => {
-   for (const value of ["Ja", "Nein", "Nicht sicher"]) customFieldValue(field, value);
+   for (const value of ["Ja", "Nein", "Nicht sicher"]) exactOptionValue(field, value);
   }]
  ];
  for (const [name, validate] of requirements) {
@@ -377,21 +383,20 @@ function buildCustomFields(lead, definitions) {
    ));
   }
   if (lead.employeeSize) {
-   fields.push(customFieldValue(
+   fields.push(exactOptionValue(
     customFieldDefinition(definitions, "Beschäftigtengröße"),
     lead.employeeSize
    ));
   }
   if (lead.existingOffer) {
    const choices = {
-    yes: ["Ja"],
-    no: ["Nein"],
-    unsure: ["Nicht sicher"]
+    yes: "Ja",
+    no: "Nein",
+    unsure: "Nicht sicher"
    };
-   fields.push(customFieldValue(
+   fields.push(exactOptionValue(
     customFieldDefinition(definitions, "Bestehendes Firmenfitness-Angebot"),
-    lead.existingOffer,
-    choices[lead.existingOffer] || [lead.existingOffer]
+    choices[lead.existingOffer]
    ));
   }
  }

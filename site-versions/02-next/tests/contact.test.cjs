@@ -396,6 +396,7 @@ test("firm-fitness fields write only the confirmed size and offer options", asyn
  }
  for (const [id, options] of [
   ["size-id", ["1-9", "10-49", "50-249", "250 oder mehr"]],
+  ["size-id", ["1–9", "10-49", "50-249", "250+"]],
   ["offer-id", ["Yes", "No", "Unsure"]]
  ]) {
   const definitions = customFields.map(item => item.id === id ? { ...item, picklistOptions: options } : item);
