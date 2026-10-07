@@ -93,6 +93,38 @@ test("go-live SEO files, canonicals and intent routing are complete", () => {
  assert.match(script, /interestInput\.checked = true/);
  assert.match(script, /kontakt\.html\?interest=\$\{interest\}/);
 });
+test("privacy publication matches actual forms and avoids unverified legal claims", () => {
+ const privacy = fs.readFileSync(path.join(next, "datenschutz.html"), "utf8");
+ const contact = fs.readFileSync(path.join(next, "kontakt.html"), "utf8");
+ const employer = fs.readFileSync(path.join(next, "firmenfitness.html"), "utf8");
+ const referral = fs.readFileSync(path.join(next, "arbeitgeber-empfehlen.html"), "utf8");
+ for (const text of [
+  "KIELS Fitness GmbH",
+  "mail@kiel-fitness.de",
+  "Vercel",
+  "HighLevel beziehungsweise LeadConnector",
+  "UTM- oder Anzeigenparameter",
+  "keine eigenen Cookies",
+  "weder Local Storage noch Session Storage",
+  "keine Webanalyse-Dienste, Marketingpixel",
+  "Diese Dienste sind nicht in die Website eingebettet.",
+  "keine ausschließlich automatisierte Entscheidung"
+ ]) assert.match(privacy, new RegExp(text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+ for (const unsupported of [
+  "DSGVO-konform",
+  "EU-US Data Privacy Framework",
+  "Standardvertragsklauseln",
+  "Auftragsverarbeitungsvertrag abgeschlossen",
+  "Datenschutzerklärungs-Generator"
+ ]) assert.doesNotMatch(privacy, new RegExp(unsupported, "i"));
+ assert.match(contact, /Bitte keine Gesundheitsdaten, Diagnosen oder InBody-Werte übermitteln\./);
+ assert.match(employer, /Keine Gesundheitsdaten oder Kontaktdaten von Beschäftigten übermitteln\./);
+ assert.match(referral, /Bitte keine Namen, Kontaktdaten oder Gesundheitsdaten anderer Personen angeben\./);
+ for (const page of fs.readdirSync(next).filter(name => name.endsWith(".html"))) {
+  const html = fs.readFileSync(path.join(next, page), "utf8");
+  assert.doesNotMatch(html, /<iframe|<script[^>]+src="https?:|<link[^>]+href="https?:[^>]+stylesheet/i, page);
+ }
+});
 test("house rules mirror the approved working draft and are wired into legal navigation", () => {
  const pages = fs.readdirSync(next).filter(name => name.endsWith(".html"));
  const rules = fs.readFileSync(path.join(next, "hausordnung.html"), "utf8");
