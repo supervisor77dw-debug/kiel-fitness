@@ -79,14 +79,18 @@ Only server-controlled values are used for source and campaign attribution:
 | Other ordinary contact request | `Kampagne / Lead-Detail`: `Kontaktformular` |
 | Employer inquiry | `Kampagne / Lead-Detail`: `Firmenfitness` |
 | Employee referral | `Kampagne / Lead-Detail`: `Firmenfitness Empfehlung` |
-| Interest selections | Existing `Interesse / Anliegen`, mapped to the listed German options |
+| Interest selections | Existing `Interesse / Anliegen (Mehrfach)`, mapped to the listed German options; the legacy single-select `Interesse / Anliegen` is not written |
 | Message | Existing `Nachricht / Anfrage`, passed as entered (no trimming) |
 | Checked callback checkbox | Existing `Rückruf erwünscht`, mapped to an actual available affirmative option; unchecked is omitted |
 | Company name | Standard HighLevel `companyName` |
 | Firmenfitness location, employee size, existing offer | Existing `Standort`, `Beschäftigtengröße`, and `Bestehendes Firmenfitness-Angebot` fields, when submitted |
 
 The Firmenfitness-specific field names/options must be present in the live
-contact-field definitions. If they are not, those submissions fail closed;
+contact-field definitions.
+Employee-size options must include `1-9`, `10-49`, `50-249`, and `250+`.
+Existing-offer options must include `Ja`, `Nein`, and `Nicht sicher`.
+Alternative labels are not mapped for these fields.
+If they are not, those submissions fail closed;
 the integration will neither create substitute fields nor report success
 after dropping supplied form data. Missing optional values are omitted.
 Phone is omitted when not entered. No preferred-contact-time, priority,

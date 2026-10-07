@@ -160,7 +160,7 @@ function checkFieldDefinitions(definitions) {
   inspectField(definitions, "Kampagne / Lead-Detail"),
   inspectField(definitions, "Nachricht / Anfrage"),
   inspectField(definitions, "Rückruf erwünscht"),
-  inspectField(definitions, "Interesse / Anliegen"),
+  inspectField(definitions, "Interesse / Anliegen (Mehrfach)"),
   inspectField(definitions, "Standort"),
   inspectField(definitions, "Beschäftigtengröße"),
   inspectField(definitions, "Bestehendes Firmenfitness-Angebot")
@@ -179,7 +179,7 @@ function checkFieldDefinitions(definitions) {
    }
   }],
   ["Rückruf erwünscht", field => { callbackValue(field, true); }],
-  ["Interesse / Anliegen", field => {
+  ["Interesse / Anliegen (Mehrfach)", field => {
    const labels = Object.values(INTEREST_LABELS);
    if (["MULTIPLE_OPTIONS", "CHECKBOX"].includes(String(field.dataType || "").toUpperCase())) {
     customFieldValue(field, labels, labels.map(value => [value]));
@@ -195,20 +195,10 @@ function checkFieldDefinitions(definitions) {
    }
   }],
   ["Beschäftigtengröße", field => {
-   customFieldValue(field, "250+", [["250+", "250 oder mehr"]]);
-   for (const value of ["1-9", "10-49", "50-249"]) customFieldValue(field, value);
+   for (const value of ["1-9", "10-49", "50-249", "250+"]) customFieldValue(field, value);
   }],
   ["Bestehendes Firmenfitness-Angebot", field => {
-   for (const value of [
-    ["Ja", "Yes", "Ja, bereits vorhanden"],
-    ["Nein", "No", "Nein, nicht vorhanden"],
-     ["Nicht sicher", "Unsicher", "Unklar", "Unsure"]
-   ]) {
-    const option = findChoice(field, value);
-    if (option === null && ["SINGLE_OPTIONS", "RADIO"].includes(String(field.dataType || "").toUpperCase())) {
-     throw new IntegrationError("existing_offer_option_unavailable");
-    }
-   }
+   for (const value of ["Ja", "Nein", "Nicht sicher"]) customFieldValue(field, value);
   }]
  ];
  for (const [name, validate] of requirements) {
@@ -373,7 +363,7 @@ function buildCustomFields(lead, definitions) {
   fields.push(customFieldValue(customFieldDefinition(definitions, "Nachricht / Anfrage"), lead.message));
  }
  if (lead.interests.length) {
-  const interestField = customFieldDefinition(definitions, "Interesse / Anliegen");
+  const interestField = customFieldDefinition(definitions, "Interesse / Anliegen (Mehrfach)");
   const labels = lead.interests.map(value => INTEREST_LABELS[value]);
   if (labels.some(value => !value)) throw new IntegrationError("interest_mapping_unavailable");
   fields.push(customFieldValue(interestField, labels, labels.map(value => [value])));
@@ -389,15 +379,14 @@ function buildCustomFields(lead, definitions) {
   if (lead.employeeSize) {
    fields.push(customFieldValue(
     customFieldDefinition(definitions, "Beschäftigtengröße"),
-    lead.employeeSize,
-    [lead.employeeSize === "250+" ? ["250+", "250 oder mehr"] : [lead.employeeSize]]
+    lead.employeeSize
    ));
   }
   if (lead.existingOffer) {
    const choices = {
-    yes: ["Ja", "Yes", "Ja, bereits vorhanden"],
-    no: ["Nein", "No", "Nein, nicht vorhanden"],
-    unsure: ["Nicht sicher", "Unsicher", "Unklar", "Unsure"]
+    yes: ["Ja"],
+    no: ["Nein"],
+    unsure: ["Nicht sicher"]
    };
    fields.push(customFieldValue(
     customFieldDefinition(definitions, "Bestehendes Firmenfitness-Angebot"),

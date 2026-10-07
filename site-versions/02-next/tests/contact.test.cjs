@@ -19,7 +19,8 @@ const customFields = [
  { id: "detail-id", name: "Kampagne / Lead-Detail", model: "contact", dataType: "TEXT", picklistOptions: [] },
  { id: "message-id", name: "Nachricht / Anfrage", model: "contact", dataType: "LARGE_TEXT", picklistOptions: [] },
  { id: "callback-id", name: "Rückruf erwünscht", model: "contact", dataType: "SINGLE_OPTIONS", picklistOptions: ["Ja", "Nein"] },
- { id: "interest-id", name: "Interesse / Anliegen", model: "contact", dataType: "MULTIPLE_OPTIONS", picklistOptions: interestOptions },
+ { id: "legacy-interest-id", name: "Interesse / Anliegen", model: "contact", dataType: "SINGLE_OPTIONS", picklistOptions: interestOptions },
+ { id: "interest-id", name: "Interesse / Anliegen (Mehrfach)", model: "contact", dataType: "MULTIPLE_OPTIONS", picklistOptions: interestOptions },
  { id: "location-id", name: "Standort", model: "contact", dataType: "TEXT", picklistOptions: [] },
  { id: "size-id", name: "Beschäftigtengröße", model: "contact", dataType: "SINGLE_OPTIONS", picklistOptions: ["1-9", "10-49", "50-249", "250+"] },
  { id: "offer-id", name: "Bestehendes Firmenfitness-Angebot", model: "contact", dataType: "SINGLE_OPTIONS", picklistOptions: ["Ja", "Nein", "Nicht sicher"] }
@@ -123,7 +124,7 @@ test("readiness inspection validates every existing contact field and option wit
  assert.deepEqual(checked.fields.find(item => item.requestedName === "Lead-Quelle").options, ["Website", "Google"]);
  const missing = checkFieldDefinitions(customFields.filter(item => item.id !== "interest-id"));
  assert.equal(missing.ready, false);
- assert.deepEqual(missing.missing, ["Interesse / Anliegen"]);
+ assert.deepEqual(missing.missing, ["Interesse / Anliegen (Mehrfach)"]);
  let calls = 0;
  const readiness = await checkHighLevelReadiness({
   env: TEST_ENV,
@@ -285,6 +286,7 @@ test("a new regular contact uses API v2, actual field IDs, and the semantic webs
  assert.equal(field(create.body, "message-id"), valid().message);
  assert.equal(field(create.body, "callback-id"), undefined);
  assert.deepEqual(field(create.body, "interest-id"), ["Probetraining", "Kurse"]);
+ assert.equal(field(create.body, "legacy-interest-id"), undefined);
  assert.equal("token" in result.body, false);
 });
 
@@ -376,6 +378,31 @@ test("firm-fitness referral maps without inventing optional phone, message, size
  assert.equal(field(create.body, "size-id"), undefined);
  assert.equal(field(create.body, "offer-id"), undefined);
  assert.equal(field(create.body, "callback-id"), undefined);
+});
+
+test("firm-fitness fields write only the confirmed size and offer options", async () => {
+ for (const employeeSize of ["1-9", "10-49", "50-249", "250+"]) {
+  for (const [existingOffer, expected] of [["yes", "Ja"], ["no", "Nein"], ["unsure", "Nicht sicher"]]) {
+   const api = mockApi();
+   const result = await request(firmFitnessInput("employer_inquiry", {
+    employeeSize, existingOffer
+   }), {}, mockHandler(api));
+   assert.equal(result.status, 200);
+   const create = api.calls.find(call => call.url.pathname === "/contacts/upsert");
+   assert.equal(field(create.body, "size-id"), employeeSize);
+   assert.equal(field(create.body, "offer-id"), expected);
+   assert.equal(field(create.body, "legacy-interest-id"), undefined);
+  }
+ }
+ for (const [id, options] of [
+  ["size-id", ["1-9", "10-49", "50-249", "250 oder mehr"]],
+  ["offer-id", ["Yes", "No", "Unsure"]]
+ ]) {
+  const definitions = customFields.map(item => item.id === id ? { ...item, picklistOptions: options } : item);
+  const checked = checkFieldDefinitions(definitions);
+  assert.equal(checked.ready, false);
+  assert.ok(checked.incompatible.some(item => item.name === definitions.find(item => item.id === id).name));
+ }
 });
 
 test("invalid firm requests are rejected before any HighLevel calls", async () => {
