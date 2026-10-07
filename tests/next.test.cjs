@@ -30,7 +30,7 @@ test("all Next pages share one header/footer and stylesheet, no clone transition
   assert.equal((text.match(/<h1(?:\s|>)/g) || []).length, 1, file);
  }
 });
-test("staging builder reads server runtime configuration without embedding credentials or promoting Production", () => {
+test("deployment builder reads server runtime configuration without embedding credentials", () => {
  const source = fs.readFileSync(path.join(root, "tools", "build-staging.cjs"), "utf8");
  assert.match(source, /fs\.writeFileSync\(path\.join\(contactFunctionRoot, "api", "contact\.js"\), handler\)/);
  assert.match(source, /highlevel-readiness\.func/);
@@ -40,7 +40,9 @@ test("staging builder reads server runtime configuration without embedding crede
  assert.doesNotMatch(source, /HIGHLEVEL_ENABLED:\s*["']false["']/);
  assert.doesNotMatch(source, /HIGHLEVEL_PRIVATE_TOKEN:\s*["'][^"']+["']/);
  assert.doesNotMatch(source, /HIGHLEVEL_LOCATION_ID:\s*["'][^"']+["']/);
- assert.match(source, /noindex, nofollow/);
+ assert.match(source, /robots\.txt/);
+ assert.match(source, /sitemap\.xml/);
+ assert.doesNotMatch(source, /X-Robots-Tag|noindex, nofollow/);
  assert.doesNotMatch(source, /--prod|HIGHLEVEL_WEBHOOK_URL:/);
 });
 test("fresh deployment artifact includes every local script and stylesheet referenced by Next pages", async () => {
@@ -48,6 +50,10 @@ test("fresh deployment artifact includes every local script and stylesheet refer
  try {
   execFileSync(process.execPath, [path.join(root, "tools", "build-staging.cjs"), "--output", output]);
   const staticRoot = path.join(output, "static");
+  assert.ok(fs.existsSync(path.join(staticRoot, "robots.txt")));
+  assert.ok(fs.existsSync(path.join(staticRoot, "sitemap.xml")));
+  const config = JSON.parse(fs.readFileSync(path.join(output, "config.json")));
+  assert.doesNotMatch(JSON.stringify(config), /noindex|nofollow/i);
   for (const file of fs.readdirSync(next).filter(name => name.endsWith(".html"))) {
    const html = fs.readFileSync(path.join(staticRoot, file), "utf8");
    for (const match of html.matchAll(/(?:src|href)="([^"]+\.(?:js|css))"/g)) {
@@ -60,6 +66,32 @@ test("fresh deployment artifact includes every local script and stylesheet refer
  } finally {
   await fs.promises.rm(output, { recursive: true, force: true, maxRetries: 10, retryDelay: 100 });
  }
+});
+test("go-live SEO files, canonicals and intent routing are complete", () => {
+ const pages = fs.readdirSync(next).filter(name => name.endsWith(".html"));
+ assert.equal(pages.length, 11);
+ for (const file of pages) {
+  const html = fs.readFileSync(path.join(next, file), "utf8");
+  assert.doesNotMatch(html, /noindex|nofollow/i, file);
+  const canonical = html.match(/<link\b[^>]*rel="canonical"[^>]*href="([^"]+)"|<link\b[^>]*href="([^"]+)"[^>]*rel="canonical"/i);
+  assert.ok(canonical, `${file}: canonical missing`);
+  assert.match(canonical[1] || canonical[2], /^https:\/\/www\.kiel-fitness\.de\//, file);
+ }
+ const robots = fs.readFileSync(path.join(next, "robots.txt"), "utf8");
+ assert.match(robots, /User-agent: \*/);
+ assert.match(robots, /Allow: \//);
+ assert.match(robots, /Sitemap: https:\/\/www\.kiel-fitness\.de\/sitemap\.xml/);
+ const sitemap = fs.readFileSync(path.join(next, "sitemap.xml"), "utf8");
+ for (const file of pages) {
+  const location = file === "index.html" ? "https://www.kiel-fitness.de/" : `https://www.kiel-fitness.de/${file}`;
+  assert.match(sitemap, new RegExp(location.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
+ }
+ const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
+ assert.equal((home.match(/href="kontakt\.html\?interest=membership"/g) || []).length, 3);
+ const script = fs.readFileSync(path.join(next, "script.js"), "utf8");
+ assert.match(script, /requestedInterest/);
+ assert.match(script, /interestInput\.checked = true/);
+ assert.match(script, /kontakt\.html\?interest=\$\{interest\}/);
 });
 test("UX trust layer uses supplied rating without fabricated testimonials or external widgets", () => {
  const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
@@ -323,7 +355,10 @@ test("all main pages have unique local SEO metadata, meaningful headings and acc
   const description = meta[0].match(/content="([^"]+)"/)[1];
   const canonical = html.match(/<link[^>]*rel="canonical"[^>]*>|<link[^>]*href="[^"]*"[^>]*rel="canonical"[^>]*>/g) || [];
   assert.equal(canonical.length, 1, page);
-  assert.ok(canonical[0].includes('href="' + page + '.html"'));
+  const expectedCanonical = page === "index"
+   ? "https://www.kiel-fitness.de/"
+   : `https://www.kiel-fitness.de/${page}.html`;
+  assert.ok(canonical[0].includes(`href="${expectedCanonical}"`));
   assert.ok(title.includes(intent) && title.includes("Kiel"), page);
   assert.ok(html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/)[1].includes(intent), page);
   assert.ok(description.length >= 100 && description.length <= 180, page);

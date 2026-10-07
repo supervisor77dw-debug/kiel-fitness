@@ -321,6 +321,23 @@ if (courseJumps && "IntersectionObserver" in window) {
 }
 
 const contactForm = document.querySelector("[data-contact-form]");
+const pageIntent = {
+ fitness: "trial",
+ health: "health",
+ kurse: "courses",
+ wellness: "wellness"
+}[document.body.dataset.page];
+document.querySelectorAll('a[href="kontakt.html"]').forEach(link => {
+ const label = link.textContent.toLowerCase();
+ const interest = label.includes("probetraining")
+  ? "trial"
+  : label.includes("training persönlich")
+    ? "trial"
+    : label.includes("betreuung") || label.includes("kurszeiten") || label.includes("programm erfragen")
+      ? pageIntent
+      : null;
+ if (interest) link.href = `kontakt.html?interest=${interest}`;
+});
 if (contactForm) {
  const submit = contactForm.querySelector('button[type="submit"]');
  const status = contactForm.querySelector(".contact-status");
@@ -335,6 +352,11 @@ if (contactForm) {
   }
  }
  const contextUrl = new URL(location.href);
+ const requestedInterest = contextUrl.searchParams.get("interest");
+ const interestInput = requestedInterest
+  ? [...contactForm.querySelectorAll('input[name="interests"]')].find(input => input.value === requestedInterest)
+  : null;
+ if (interestInput) interestInput.checked = true;
  const cleanPageUrl = value => {
   if (!value) return null;
   const url = new URL(value);

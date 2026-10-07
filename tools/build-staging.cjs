@@ -28,7 +28,7 @@ function copy(source, destination, relative) {
 }
 const resources = new Set();
 for (const entry of fs.readdirSync(next)) {
- if (!entry.endsWith(".html") && !["home.css", "script.js", "firmenfitness.js"].includes(entry)) continue;
+ if (!entry.endsWith(".html") && !["home.css", "script.js", "firmenfitness.js", "robots.txt", "sitemap.xml"].includes(entry)) continue;
  copy(path.join(next, entry), path.join(staticRoot, entry), entry);
  const text = fs.readFileSync(path.join(next, entry), "utf8");
  for (const match of text.matchAll(/(?:src|href)="([^"]+)"|url\(["']?([^"')]+)["']?\)/g)) {
@@ -65,7 +65,6 @@ fs.writeFileSync(path.join(readinessFunctionRoot, ".vc-config.json"), JSON.strin
 fs.writeFileSync(path.join(output, "config.json"), JSON.stringify({
  version: 3,
  routes: [
-  { src: "/(.*)", headers: { "X-Robots-Tag": "noindex, nofollow" }, continue: true },
   { src: "/api/contact", dest: "/api/contact" },
   { src: "/api/highlevel-readiness", dest: "/api/highlevel-readiness" },
   { handle: "filesystem" },

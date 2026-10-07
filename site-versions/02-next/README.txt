@@ -29,10 +29,11 @@ Fachlich bestätigt / korrigiert
   Marketingaussagen entfernt. Du-Ansprache und Programmnamen vereinheitlicht.
 
 Content-/SEO-Prüftabelle
-Alle Hauptseiten: genau eine H1, gegliederte H2/H3, eigener Title/Description,
-relative seitenrichtige Canonical. Canonicals folgen der bestehenden relativen
-Konvention und lösen auf dem jeweiligen Host auf; keine Wix-Domainmigration.
-Vercel bleibt ausdrücklich noindex/nofollow, trotz vervollständigter Metadaten.
+Alle Hauptseiten: genau eine H1, gegliederte H2/H3, eigener Title/Description
+und absolute Canonical auf https://www.kiel-fitness.de/. robots.txt und
+sitemap.xml sind Teil des Builds. Der globale Vercel-noindex-Header sowie die
+seitenbezogenen noindex-Angaben fuer Firmenfitness wurden fuer den Go-Live
+entfernt. Die Domain-/DNS-Umschaltung erfolgt weiterhin separat.
 Keine SEO-Scores, keine neuen medizinischen Versprechen oder Schema-Fakten.
 
 Seite | Fokus | H1 | Title | Meta Description | Canonical | Interne Links | Alt-Texte | Befund
@@ -225,9 +226,12 @@ HighLevel-API-v2-Integration, 04.10.2026
   Der lokale Prozess hatte keine der beiden HighLevel-Variablen; Runtime-
   Erkennung des neuen Functions-Builds kann erst nach freigegebenem Deploy
   geprüft werden. Kein Live-Testlead, Push oder Deployment ausgeführt.
-- Vor produktivem Einsatz: tatsächliche HighLevel-Felddefinitionen und
-  Vercel-Scopes prüfen sowie Rechtsgrundlage, Auftragsverarbeitung und
-  Aufbewahrungsfristen in der Datenschutzerklärung bestätigen.
+- Vor produktivem Einsatz: Rechtsgrundlagen fuer allgemeine Kontaktanfragen,
+  Arbeitgeberanfragen und Empfehlungen durch den Verantwortlichen festlegen
+  sowie wirksame Auftragsverarbeitungsvereinbarungen mit Vercel und
+  HighLevel/LeadConnector bestaetigen. Die Datenschutzerklaerung beschreibt
+  die technische Verarbeitung und verwendet Loeschkriterien statt einer
+  unbelegten festen Aufbewahrungsfrist.
   Technische Einzelheiten: CONTACT.md.
 
 UX- und Design-Finishing – lokaler Abnahmestand, 05.10.2026
@@ -503,9 +507,9 @@ Homepage-Trust-Flow und authentische Studiofotos, 06.10.2026
   Motiven plus einer eigenstaendigen Flaechenansicht statt des Rundgangfotos.
 - Alle vier Repository-Testdateien: 38/38 Tests bestanden; lokaler WebP-Build
   und Asset-Auslieferung erfolgreich.
-- Vercel verwendet weiterhin ausdruecklich den bestehenden Staging-Build mit
-  X-Robots-Tag noindex/nofollow. Production-Smoke erfolgt nach dem Push mit
-  dieser Build-Konfiguration.
+- Der Vercel-Build ist fuer die spaetere Indexierung vorbereitet. Die
+  finale Domain wird erst nach Domainverifikation und Production-Smoke
+  umgeschaltet.
 
 Gezielte Biosauna- und Gesundheitsrunde, 06.10.2026
 - Wellness 3 aus assets/kiels-authentic/Kiels Fitness, Wellness-3.jpg ist
@@ -530,3 +534,31 @@ Gezielte Biosauna- und Gesundheitsrunde, 06.10.2026
   als neutrale, klar markierte Infografik genutzt. Sie zeigt keine echte
   Messung und kein Produktfoto; spaeter kann sie durch ein eigenes KIELS-Foto
   mit Trainer und Mitglied am Geraet ersetzt werden.
+
+Pre-Go-Live-Stand und Domain-Umschaltplan, 07.10.2026
+- Aktuelle Vercel-Production: https://kiel-fitness.vercel.app
+- Ziel: https://www.kiel-fitness.de; Root-Domain https://kiel-fitness.de
+  leitet dauerhaft auf die www-Domain weiter. Die www-Domain ist damit die
+  einzige kanonische Variante.
+- Vor Umschaltung beide Domains im Vercel-Projekt hinzufuegen. Die konkreten
+  DNS-Zielwerte immer aus Project Settings > Domains uebernehmen; sie koennen
+  projektspezifisch sein. Typisch ist fuer www ein CNAME auf den von Vercel
+  angezeigten cname.vercel-dns.com-Zielwert und fuer @ ein A-Record auf die
+  von Vercel angezeigte Apex-IP.
+- Vorher aktuelle Wix-DNS-Werte und TTL dokumentieren, TTL rechtzeitig
+  reduzieren und keine Wix-Zuordnung loeschen. Zuerst www umstellen, DNS und
+  Vercel-Verifikation abwarten, automatisches HTTPS-Zertifikat pruefen und
+  alle Seiten, Assets, Formulare, robots.txt, sitemap.xml und Redirects testen.
+- Erst nach erfolgreichem Smoke-Test die Root-Domain auf Vercel zeigen und
+  den Redirect root -> www aktivieren. Wix erst deaktivieren, wenn www und
+  Root-Domain weltweit auf Vercel aufloesen und HTTPS stabil ist.
+- Fallback: Bei funktionalem Fehler Domainzuordnung in Vercel entfernen und
+  die dokumentierten Wix-DNS-Werte wiederherstellen. Bei reinem DNS-/SSL-
+  Fehler Wix aktiv lassen, DNS auf Wix zuruecksetzen und nach Ablauf der
+  Propagation erneut planen. Keine Datenmigration oder Wix-Loeschung ist fuer
+  den DNS-Rollback erforderlich.
+- Rechtlicher Blocker vor Domainumschaltung: Verantwortlicher muss die
+  dienstespezifischen Rechtsgrundlagen freigeben und bestaetigen, dass fuer
+  den eingesetzten Vercel-Tarif und HighLevel/LeadConnector wirksame AVV/DPA
+  sowie erforderliche Drittlandgarantien vorliegen. Die Website trifft diese
+  Vertragsentscheidung nicht selbst.
