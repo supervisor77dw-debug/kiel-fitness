@@ -93,6 +93,12 @@ p + p { margin-top: 16px; }
 .review-arrow:hover { border-color: rgba(253,199,30,.42); color: var(--white); background: rgba(253,199,30,.06); }
 .review-arrow:focus-visible,.review-autoplay:focus-visible { outline: 2px solid var(--yellow); outline-offset: 3px; }
 .review-progress { height: 2px; overflow: hidden; background: rgba(255,255,255,.14); }
+.review-member-cta { display: grid; grid-template-columns: minmax(0,1fr) auto; gap: 32px; align-items: center; margin-top: 28px; padding: 26px 28px; border: 1px solid rgba(253,199,30,.2); border-radius: 18px; color: var(--white); background: radial-gradient(circle at 8% 0,rgba(253,199,30,.09),transparent 42%),linear-gradient(145deg,rgba(255,255,255,.045),transparent 56%),rgba(7,23,32,.96); box-shadow: inset 0 1px rgba(255,255,255,.08),0 12px 30px rgba(7,23,32,.15); }
+.review-member-cta .eyebrow { margin-bottom: 8px; }
+.review-member-cta h3 { color: var(--white); font-size: clamp(22px,2.2vw,28px); }
+.review-member-cta p:not(.eyebrow) { max-width: 720px; margin-top: 10px; color: rgba(255,255,255,.76); }
+.review-member-thanks { font-size: 13px; font-weight: 700; letter-spacing: .02em; }
+.review-member-button { min-width: 236px; text-align: center; }
 .review-progress span { display: block; width: 100%; height: 100%; background: var(--yellow); transform: scaleX(.1667); transform-origin: left center; }
 .review-counter { color: var(--muted); font-size: 11px; font-variant-numeric: tabular-nums; white-space: nowrap; }
 .review-autoplay { display: inline-grid; place-items: center; width: 40px; height: 40px; border: 1px solid rgba(255,255,255,.12); border-radius: 50%; color: var(--muted); background: transparent; cursor: pointer; font-size: 15px; }
@@ -628,6 +634,8 @@ a[href^="tel:"], a[href^="mailto:"], .privacy a, .legal-content a, .related a, .
  .trust-section { padding-block: 32px 40px; }
  .review-proof { grid-template-columns: 1fr; padding: 0; gap: 18px; margin-bottom: 18px; }
  .review-rating { padding: 18px 22px; }
+ .review-member-cta { grid-template-columns: 1fr; gap: 20px; padding: 24px; }
+ .review-member-button { width: 100%; min-width: 0; }
  .membership-details { padding: 22px; }
  .hours .text-link { font-size: 14px; }
  .mobile-actions { box-shadow: 0 -8px 24px rgba(0,0,0,.2); }

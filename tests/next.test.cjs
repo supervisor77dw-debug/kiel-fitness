@@ -113,7 +113,7 @@ test("UX trust layer uses supplied rating without fabricated testimonials or ext
  assert.match(reviews[0], /Seit 2006 meine Sport- und Begegnungsstätte\. Meine 2\. Familie\./);
  assert.match(reviews[0], /Super Gym\. Sehr nettes Personal und faire Mitgliedschaft\./);
  assert.match(reviews[0], /Bestes Gym in Kiel wenn einem wichtig ist in einer absolut familiären Atmosphäre zu trainieren\./);
- assert.doesNotMatch(reviews[0], /Zusammenfassung|Weitere Eindrücke|Originalzitat|<h3|review-kind|review-summary|★/);
+ assert.doesNotMatch(reviews[0], /Zusammenfassung|Weitere Eindrücke|Originalzitat|review-kind|review-summary|★/);
  assert.match(reviews[0], /aria-roledescription="Karussell"/);
  assert.match(reviews[0], /aria-label="Vorherige Bewertung"/);
  assert.match(reviews[0], /aria-label="Nächste Bewertung"/);
@@ -137,7 +137,7 @@ test("UX trust layer uses supplied rating without fabricated testimonials or ext
  assert.match(script, /pointerup/);
  assert.match(script, /dialog\.open/);
 });
-test("Google reviews use desktop, tablet and mobile layouts without external review links", () => {
+test("Google reviews use desktop, tablet and mobile layouts with one member review CTA", () => {
  const css = fs.readFileSync(path.join(next, "home.css"), "utf8");
  assert.match(css, /\.review-carousel \{ --review-visible: 3; --review-card-width: calc\(\(100% - 40px\) \/ 3\); \}/);
  assert.match(css, /@media \(max-width: 1000px\)[\s\S]*?\.review-carousel \{ --review-visible: 2; \}/);
@@ -147,6 +147,14 @@ test("Google reviews use desktop, tablet and mobile layouts without external rev
  assert.match(css, /@media \(prefers-reduced-motion: reduce\)/);
  const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
  assert.doesNotMatch(home.match(/<div class="review-proof[\s\S]*?<\/div>/)[0], /google\.com\/maps\/search/);
+ const memberCta = home.match(/<aside class="review-member-cta"[\s\S]*?<\/aside>/);
+ assert.ok(memberCta);
+ assert.match(memberCta[0], /Du kennst KIELS aus eigener Erfahrung\?/);
+ assert.match(memberCta[0], /KIELS auf Google bewerten/);
+ assert.match(memberCta[0], /href="https:\/\/search\.google\.com\/local\/writereview\?placeid=ChIJyQuPqQxWskcRfugnGqTPgIg"/);
+ assert.match(memberCta[0], /target="_blank" rel="noopener noreferrer"/);
+ assert.doesNotMatch(memberCta[0], /positive Bewertung|5 Sterne|Gegenleistung/i);
+ assert.equal((home.match(/search\.google\.com\/local\/writereview/g) || []).length, 1);
 });
 test("homepage places the complete trust and review block before Why KIELS and includes authentic optimized imagery", () => {
  const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
