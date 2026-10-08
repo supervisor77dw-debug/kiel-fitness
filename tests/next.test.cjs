@@ -245,7 +245,7 @@ test("homepage places the complete trust and review block before Why KIELS and i
  const openingIndex = home.indexOf('id="opening-title"');
  assert.ok(extrasIndex >= 0 && extrasIndex < bistroIndex && bistroIndex < openingIndex);
  assert.match(home, /href="#bistro-lounge">Bistro &amp; Lounge ansehen/);
- assert.match(home, /src="assets\/home-lounge-authentic\.webp" alt="Lounge mit Sitzgruppen im KIELS" loading="lazy" width="1800" height="1200"/);
+ assert.match(home, /src="assets\/studio-2026\/kiels-fitness-bistro-tresen-01-2026\.webp" alt="Bistro und Empfangstresen im KIELS Fitnessstudio in Kiel" loading="lazy" width="1800" height="1350"/);
  assert.doesNotMatch(home, /Bistro im Wellnessbereich|href="wellness\.html">Bistro/);
  const wellness = fs.readFileSync(path.join(next, "wellness.html"), "utf8");
  assert.match(wellness, /Bistro &amp; Lounge findest du direkt beim Empfang/);
@@ -270,15 +270,13 @@ test("homepage places the complete trust and review block before Why KIELS and i
   assert.match(references, new RegExp(`src="assets/${asset}"[^>]*alt="[^"]+"[^>]*loading="lazy"[^>]*width="1800" height="(?:1200|1013)"`));
  }
 });
-test("Biosauna uses Wellness 3 consistently while the mixed sauna and health diagnostics stay distinct", () => {
- const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
+test("current Biosauna photo is used while the mixed sauna and health diagnostics stay distinct", () => {
  const wellness = fs.readFileSync(path.join(next, "wellness.html"), "utf8");
  const styles = fs.readFileSync(path.join(next, "styles.css"), "utf8");
  const health = fs.readFileSync(path.join(next, "health.html"), "utf8");
- const biosaunaAsset = "wellness-biosauna-authentic.webp";
- assert.match(home, new RegExp(`src="assets/${biosaunaAsset}"`));
- assert.match(wellness, new RegExp(`<img src="assets/${biosaunaAsset}" alt="Biosauna-Bereich im KIELS mit Blick auf den Saunazugang" loading="lazy" width="1800" height="1012">`));
- assert.doesNotMatch(`${home}\n${wellness}\n${styles}`, /assets\/biosauna\.png/);
+ const biosaunaAsset = "studio-2026/kiels-fitness-biosauna-wellness-2026.webp";
+ assert.match(wellness, new RegExp(`<img src="assets/${biosaunaAsset}" alt="Biosauna im KIELS Fitnessstudio in Kiel" loading="lazy" width="1800" height="1350">`));
+ assert.doesNotMatch(`${wellness}\n${styles}`, /assets\/biosauna\.png/);
  assert.match(wellness, /wellness-mixed-sauna-authentic\.webp/);
  assert.match(wellness, /wellness-women-sauna-authentic\.webp/);
  assert.match(health, /Körperanalyse mit InBody 770/);
@@ -290,12 +288,12 @@ test("Biosauna uses Wellness 3 consistently while the mixed sauna and health dia
  assert.equal(image.toString("ascii", 8, 12), "WEBP");
  assert.ok(image.length < 500_000);
 });
-test("health page presents the InBody 770 with a local neutral placeholder and responsive assessment flow", () => {
+test("health page presents the authentic InBody 770 photo with a responsive assessment flow", () => {
  const health = fs.readFileSync(path.join(next, "health.html"), "utf8");
  const css = fs.readFileSync(path.join(next, "home.css"), "utf8");
- const asset = "assets/health/inbody-770-placeholder.svg";
- assert.match(health, new RegExp(`<img src="${asset}" alt="Neutrales Infovisual zur Körperanalyse mit InBody 770, kein Produktfoto" loading="lazy" width="960" height="640">`));
- assert.match(health, /Übergangsvisual – ein eigenes KIELS-Foto folgt/);
+ const asset = "assets/studio-2026/kiels-fitness-inbody-770-diagnostikraum-2026.webp";
+ assert.match(health, new RegExp(`<img src="${asset}" alt="InBody 770 im Diagnostikraum des KIELS Fitnessstudios in Kiel" loading="lazy" width="1800" height="1350">`));
+ assert.doesNotMatch(health, /inbody-770-placeholder|Übergangsvisual – ein eigenes KIELS-Foto folgt/);
  assert.match(health, /Körperfettanteil/);
  assert.match(health, /Muskelmasse/);
  assert.match(health, /Körperwasser · ECW\/ICW/);
@@ -304,9 +302,33 @@ test("health page presents the InBody 770 with a local neutral placeholder and r
  assert.match(health, /<strong>Analyse<\/strong>[\s\S]*<strong>Eingangsdiagnostik<\/strong>[\s\S]*<strong>Individueller Trainingsplan<\/strong>/);
  assert.match(css, /\.health-analysis \{ display: grid; grid-template-columns: minmax\(0,\.95fr\) minmax\(0,1\.05fr\);/);
  assert.match(css, /\.health-analysis \{ grid-template-columns: 1fr; \}/);
- const placeholder = fs.readFileSync(path.join(next, asset), "utf8");
- assert.match(placeholder, /kein Produktfoto und keine individuellen Messwerte/);
- assert.doesNotMatch(placeholder, /<image\b[^>]*(?:href|xlink:href)="https?:\/\//);
+ assert.equal(fs.readFileSync(path.join(next, asset)).toString("ascii", 8, 12), "WEBP");
+});
+test("all six 2026 studio photos are optimized, four are placed, and the second bistro view stays reserve-only", () => {
+ const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
+ const wellness = fs.readFileSync(path.join(next, "wellness.html"), "utf8");
+ const health = fs.readFileSync(path.join(next, "health.html"), "utf8");
+ const used = {
+  "kiels-fitness-biosauna-wellness-2026.webp": wellness,
+  "kiels-fitness-inbody-770-diagnostikraum-2026.webp": health,
+  "kiels-fitness-kneippgang-kaltwasserbereich-2026.webp": wellness,
+  "kiels-fitness-wellness-aussenterrasse-2026.webp": wellness,
+  "kiels-fitness-bistro-tresen-01-2026.webp": home
+ };
+ for (const [asset, html] of Object.entries(used)) {
+  const file = path.join(next, "assets", "studio-2026", asset);
+  assert.ok(fs.statSync(file).size < 700_000, `${asset} is optimized for web delivery`);
+  assert.equal(fs.readFileSync(file).toString("ascii", 8, 12), "WEBP", `${asset} is WebP`);
+  assert.match(html, new RegExp(`src="assets/studio-2026/${asset}"[^>]*loading="lazy"[^>]*width="1800" height="1350"`));
+ }
+ const reserve = "kiels-fitness-bistro-tresen-02-2026.webp";
+ const reserveFile = path.join(next, "assets", "studio-2026", reserve);
+ assert.ok(fs.statSync(reserveFile).size < 700_000);
+ assert.equal(fs.readFileSync(reserveFile).toString("ascii", 8, 12), "WEBP");
+ assert.doesNotMatch(`${home}\n${wellness}\n${health}`, new RegExp(reserve));
+ assert.match(wellness, /alt="Kneipp- und Kaltwasserbereich im KIELS Wellnessbereich"/);
+ assert.match(wellness, /alt="Außenterrasse mit Liegen im KIELS Fitnessstudio in Kiel"/);
+ assert.match(wellness, /Das Foto zeigt den Kneipp- und Kaltwasserbereich\./);
 });
 test("premium pass removes demo footers without changing approved page content or tariffs", () => {
  for (const file of fs.readdirSync(next).filter(name => name.endsWith(".html"))) {
