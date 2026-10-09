@@ -60,8 +60,9 @@ test("legal pages and global footer use the unified accessible navigation and lo
   const html = fs.readFileSync(path.join(next, file), "utf8");
   const footer = html.match(/<footer class="site-footer">[\s\S]*?<\/footer>/)?.[0];
   assert.ok(footer, `${file}: footer missing`);
-  assert.match(footer, /href="https:\/\/www\.facebook\.com\/kielsfitness\/\?locale=de_DE">Facebook ↗<\/a>/, file);
-  assert.match(footer, /href="https:\/\/www\.instagram\.com\/kielsfitness\/\?hl=de">Instagram ↗<\/a>/, file);
+  assert.match(footer, /href="https:\/\/www\.facebook\.com\/kielsfitness\/\?locale=de_DE">Facebook<\/a>/, file);
+  assert.match(footer, /href="https:\/\/www\.instagram\.com\/kielsfitness\/\?hl=de">Instagram<\/a>/, file);
+  assert.doesNotMatch(footer, /Facebook ↗|Instagram ↗/, file);
   assert.doesNotMatch(html, /facebook\.com\/plugins|instagram\.com\/embed|connect\.facebook\.net|platform\.instagram\.com/i, file);
  }
 
@@ -70,6 +71,8 @@ test("legal pages and global footer use the unified accessible navigation and lo
  assert.match(css, /\.social-links a\[href\*="instagram\.com"\]::before/);
  assert.equal((css.match(/data:image\/svg\+xml/g) || []).length, 4);
  assert.doesNotMatch(css, /https?:\/\/[^)"']*(?:icon|facebook|instagram)/i);
+ assert.match(css, /\.social-links a \{[\s\S]*height: 44px;[\s\S]*border-radius: 999px;/);
+ assert.match(css, /\.site-footer \.social-links a:hover \{[\s\S]*border-color: rgba\(253,199,30,\.62\);/);
  assert.match(css, /\.related \{ display: flex; flex-wrap: wrap;/);
  assert.match(css, /\.legal-content \.related a \{[\s\S]*min-height: 48px;/);
  assert.match(css, /\.legal-content \.related a\[aria-current="page"\]/);
