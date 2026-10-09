@@ -30,6 +30,51 @@ test("all Next pages share one header/footer and stylesheet, no clone transition
   assert.equal((text.match(/<h1(?:\s|>)/g) || []).length, 1, file);
  }
 });
+test("legal pages and global footer use the unified accessible navigation and local social icons", () => {
+ const legalPages = {
+  "impressum.html": "Impressum",
+  "datenschutz.html": "Datenschutz",
+  "agbs.html": "AGB",
+  "hausordnung.html": "Hausordnung"
+ };
+ const legalLinks = [
+  ["impressum.html", "Impressum"],
+  ["datenschutz.html", "Datenschutz"],
+  ["agbs.html", "AGB"],
+  ["hausordnung.html", "Hausordnung"]
+ ];
+ for (const [file, title] of Object.entries(legalPages)) {
+  const html = fs.readFileSync(path.join(next, file), "utf8");
+  assert.match(html, new RegExp(`<h1><strong>KIELS</strong><span aria-hidden="true">·</span><span>${title}</span></h1>`), file);
+  const related = html.match(/<nav class="related" aria-label="Weitere Rechtstexte">([\s\S]*?)<\/nav>/)?.[0];
+  assert.ok(related, `${file}: legal navigation missing`);
+  assert.equal((related.match(/<a /g) || []).length, 4, file);
+  for (const [href, label] of legalLinks) assert.match(related, new RegExp(`<a href="${href}"(?: aria-current="page")?>${label}</a>`), file);
+  assert.match(related, new RegExp(`<a href="${file}" aria-current="page">${title}</a>`), file);
+  assert.equal((related.match(/aria-current="page"/g) || []).length, 1, file);
+  assert.ok(legalLinks.map(([href]) => related.indexOf(`href="${href}"`)).every((position, index, positions) => index === 0 || position > positions[index - 1]), `${file}: legal link order`);
+ }
+
+ const pages = fs.readdirSync(next).filter(name => name.endsWith(".html"));
+ for (const file of pages) {
+  const html = fs.readFileSync(path.join(next, file), "utf8");
+  const footer = html.match(/<footer class="site-footer">[\s\S]*?<\/footer>/)?.[0];
+  assert.ok(footer, `${file}: footer missing`);
+  assert.match(footer, /href="https:\/\/www\.facebook\.com\/kielsfitness\/\?locale=de_DE">Facebook ↗<\/a>/, file);
+  assert.match(footer, /href="https:\/\/www\.instagram\.com\/kielsfitness\/\?hl=de">Instagram ↗<\/a>/, file);
+  assert.doesNotMatch(html, /facebook\.com\/plugins|instagram\.com\/embed|connect\.facebook\.net|platform\.instagram\.com/i, file);
+ }
+
+ const css = fs.readFileSync(path.join(next, "home.css"), "utf8");
+ assert.match(css, /\.social-links a\[href\*="facebook\.com"\]::before/);
+ assert.match(css, /\.social-links a\[href\*="instagram\.com"\]::before/);
+ assert.equal((css.match(/data:image\/svg\+xml/g) || []).length, 4);
+ assert.doesNotMatch(css, /https?:\/\/[^)"']*(?:icon|facebook|instagram)/i);
+ assert.match(css, /\.related \{ display: flex; flex-wrap: wrap;/);
+ assert.match(css, /\.legal-content \.related a \{[\s\S]*min-height: 48px;/);
+ assert.match(css, /\.legal-content \.related a\[aria-current="page"\]/);
+ assert.match(css, /\.legal-content \.related a \{ flex: 1 1 140px; \}/);
+});
 test("deployment builder reads server runtime configuration without embedding credentials", () => {
  const source = fs.readFileSync(path.join(root, "tools", "build-staging.cjs"), "utf8");
  assert.match(source, /fs\.writeFileSync\(path\.join\(contactFunctionRoot, "api", "contact\.js"\), handler\)/);
@@ -139,7 +184,7 @@ test("house rules mirror the approved working draft and are wired into legal nav
   "Die Maßnahmen müssen verhältnismäßig sein; weitergehende gesetzliche Rechte bleiben unberührt.",
   "Arbeitsfassung V1 · Stand 07.10.2026 · Vor produktiver Einführung rechtlich final prüfen."
  ]) assert.match(rules, new RegExp(text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
- assert.match(rules, /<nav class="related"[^>]*><a href="agbs\.html">AGB<\/a><a href="datenschutz\.html">Datenschutz<\/a><\/nav>/);
+ assert.match(rules, /<nav class="related"[^>]*><a href="impressum\.html">Impressum<\/a><a href="datenschutz\.html">Datenschutz<\/a><a href="agbs\.html">AGB<\/a><a href="hausordnung\.html" aria-current="page">Hausordnung<\/a><\/nav>/);
  assert.match(terms, /<a href="hausordnung\.html">Hausordnung<\/a> dient Sicherheit/);
  for (const page of pages) {
   const html = fs.readFileSync(path.join(next, page), "utf8");
