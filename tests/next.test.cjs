@@ -288,6 +288,8 @@ test("homepage places the complete trust and review block before Why KIELS and i
  assert.match(trustBlock, /4,7 von 5 bei Google, 183 Bewertungen/);
  assert.match(trustBlock, /Stand: 05\.10\.2026/);
  assert.match(home, /So fühlt sich KIELS an\./);
+ assert.equal((home.match(/class="goal-card"/g) || []).length, 4);
+ assert.doesNotMatch(home, /Training trotz Familie|Rectangle%20370\.png/);
  const bistroIndex = home.indexOf('id="bistro-lounge"');
  const extrasIndex = home.indexOf('id="extras-title"');
  const openingIndex = home.indexOf('id="opening-title"');
@@ -303,6 +305,9 @@ test("homepage places the complete trust and review block before Why KIELS and i
  assert.match(fitness, /fitness-spaces-title/);
  assert.match(fitness, /fitness-strength-authentic\.webp/);
  assert.match(fitness, /fitness-equipment-authentic\.webp/);
+ const css = fs.readFileSync(path.join(next, "home.css"), "utf8");
+ assert.match(css, /\.goal-card \{ grid-column: span 3;/);
+ assert.match(css, /\.goal-grid \{[^}]*grid-auto-rows: 1fr;/);
  assert.match(wellness, /wellness-mixed-sauna-authentic\.webp/);
  assert.match(wellness, /wellness-women-sauna-authentic\.webp/);
  const assets = [

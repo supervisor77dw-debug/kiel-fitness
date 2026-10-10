@@ -562,3 +562,20 @@ Pre-Go-Live-Stand und Domain-Umschaltplan, 07.10.2026
   den eingesetzten Vercel-Tarif und HighLevel/LeadConnector wirksame AVV/DPA
   sowie erforderliche Drittlandgarantien vorliegen. Die Website trifft diese
   Vertragsentscheidung nicht selbst.
+
+Medien-Auslieferung und Go-Live-Sperre, 10.10.2026
+- Der Vercel-Build erfasst lokale Medienreferenzen aus allen produktiven
+  HTML-, CSS- und JavaScript-Dateien. Neben src, href und CSS-url werden
+  insbesondere alle einzelnen srcset-Kandidaten kopiert.
+- tools/media-audit.cjs erstellt die Medieninventur, prueft exakte
+  Gross-/Kleinschreibung, Dateisignaturen, Git-Tracking, Build-Ausgabe und
+  optional alle HTTP-URLs eines Deployments.
+- Dauerhafte lokale Absicherung:
+  node --test tests/media.test.cjs
+- Externe Deployment-Pruefung nach einer ausdruecklich freigegebenen
+  Veroeffentlichung:
+  $env:MEDIA_AUDIT_BASE_URL="https://<deployment>/";
+  node --test tests/media.test.cjs
+- Ein Build oder Deployment darf nicht freigegeben werden, wenn der
+  Medienaudit fehlende Quelldateien, Build-Dateien oder HTTP-Status ungleich
+  200 meldet.

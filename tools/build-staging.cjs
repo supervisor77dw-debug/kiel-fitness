@@ -1,6 +1,7 @@
 const fs = require("node:fs");
 const path = require("node:path");
 const crypto = require("node:crypto");
+const { extractMediaReferences, productiveSourceFiles } = require("./media-audit.cjs");
 const root = path.resolve(__dirname, "..");
 const next = path.join(root, "site-versions", "02-next");
 const shared = path.join(root, "site-versions", "shared");
@@ -27,16 +28,12 @@ function copy(source, destination, relative) {
  files.push({ path: relative, sha256: crypto.createHash("sha256").update(fs.readFileSync(source)).digest("hex") });
 }
 const resources = new Set();
-for (const entry of fs.readdirSync(next)) {
- if (!entry.endsWith(".html") && !["home.css", "script.js", "firmenfitness.js", "robots.txt", "sitemap.xml"].includes(entry)) continue;
+for (const entry of [...productiveSourceFiles(), "robots.txt", "sitemap.xml"]) {
  copy(path.join(next, entry), path.join(staticRoot, entry), entry);
  const text = fs.readFileSync(path.join(next, entry), "utf8");
- for (const match of text.matchAll(/(?:src|href)="([^"]+)"|url\(["']?([^"')]+)["']?\)/g)) {
-  const resource = decodeURIComponent(match[1] || match[2]);
-  if (/^(assets|wix-clone)\//.test(resource)) {
-   if (resource.split("/").includes("..") || resource.includes("\\")) throw new Error("Unsafe resource path.");
-   resources.add(resource);
-  }
+ for (const reference of extractMediaReferences(text, entry)) {
+  if (reference.unsafe) throw new Error(`Unsafe media reference in ${entry}:${reference.line}: ${reference.raw}`);
+  resources.add(reference.path);
  }
 }
 for (const relative of resources) {

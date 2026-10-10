@@ -124,8 +124,8 @@ p + p { margin-top: 16px; }
 .usp-number { display: block; color: var(--yellow); font-size: 12px; margin-bottom: 20px; }
 .usp h3 { font-size: 21px; }
 .usp p { color: var(--muted); font-size: 15px; margin-top: 14px; }
-.goal-grid { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); gap: 20px; }
-.goal-card { grid-column: span 2; display: flex; flex-direction: column; border-radius: var(--radius); overflow: hidden; background: var(--navy-soft); border: 1px solid var(--line); transition: border-color .16s; }
+.goal-grid { display: grid; grid-template-columns: repeat(6,minmax(0,1fr)); grid-auto-rows: 1fr; gap: 20px; }
+.goal-card { grid-column: span 3; display: flex; flex-direction: column; border-radius: var(--radius); overflow: hidden; background: var(--navy-soft); border: 1px solid var(--line); transition: border-color .16s; }
 .goal-card.wide { grid-column: span 3; }
 .goal-card:hover { border-color: var(--yellow); }
 .goal-card > img { width: 100%; aspect-ratio: 1.6; object-fit: cover; }
@@ -282,7 +282,6 @@ p + p { margin-top: 16px; }
  .hero-caption > span { font-size: 16px; }
  .usp-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
  .goal-card { grid-column: span 3; }
- .goal-card:last-child { grid-column: 1 / -1; }
  .studio-grid { gap: 32px; }
  .support-grid { gap: 32px; }
  .tariff { padding: 24px; }
