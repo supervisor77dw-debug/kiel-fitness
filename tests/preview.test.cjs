@@ -94,6 +94,25 @@ test("authentic homepage studio image is served from the optimized local WebP as
  assert.deepEqual(Buffer.from(await response.arrayBuffer()), expected);
 });
 
+test("approved training, bistro and location images use responsive local derivatives", async () => {
+ const pages = {
+  "index.html": ["gastronomie-kaffeeuebergabe-800.webp", "gastronomie-kaffeeuebergabe-1600.webp"],
+  "fitness.html": ["freihantelbereich-collage-768.webp", "freihantelbereich-collage-1536.webp"],
+  "kontakt.html": ["aussenansicht-standort-887.webp", "aussenansicht-standort-1774.webp"]
+ };
+ for (const [page, assets] of Object.entries(pages)) {
+  const html = fs.readFileSync(path.join(versions, "02-next", page), "utf8");
+  assert.match(html, /loading="lazy" decoding="async"/);
+  assert.match(html, /srcset="[^"]+" sizes="[^"]+"/);
+  for (const asset of assets) {
+   assert.match(html, new RegExp("assets/kiels-authentic/" + asset.replace(".", "\\.")));
+   const response = await fetch(base + "/next/assets/kiels-authentic/" + asset);
+   assert.equal(response.status, 200, asset);
+   assert.match(response.headers.get("content-type"), /image\/webp/);
+  }
+ }
+});
+
 test("local API aliases preserve validation/spam and cannot activate HighLevel", async () => {
  const previousToken = process.env.HIGHLEVEL_PRIVATE_TOKEN;
  const previousLocation = process.env.HIGHLEVEL_LOCATION_ID;
