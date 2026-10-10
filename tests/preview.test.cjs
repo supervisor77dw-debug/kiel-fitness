@@ -62,7 +62,7 @@ test("selection, directory redirects and both complete sites are served", async 
   assert.equal(redirect.status, 302);
   assert.equal(redirect.headers.get("location"), "/" + version + "/");
   const pages = ["", "fitness.html", "health.html", "kurse.html", "wellness.html", "kontakt.html", "agbs.html", "impressum.html", "datenschutz.html", "script.js", "responsive.css"];
-  if (version === "next") pages.push("hausordnung.html", "firmenfitness.html", "arbeitgeber-empfehlen.html", "firmenfitness.js");
+  if (version === "next") pages.push("hausordnung.html", "firmenfitness.html", "arbeitgeber-empfehlen.html", "kinderbetreuung.html", "firmenfitness.js");
   for (const page of pages) {
    const response = await fetch(base + "/" + version + "/" + page);
    assert.equal(response.status, 200, version + "/" + page);
@@ -111,6 +111,25 @@ test("approved training, bistro and location images use responsive local derivat
    assert.match(response.headers.get("content-type"), /image\/webp/);
   }
  }
+});
+
+test("childcare pages use both approved responsive image sources", async () => {
+ const home = fs.readFileSync(path.join(versions, "02-next", "index.html"), "utf8");
+ const childcare = fs.readFileSync(path.join(versions, "02-next", "kinderbetreuung.html"), "utf8");
+ for (const asset of [
+  "kinderhort-spiellandschaft-724.webp",
+  "kinderhort-spiellandschaft-1448.webp",
+  "kinderhort-aufenthaltsbereich-724.webp",
+  "kinderhort-aufenthaltsbereich-1448.webp"
+ ]) {
+  assert.match(home + childcare, new RegExp("assets/kiels-authentic/" + asset.replace(".", "\\.")));
+  const response = await fetch(base + "/next/assets/kiels-authentic/" + asset);
+  assert.equal(response.status, 200, asset);
+  assert.match(response.headers.get("content-type"), /image\/webp/);
+ }
+ assert.match(home, /href="kinderbetreuung\.html">Kinderbetreuung entdecken/);
+ assert.match(childcare, /Montag–Freitag[\s\S]*08:30–12:00 Uhr[\s\S]*15:00–19:00 Uhr/);
+ assert.match(childcare, /Samstag–Sonntag[\s\S]*08:30–12:00 Uhr/);
 });
 
 test("local API aliases preserve validation/spam and cannot activate HighLevel", async () => {

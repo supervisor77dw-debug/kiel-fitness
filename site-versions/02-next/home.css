@@ -180,6 +180,29 @@ p + p { margin-top: 16px; }
 .extras-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 32px; }
 .extras-grid article { padding-top: 24px; border-top: 1px solid var(--line); }
 .extras-grid p { color: var(--muted); margin-block: 16px; font-size: 15px; }
+.childcare-feature { position: relative; overflow: hidden; background: linear-gradient(135deg,rgba(253,199,30,.08),transparent 52%),var(--navy-soft); }
+.childcare-feature-grid { display: grid; grid-template-columns: minmax(280px,.72fr) minmax(0,1.28fr); gap: 64px; align-items: center; }
+.childcare-feature-copy > p:not(.eyebrow) { max-width: 500px; margin-top: 24px; color: var(--muted); }
+.childcare-feature-copy .button { margin-top: 28px; }
+.childcare-feature-gallery { position: relative; min-height: 510px; padding: 0 72px 72px 0; }
+.childcare-feature-gallery figure { margin: 0; overflow: hidden; border: 1px solid rgba(255,255,255,.16); border-radius: var(--radius); background: var(--navy); box-shadow: var(--shadow-soft); }
+.childcare-feature-gallery img { width: 100%; aspect-ratio: 4/3; object-fit: contain; }
+.childcare-feature-main { width: 88%; }
+.childcare-feature-secondary { position: absolute; right: 0; bottom: 0; width: 44%; }
+.childcare-callout { padding-top: 0; }
+.childcare-callout .support-panel { display: grid; grid-template-columns: 150px minmax(0,1fr) auto; gap: 24px 32px; align-items: center; background: linear-gradient(135deg,rgba(253,199,30,.08),transparent 55%); }
+.childcare-callout .eyebrow { margin: 0; }
+.childcare-callout h2 { font-size: clamp(26px,3vw,38px); }
+.childcare-callout .support-panel > p:not(.eyebrow) { margin: 0; }
+.childcare-page .page-visual img,.childcare-room-image img { width: 100%; aspect-ratio: 4/3; object-fit: contain; background: var(--navy-soft); }
+.childcare-room-grid { display: grid; grid-template-columns: 1.08fr .92fr; gap: 64px; align-items: center; }
+.childcare-room-image { margin: 0; overflow: hidden; border-radius: var(--radius); box-shadow: var(--shadow-soft); }
+.childcare-room-copy > p:not(.eyebrow) { margin-top: 24px; color: var(--muted); }
+.childcare-schedule .hours-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.childcare-notes { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.childcare-notes .info-card,.childcare-notes .support-panel { height: 100%; }
+.childcare-notes ul { margin: 20px 0 0; padding-left: 20px; color: var(--muted); }
+.childcare-notes li + li { margin-top: 10px; }
 .extras-grid .text-link { font-size: 14px; }
 .hours-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 20px; }
 .hours { padding: 26px; border-radius: 16px; border: 1px solid var(--line); }
@@ -266,6 +289,11 @@ p + p { margin-top: 16px; }
  .tariff h3 { font-size: 20px; }
  .tariff .button { font-size: 13px; }
  .hours-grid { grid-template-columns: repeat(2,minmax(0,1fr)); }
+ .childcare-feature-grid { gap: 36px; }
+ .childcare-feature-gallery { min-height: 430px; padding: 0 52px 52px 0; }
+ .childcare-callout .support-panel { grid-template-columns: 1fr 1fr; }
+ .childcare-callout .support-panel > p:not(.eyebrow) { grid-column: 1 / -1; }
+ .childcare-room-grid { gap: 36px; }
 }
 @media (max-width: 760px) {
  body { padding-bottom: calc(88px + env(safe-area-inset-bottom)); }
@@ -311,6 +339,14 @@ p + p { margin-top: 16px; }
  .membership-details { gap: 28px; }
  .benefit-list { grid-template-columns: 1fr; }
  .hours-grid { grid-template-columns: 1fr; gap: 12px; }
+ .childcare-feature-grid,.childcare-room-grid,.childcare-notes { grid-template-columns: 1fr; }
+ .childcare-feature-copy .button { width: 100%; }
+ .childcare-feature-gallery { display: grid; min-height: 0; padding: 0; gap: 14px; }
+ .childcare-feature-main { width: 100%; }
+ .childcare-feature-secondary { position: static; width: 82%; justify-self: end; }
+ .childcare-callout .support-panel { grid-template-columns: 1fr; gap: 16px; }
+ .childcare-callout .support-panel > p:not(.eyebrow) { grid-column: auto; }
+ .childcare-schedule .hours-grid { grid-template-columns: 1fr; }
  .hours dl { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
  .hours dd { margin: 0; text-align: right; font-size: 15px; }
  .closing { padding: 40px 24px; margin-block: 32px 48px; }
