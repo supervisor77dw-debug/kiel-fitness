@@ -579,3 +579,17 @@ Medien-Auslieferung und Go-Live-Sperre, 10.10.2026
 - Ein Build oder Deployment darf nicht freigegeben werden, wenn der
   Medienaudit fehlende Quelldateien, Build-Dateien oder HTTP-Status ungleich
   200 meldet.
+
+Bildintegration Runde 1, 11.10.2026
+- Freigegebene Quellen:
+  ../08_BILDOPTIMIERUNG_2026/
+- Responsive WebP-Derivate liegen unter assets/areas/. Die Quelldateien im
+  zentralen Dropbox-Ordner bleiben unveraendert.
+- Eingesetzt werden vier Startseitenmotive, vier Trainingsbereiche, drei
+  Kursraeume, sechs Wellnessmotive und das Bistro-Hauptmotiv.
+- Die zweite KEISER-Zirkel-Perspektive und die zweite Damensauna-Perspektive
+  bleiben wegen inhaltlicher Redundanz Reserve und werden nicht zusaetzlich
+  ausgeliefert.
+- Alle Bilder unterhalb des initial sichtbaren Bereichs verwenden Lazy
+  Loading, definierte Abmessungen, srcset und sizes. Die bestehenden Hero-
+  Bilder und die LES-MILLS-Kursmotive bleiben unveraendert.

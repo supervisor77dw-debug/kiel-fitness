@@ -94,19 +94,21 @@ test("authentic homepage studio image is served from the optimized local WebP as
  assert.deepEqual(Buffer.from(await response.arrayBuffer()), expected);
 });
 
-test("approved training, bistro and location images use responsive local derivatives", async () => {
+test("approved round-one and location images use responsive local derivatives", async () => {
  const pages = {
-  "index.html": ["gastronomie-kaffeeuebergabe-800.webp", "gastronomie-kaffeeuebergabe-1600.webp"],
-  "fitness.html": ["freihantelbereich-collage-768.webp", "freihantelbereich-collage-1536.webp"],
-  "kontakt.html": ["aussenansicht-standort-887.webp", "aussenansicht-standort-1774.webp"]
+  "index.html": ["assets/areas/bistro-coffee-724.webp", "assets/areas/bistro-coffee-1448.webp"],
+  "fitness.html": ["assets/areas/free-weights-768.webp", "assets/areas/free-weights-1536.webp"],
+  "kurse.html": ["assets/areas/course-spinning-800.webp", "assets/areas/course-spinning-1600.webp"],
+  "wellness.html": ["assets/areas/wellness-terrace-724.webp", "assets/areas/wellness-terrace-1448.webp"],
+  "kontakt.html": ["assets/kiels-authentic/aussenansicht-standort-887.webp", "assets/kiels-authentic/aussenansicht-standort-1774.webp"]
  };
  for (const [page, assets] of Object.entries(pages)) {
   const html = fs.readFileSync(path.join(versions, "02-next", page), "utf8");
   assert.match(html, /loading="lazy" decoding="async"/);
   assert.match(html, /srcset="[^"]+" sizes="[^"]+"/);
   for (const asset of assets) {
-   assert.match(html, new RegExp("assets/kiels-authentic/" + asset.replace(".", "\\.")));
-   const response = await fetch(base + "/next/assets/kiels-authentic/" + asset);
+   assert.match(html, new RegExp(asset.replaceAll("/", "\\/").replace(".", "\\.")));
+   const response = await fetch(base + "/next/" + asset);
    assert.equal(response.status, 200, asset);
    assert.match(response.headers.get("content-type"), /image\/webp/);
   }
