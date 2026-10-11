@@ -4,6 +4,14 @@ Alle Website-Optimierungen erfolgen hier. Current/Archiv und shared bleiben
 eingefroren. Eigene Ressourcen unter assets oder wix-clone haben Vorrang vor
 dem shared-Snapshot. Versionsarchitektur: ..\README.txt.
 
+Bildpaket 2 – lokal integriert, noch nicht deployed
+Elf freigegebene Kursmotive verwenden unter assets/courses jeweils die
+vorbereiteten 800- und 1200-Pixel-WebPs mit srcset und sizes. Ersetzt wurden
+BODYPUMP, BODYBALANCE, Strength Development, BODYATTACK, BODYCOMBAT, LM Step,
+LES MILLS CORE, LES MILLS TONE, Rückenfit, Wirbelsäulengymnastik und Step BBP.
+Die alten Kursbilder bleiben im unveränderten shared-Snapshot erhalten.
+BODYATTACK nutzt wegen des Hochformats eine eigene vertikale Fokusposition.
+
 Gemeinsames freigegebenes Designsystem
 home.css gilt für alle neun Seiten, script.js für Navigation und Formular.
 1240 px maximale Contentbreite; 64 px Abschnittsabstand, mobil 40 px.
