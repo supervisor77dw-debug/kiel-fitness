@@ -359,7 +359,8 @@ test("approved Biosauna photo is responsive while health diagnostics stay distin
  assert.match(wellness, /wellness-mixed-sauna-800\.webp/);
  assert.match(wellness, /wellness-women-sauna-800\.webp/);
  assert.match(health, /Körperanalyse mit InBody 770/);
- assert.match(health, /Eingangsdiagnostik bilden sie eine nachvollziehbare Grundlage für deinen individuellen Trainingsplan/);
+ assert.match(health, /Verstehen → Analysieren → Planen → Trainieren/);
+ assert.match(health, /Gemeinsam erfassen wir deine Ausgangssituation, deine Ziele und wichtige individuelle Voraussetzungen/);
  assert.match(health, /health-dr-hosch-original\.png/);
  assert.match(health, /<h1>Gesundheitstraining in Kiel/);
  assert.match(fs.readFileSync(path.join(next, "home.css"), "utf8"), /body\[data-page="health"\] \.page-hero h1 \{ font-size: clamp\(28px,8vw,34px\); \}/);
@@ -375,10 +376,10 @@ test("health page presents the authentic InBody 770 photo with a responsive asse
  assert.doesNotMatch(health, /inbody-770-placeholder|Übergangsvisual – ein eigenes KIELS-Foto folgt/);
  assert.match(health, /Körperfettanteil/);
  assert.match(health, /Muskelmasse/);
- assert.match(health, /Körperwasser · ECW\/ICW/);
+ assert.match(health, /Körperwasser/);
  assert.match(health, /Viszerales Fett/);
  assert.match(health, /Phasenwinkel/);
- assert.match(health, /<strong>Analyse<\/strong>[\s\S]*<strong>Eingangsdiagnostik<\/strong>[\s\S]*<strong>Individueller Trainingsplan<\/strong>/);
+ assert.match(health, /<strong>Körperanalyse<\/strong>[\s\S]*<strong>Eingangsdiagnostik<\/strong>[\s\S]*<strong>Individueller Trainingsplan<\/strong>/);
  assert.match(css, /\.health-analysis \{ display: grid; grid-template-columns: minmax\(0,\.95fr\) minmax\(0,1\.05fr\);/);
  assert.match(css, /\.health-analysis \{ grid-template-columns: 1fr; \}/);
  assert.equal(fs.readFileSync(path.join(next, asset)).toString("ascii", 8, 12), "WEBP");
@@ -522,6 +523,27 @@ test("course inventory maps all existing offerings, verified LES MILLS links and
  }
  assert.doesNotMatch(html, /<template data-course-detail>/);
  assert.doesNotMatch(html, /Heilwirkung|reinigt den Körper|reinigt das Herz-Kreislauf-System|Millionen Teilnehmer|schnellsten Methoden/);
+});
+test("final course, health and wellness harmonization uses the approved responsive assets", () => {
+ const courses = fs.readFileSync(path.join(next, "kurse.html"), "utf8");
+ const health = fs.readFileSync(path.join(next, "health.html"), "utf8");
+ const wellness = fs.readFileSync(path.join(next, "wellness.html"), "utf8");
+ assert.match(courses, /kiels-kurse-hero-20261012-800\.webp 800w, assets\/courses\/kiels-kurse-hero-20261012-1200\.webp 1200w/);
+ assert.match(courses, /kiels-lesmills-step-final-800\.webp 800w, assets\/courses\/kiels-lesmills-step-final-1200\.webp 1200w/);
+ assert.match(courses, /kiels-kurs-ashtanga-yoga-neu-20261012-800\.webp 800w, assets\/courses\/kiels-kurs-ashtanga-yoga-neu-20261012-1200\.webp 1200w/);
+ assert.match(courses, /BODYPUMP HEAVY setzt auf kontrolliertes Krafttraining mit höheren Gewichten und längeren Erholungsphasen/);
+ assert.doesNotMatch(courses, /course-07\.jpg|kiels-lesmills-step-(?:800|1200)\.webp|kiels-kurs-ashtanga-yoga-(?:800|1200)\.webp|[A-Za-zÄÖÜäöüß]Übungen/);
+
+ assert.equal((health.match(/<strong>Körperanalyse<\/strong>/g) || []).length, 1);
+ assert.equal((health.match(/<strong>Eingangsdiagnostik<\/strong>/g) || []).length, 1);
+ assert.equal((health.match(/<strong>Individueller Trainingsplan<\/strong>/g) || []).length, 1);
+ assert.match(health, /href="kontakt\.html\?interest=health">Beratung anfragen/);
+ assert.match(health, /Die Website ersetzt keine medizinische Beratung und verspricht keine Heilwirkung/);
+
+ assert.match(wellness, /kiels-wellness-infrarotsauna-800\.webp 800w, assets\/wellness\/kiels-wellness-infrarotsauna-1200\.webp 1200w/);
+ assert.match(wellness, /In Vorbereitung · Visualisierung/);
+ assert.match(wellness, /die Kabine ist noch nicht in Betrieb/);
+ assert.doesNotMatch(wellness, /Dampfbad|wellness-dampfbad\.png/);
 });
 test("postnatal Aufbau Rückbildung and established Rückenfitness remain separate", () => {
  const courses = fs.readFileSync(path.join(next, "kurse.html"), "utf8");

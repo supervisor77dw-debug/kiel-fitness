@@ -423,15 +423,20 @@ body[data-page="kurse"] .page-hero { align-items: start; }
 .analysis-flow li { display: flex; min-width: 0; flex-direction: column; gap: 5px; padding: 14px 16px; border: 1px solid var(--line); border-radius: 12px; background: rgba(255,255,255,.025); }
 .analysis-flow li span { color: var(--yellow); font-size: 11px; font-weight: 700; letter-spacing: .1em; }
 .analysis-flow li strong { font-size: 14px; line-height: 1.35; }
+.analysis-flow li p { color: var(--muted); margin-top: 5px; font-size: 14px; }
 .portrait-card img { width: 160px; height: 190px; object-fit: contain; margin-bottom: 24px; }
+.health-offers { grid-template-columns: repeat(2,minmax(0,1fr)); }
 .wellness-grid, .course-grid { display: grid; grid-template-columns: repeat(2,minmax(0,1fr)); gap: 24px; }
 .wellness-impressions { grid-template-columns: repeat(3,minmax(0,1fr)); gap: 24px; }
 .wellness-schedule-card { max-width: 760px; margin-inline: auto; }
 .wellness-bistro-link { max-width: 760px; margin: 24px auto 0; }
 .media-card { overflow: hidden; border-radius: var(--radius); background: var(--navy-soft); border: 1px solid var(--line); }
 .media-card > img { width: 100%; aspect-ratio: 1.65; object-fit: cover; }
+.media-card > picture { display: block; }
+.media-card > picture img { display: block; width: 100%; aspect-ratio: 1.65; object-fit: cover; }
 .media-card > img.course-image-bodyattack { object-position: center 24%; }
 .media-card > div { padding: 28px; }
+.card-status { color: var(--yellow); font-size: 12px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; }
 .course-grid .media-card p { font-size: 15px; }
 .course-jumps { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 28px; }
 .review-note a { text-decoration: underline; text-underline-offset: 4px; color: var(--yellow); }
@@ -506,6 +511,8 @@ body[data-page="kurse"] .page-hero { align-items: start; }
  .health-analysis { grid-template-columns: 1fr; }
  .analysis-flow { grid-template-columns: 1fr; gap: 8px; }
  .analysis-flow li { display: grid; grid-template-columns: 34px minmax(0,1fr); align-items: baseline; }
+ .analysis-flow li p { grid-column: 2; }
+ .health-offers { grid-template-columns: 1fr; }
  .info-card, .contact-form { padding: 24px; }
  .choices { grid-template-columns: 1fr; }
  .media-card > div { padding: 24px; }
@@ -954,6 +961,8 @@ body[data-page="health"] .button.secondary {
  border-color: rgba(32,40,44,.35);
  background: rgba(255,255,255,.28);
 }
+
+body[data-page="kurse"] .page-visual img { aspect-ratio: 16 / 9; }
 body[data-page="health"] .button.secondary:hover { background: rgba(255,255,255,.6); }
 body[data-page="health"] .closing {
  --muted: #c3cdd1;

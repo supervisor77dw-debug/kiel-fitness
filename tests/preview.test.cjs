@@ -123,6 +123,25 @@ test("approved round-one and location images use responsive local derivatives", 
  }
 });
 
+test("final course and infrared sauna images are served as local WebP assets", async () => {
+ const assets = [
+  "assets/courses/kiels-kurse-hero-20261012-800.webp",
+  "assets/courses/kiels-kurse-hero-20261012-1200.webp",
+  "assets/courses/kiels-lesmills-step-final-800.webp",
+  "assets/courses/kiels-lesmills-step-final-1200.webp",
+  "assets/courses/kiels-kurs-ashtanga-yoga-neu-20261012-800.webp",
+  "assets/courses/kiels-kurs-ashtanga-yoga-neu-20261012-1200.webp",
+  "assets/wellness/kiels-wellness-infrarotsauna-800.webp",
+  "assets/wellness/kiels-wellness-infrarotsauna-1200.webp"
+ ];
+ for (const asset of assets) {
+  const response = await fetch(base + "/next/" + asset);
+  assert.equal(response.status, 200, asset);
+  assert.match(response.headers.get("content-type"), /image\/webp/);
+  assert.equal(Buffer.from(await response.arrayBuffer()).toString("ascii", 8, 12), "WEBP", asset);
+ }
+});
+
 test("childcare pages use both approved responsive image sources", async () => {
  const home = fs.readFileSync(path.join(versions, "02-next", "index.html"), "utf8");
  const childcare = fs.readFileSync(path.join(versions, "02-next", "kinderbetreuung.html"), "utf8");

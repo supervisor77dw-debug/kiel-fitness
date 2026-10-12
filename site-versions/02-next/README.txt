@@ -1,4 +1,4 @@
-KIELS Next – aktiver Website-Arbeitsstand, UX-Finishing, 05.10.2026
+KIELS Next – aktiver Website-Arbeitsstand, finale Harmonisierung, 12.10.2026
 
 Alle Website-Optimierungen erfolgen hier. Current/Archiv und shared bleiben
 eingefroren. Eigene Ressourcen unter assets oder wix-clone haben Vorrang vor
@@ -13,6 +13,19 @@ Bestandsbilder bleiben erhalten. Alle 28 Karten verwenden freigegebene
 800-/1200-Pixel-WebPs. Eine App-Verlinkung war im aktiven Next-Stand nicht
 vorhanden und wurde daher nicht erfunden.
 BODYATTACK nutzt wegen des Hochformats eine eigene vertikale Fokusposition.
+
+Finale Seitenharmonisierung 12.10.2026
+- Die Kursseite nutzt das freigegebene responsive Hero-Motiv sowie die finalen
+  WebP-Paare für LES MILLS STEP und Ashtanga Yoga. BODYPUMP HEAVY wurde fachlich
+  präzisiert; der Katalog bleibt bei 28 Kursarten in sechs Kategorien.
+- Die Gesundheitsseite folgt durchgängig dem Weg Verstehen, Analysieren, Planen,
+  Trainieren. InBody-Analyse, persönliche Planung, Arztsprechstunde,
+  Physiotherapie, Rückenfitness und postnatale Rückbildung sind klar getrennt.
+- Das bisherige Dampfbad-Angebot ist entfernt. Eine geplante Infrarotsauna wird
+  mit responsive WebPs ausdrücklich als "In Vorbereitung · Visualisierung"
+  gezeigt; Bild und Text behaupten keine bereits installierte Kabine.
+- Die neuen Bilder bleiben als unveränderte freigegebene WebP-Quelldateien
+  erhalten. Responsive Auslieferung erfolgt mit srcset und sizes.
 
 Gemeinsames freigegebenes Designsystem
 home.css gilt für alle neun Seiten, script.js für Navigation und Formular.
@@ -48,9 +61,9 @@ Keine SEO-Scores, keine neuen medizinischen Versprechen oder Schema-Fakten.
 Seite | Fokus | H1 | Title | Meta Description | Canonical | Interne Links | Alt-Texte | Befund
 Home | Fitnessstudio Kiel | Mehr als Fitness. Dein Fitnessstudio in Kiel. | Fitnessstudio Kiel – Sauna, Kurse & Kinderbetreuung | Vorhandene lokale Angebotsbeschreibung beibehalten | index.html | Leistungsseiten, Mitgliedschaft, Kinderbetreuung; Firmenfitness direkt #firmenfitness | Beschreibende Hauptbilder; leere Alt-Texte nur bei dekorativen verlinkten Kartenbildern mit gleichem Textziel | Kürzerer Hero, Google-Rating, unveränderte Tarife
 Fitness | Fitnesstraining Kiel | Fitnesstraining in Kiel. Dein Trainingsweg. | Fitnesstraining Kiel – Personal, Ausdauer & Zirkel | Vorhandene Beschreibung beibehalten | fitness.html | Gesundheit, Zirkel, Firmenfitness, Kontakt | Hero/Trainingsbereich konkretisiert | Suchintention in H1; Trainingswege/Betreuung/Zirkel klar
-Gesundheit | Gesundheitstraining Kiel | Gesundheitstraining in Kiel. Individuell begleitet. | Gesundheitstraining Kiel – Analyse & Betreuung | Neu: Körperanalyse, Sportdiagnostik, Trainingsplanung, Rückenfitness | health.html | Fitness-Trainingswege, Gesundheitskurse, Rückbildung-Anker, Firmenfitness, Kontakt | Gesundheitsmotiv und Arztporträt konkretisiert | H1/Title/Description/Canonical vollständig; InBody 770, Planung und Betreuung erläutert
+Gesundheit | Gesundheitstraining Kiel | Gesundheitstraining in Kiel. Individuell begleitet. | Gesundheitstraining Kiel – Analyse & Betreuung | Körperanalyse, Sportdiagnostik, Trainingsplanung, Rückenfitness | health.html | Gesundheitskurse, Rückbildung-Anker, Gesundheitsberatung | Gesundheitsmotiv, InBody-Foto und Arztporträt konkretisiert | Klarer Weg von Analyse über Planung zum Training; InBody 770 und Betreuung erläutert
 Kurse | Fitnesskurse Kiel | Fitnesskurse in Kiel. Deinen Kurs finden. | Fitnesskurse Kiel – LES MILLS, Yoga & mehr | 28 Kursarten einschließlich Rückbildung und PDF-Kursplan | kurse.html | Sechs Kurswelten, Kursplan, Rückenfitness/Gesundheit, Kontakt | Alle Karten mit eigenem responsivem Kursmotiv | 28 Angebote; sieben ergänzende offizielle LES-MILLS-Links
-Wellness | Fitnessstudio mit Sauna Kiel | Dein Fitnessstudio mit Sauna in Kiel. Training und Auszeit. | Fitnessstudio mit Sauna Kiel – Wellness & Ruhe | Neu: bestätigte Saunen, Dampfbad, Ruheraum und veröffentlichte Zeiten | wellness.html | Öffnungszeiten, Fitness, Kontakt | Sauna-/Ruheraum-/Wellnessmotive konkretisiert | H1/Title/Description/Canonical vollständig; keine Betriebs-/Terminzusage erfunden
+Wellness | Fitnessstudio mit Sauna Kiel | Dein Fitnessstudio mit Sauna in Kiel. Training und Auszeit. | Fitnessstudio mit Sauna Kiel – Wellness & Ruhe | Bestätigte Saunen, Ruheraum, veröffentlichte Zeiten und geplante Infrarotsauna | wellness.html | Öffnungszeiten, Fitness, Kontakt | Sauna-/Ruheraum-/Wellnessmotive; Infrarotsauna als Visualisierung | H1/Title/Description/Canonical vollständig; Infrarotsauna klar als in Vorbereitung bezeichnet
 Kontakt | KIELS Kiel Kontakt / Probetraining | Kontakt zu KIELS in Kiel. Deine Frage zählt. | Kontakt – KIELS Fitness Kiel, Probetraining & Fragen | Vorhandene Adresse/Telefon/Anfragebeschreibung beibehalten | kontakt.html | Öffnungszeiten, Datenschutz; direkte Telefon/Mail/Anfahrt | Logo vorhanden, keine zusätzlichen Inhaltsbilder | Einführung priorisiert echte Telefon-/Mailanfrage; Versandhinweis bleibt
 Mitgliedschaft | Tarife / Mitgliedschaft Kiel | Nutzt Home-H1, eigener Abschnitt H2 "Welcher Tarif passt zu dir?" | Nutzt Home-Title | Nutzt Home-Description | index.html (kein separates Dokument) | index.html#mitgliedschaft, Mail-/Telefonberatung | Keine eigenen Bilder; keine künstlichen Alt-Texte | Alle drei Tarifkarten; Late-Night vollständig bestätigt
 Rechtsseiten | AGB / Impressum / Datenschutz | Je eine bestehende H1 | Bestehende Titel | Unverändert | Unverändert | Gemeinsame Navigation/Rechtslinks | Gemeinsames Logo | Rechtlicher Hauptinhalt unverändert
