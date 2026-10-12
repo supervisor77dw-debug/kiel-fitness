@@ -446,7 +446,7 @@ test("all Next internal page links and fragment CTA destinations resolve", () =>
   }
  }
 });
-test("approved Late-Night terms are complete and missing course PDF is not fabricated", () => {
+test("approved Late-Night terms and the released course PDF are complete", () => {
  const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
  const membership = home.match(/<section\b[^>]*id="mitgliedschaft"[\s\S]*?<\/section>/);
  assert.ok(membership, "membership section exists");
@@ -465,31 +465,40 @@ test("approved Late-Night terms are complete and missing course PDF is not fabri
  }
  const courses = fs.readFileSync(path.join(next, "kurse.html"), "utf8");
  assert.match(courses, /id="kursplan"/);
- assert.match(courses, /PDF-Download wird ergänzt, sobald der aktuelle Plan vorliegt/);
- assert.doesNotMatch(courses, /href="kursplan\.pdf"|href="#"/);
+ assert.match(courses, /href="assets\/documents\/kiels-kursplan-mai-2026\.pdf" download/);
+ assert.doesNotMatch(courses, /href="#"/);
 });
 test("course inventory maps all existing offerings, verified LES MILLS links and local-only courses", () => {
  const inventory = JSON.parse(fs.readFileSync(path.join(next, "course-links.json"), "utf8"));
  const html = fs.readFileSync(path.join(next, "kurse.html"), "utf8");
- assert.equal(inventory.courses.length, 25);
- assert.equal(new Set(inventory.courses.map(c => c.id)).size, 25);
- assert.equal((html.match(/data-course-id="/g) || []).length, 25);
- assert.equal(inventory.courses.filter(c => c.group === "LES MILLS").length, 8);
- assert.equal(inventory.courses.filter(c => c.officialLinkUseful).length, 8);
+ assert.equal(inventory.courses.length, 28);
+ assert.equal(new Set(inventory.courses.map(c => c.id)).size, 28);
+ assert.equal((html.match(/data-course-id="/g) || []).length, 28);
+ assert.equal(inventory.courses.filter(c => c.group === "LES MILLS").length, 7);
+ assert.equal(inventory.courses.filter(c => c.officialLinkUseful).length, 7);
+ assert.deepEqual(
+  Object.fromEntries(["power", "gesundheit", "body-mind", "cardio", "beweglichkeit", "core"].map(category => [
+   category,
+   inventory.courses.filter(course => course.categoryId === category).length
+  ])),
+  { power: 5, gesundheit: 2, "body-mind": 7, cardio: 10, beweglichkeit: 2, core: 2 }
+ );
+ assert.doesNotMatch(html, /Strength Development|Wirbelsäulengymnastik/);
  const programs = {
-  "course-01": ["bodypump", "BODYPUMP"],
-  "course-02": ["strength-development", "LES MILLS STRENGTH DEVELOPMENT"],
-  "course-07": ["bodybalance", "BODYBALANCE"],
-  "course-08": ["bodyattack", "BODYATTACK"],
-  "course-09": ["lmi-step", "LMI STEP"],
-  "course-16": ["bodycombat", "BODYCOMBAT"],
-  "course-23": ["les-mills-core", "LES MILLS CORE"],
-  "course-24": ["les-mills-tone", "LES MILLS TONE"]
+  "course-bodypump": ["bodypump", "BODYPUMP"],
+  "course-les-mills-tone": ["les-mills-tone", "LES MILLS TONE"],
+  "course-bodybalance": ["bodybalance", "BODYBALANCE"],
+  "course-bodyattack": ["bodyattack", "BODYATTACK"],
+  "course-bodycombat": ["bodycombat", "BODYCOMBAT"],
+  "course-les-mills-step": ["lmi-step", "LMI STEP"],
+  "course-les-mills-core": ["les-mills-core", "LES MILLS CORE"]
  };
  for (const course of inventory.courses) {
   const card = html.match(new RegExp('<article class="media-card" data-course-id="' + course.id + '"[\\s\\S]*?</article>'))?.[0];
   assert.ok(card, course.id);
-  assert.ok(card.includes("<h3>" + course.name + "</h3>"));
+  assert.ok(card.includes("<h3>" + course.name.replaceAll("&", "&amp;") + "</h3>"));
+  assert.match(card, /srcset="assets\/courses\/kiels-[^"]+-800\.webp 800w, assets\/courses\/kiels-[^"]+-1200\.webp 1200w"/);
+  assert.match(card, /\ssizes="[^"]+"/);
   const external = [...card.matchAll(/href="(https?:[^"]+)"/g)];
   if (programs[course.id]) {
    const [slug, program] = programs[course.id];
@@ -514,18 +523,18 @@ test("course inventory maps all existing offerings, verified LES MILLS links and
  assert.doesNotMatch(html, /<template data-course-detail>/);
  assert.doesNotMatch(html, /Heilwirkung|reinigt den Körper|reinigt das Herz-Kreislauf-System|Millionen Teilnehmer|schnellsten Methoden/);
 });
-test("postnatal Aufbau Rückbildung and established Rückenfit remain separate", () => {
+test("postnatal Aufbau Rückbildung and established Rückenfitness remain separate", () => {
  const courses = fs.readFileSync(path.join(next, "kurse.html"), "utf8");
  const health = fs.readFileSync(path.join(next, "health.html"), "utf8");
- const postnatal = courses.match(/data-course-id="course-04"[\s\S]*?<\/article>/)[0];
- const back = courses.match(/data-course-id="course-25"[\s\S]*?<\/article>/)[0];
+ const postnatal = courses.match(/data-course-id="course-aufbau-rueckbildung"[\s\S]*?<\/article>/)[0];
+ const back = courses.match(/data-course-id="course-rueckenfitness"[\s\S]*?<\/article>/)[0];
  assert.match(postnatal, /Aufbau Rückbildung/);
  assert.match(postnatal, /nach einer Schwangerschaft oder Entbindung/);
- assert.match(back, /<h3>Rückenfit<\/h3>/);
- assert.match(back, /Kräftigung der Rumpfmuskulatur/);
+ assert.match(back, /<h3>Rückenfitness<\/h3>/);
+ assert.match(back, /Kräftigung der Rücken- und Rumpfmuskulatur/);
  assert.match(health, /href="kurse.html#rueckbildung"/);
- assert.match(health, /id="rueckenfit"/);
- assert.doesNotMatch(courses + health, /Aufbau Rückenbildung|Rückenfitness/);
+ assert.match(health, /id="rueckenfitness"/);
+ assert.doesNotMatch(courses + health, /Aufbau Rückenbildung|Rückenfit(?!ness)|Wirbelsäulengymnastik/);
 });
 test("all main pages have unique local SEO metadata, meaningful headings and accessible images", () => {
  const focus = { index: "Fitnessstudio", fitness: "Fitnesstraining", health: "Gesundheitstraining", kurse: "Fitnesskurse", wellness: "Fitnessstudio mit Sauna", kinderbetreuung: "Fitness", kontakt: "Kontakt" };

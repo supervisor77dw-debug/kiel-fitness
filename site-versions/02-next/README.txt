@@ -4,12 +4,14 @@ Alle Website-Optimierungen erfolgen hier. Current/Archiv und shared bleiben
 eingefroren. Eigene Ressourcen unter assets oder wix-clone haben Vorrang vor
 dem shared-Snapshot. Versionsarchitektur: ..\README.txt.
 
-Bildpaket 2 – lokal integriert, noch nicht deployed
-Elf freigegebene Kursmotive verwenden unter assets/courses jeweils die
-vorbereiteten 800- und 1200-Pixel-WebPs mit srcset und sizes. Ersetzt wurden
-BODYPUMP, BODYBALANCE, Strength Development, BODYATTACK, BODYCOMBAT, LM Step,
-LES MILLS CORE, LES MILLS TONE, Rückenfit, Wirbelsäulengymnastik und Step BBP.
-Die alten Kursbilder bleiben im unveränderten shared-Snapshot erhalten.
+Finaler Kursstand 12.10.2026
+Kursplan Mai 2026 ist als weiterhin aktuelle Grundlage freigegeben und unter
+assets/documents/kiels-kursplan-mai-2026.pdf eingebunden. Der Katalog enthält
+28 Kursarten in sechs primären Kategorien. Strength Development und
+Wirbelsäulengymnastik sind nicht mehr als aktuelle Karten gelistet; ihre
+Bestandsbilder bleiben erhalten. Alle 28 Karten verwenden freigegebene
+800-/1200-Pixel-WebPs. Eine App-Verlinkung war im aktiven Next-Stand nicht
+vorhanden und wurde daher nicht erfunden.
 BODYATTACK nutzt wegen des Hochformats eine eigene vertikale Fokusposition.
 
 Gemeinsames freigegebenes Designsystem
@@ -27,10 +29,9 @@ Fachlich bestätigt / korrigiert
   Die frühere offene Abrechnungsfrage ist erledigt; Preis/Laufzeit unverändert.
 - Aufbau Rückbildung: für Frauen nach Schwangerschaft/Entbindung, postnatal.
   Falsche frühere Bezeichnung und rückenorientierte Beschreibung korrigiert.
-- Rückenfit: eigenes bereits auf Gesundheit beschriebenes Angebot, getrennt
-  von Rückbildung. Nun zusätzlich als eigene Karte im Kurskatalog sichtbar.
-  25 Angebote im Inventar = bisherige 24 Karten plus vorhandenes Rückenangebot;
-  kein neues Leistungsprogramm eingeführt.
+- Rückenfitness: eigenes Gesundheitsangebot, getrennt von der postnatalen
+  Rückbildung und konsistent auf Kurs- und Gesundheitsseite benannt.
+- Die 28 Angebote entsprechen dem weiterhin freigegebenen Kursplan Mai 2026.
 - Pauschaler offener Punkt "Bereichszeiten" entfällt. Bestehende veröffentlichte
   Sauna-/Kinderbetreuungszeiten wurden nicht geändert.
 - Kursbeschreibungen gekürzt; Wirkungs-/Heilversprechen und pauschale
@@ -47,8 +48,8 @@ Keine SEO-Scores, keine neuen medizinischen Versprechen oder Schema-Fakten.
 Seite | Fokus | H1 | Title | Meta Description | Canonical | Interne Links | Alt-Texte | Befund
 Home | Fitnessstudio Kiel | Mehr als Fitness. Dein Fitnessstudio in Kiel. | Fitnessstudio Kiel – Sauna, Kurse & Kinderbetreuung | Vorhandene lokale Angebotsbeschreibung beibehalten | index.html | Leistungsseiten, Mitgliedschaft, Kinderbetreuung; Firmenfitness direkt #firmenfitness | Beschreibende Hauptbilder; leere Alt-Texte nur bei dekorativen verlinkten Kartenbildern mit gleichem Textziel | Kürzerer Hero, Google-Rating, unveränderte Tarife
 Fitness | Fitnesstraining Kiel | Fitnesstraining in Kiel. Dein Trainingsweg. | Fitnesstraining Kiel – Personal, Ausdauer & Zirkel | Vorhandene Beschreibung beibehalten | fitness.html | Gesundheit, Zirkel, Firmenfitness, Kontakt | Hero/Trainingsbereich konkretisiert | Suchintention in H1; Trainingswege/Betreuung/Zirkel klar
-Gesundheit | Gesundheitstraining Kiel | Gesundheitstraining in Kiel. Individuell begleitet. | Gesundheitstraining Kiel – Analyse & Betreuung | Neu: Körperanalyse, Sportdiagnostik, Trainingsplanung, Rückenfit | health.html | Fitness-Trainingswege, Gesundheitskurse, Rückbildung-Anker, Firmenfitness, Kontakt | Gesundheitsmotiv und Arztporträt konkretisiert | H1/Title/Description/Canonical vollständig; InBody 770, Planung und Betreuung erläutert
-Kurse | Fitnesskurse Kiel | Fitnesskurse in Kiel. Deinen Kurs finden. | Fitnesskurse Kiel – LES MILLS, Yoga & Rückenfit | Neu: Kursangebot einschließlich Rückbildung; Kursplan anfragen | kurse.html | Sechs Kurswelten, Kursplan, Rückenfit/Gesundheit, Kontakt | Alle Karten mit Kursmotiv bezeichnet | 25 Angebote; acht ergänzende offizielle LES-MILLS-Links
+Gesundheit | Gesundheitstraining Kiel | Gesundheitstraining in Kiel. Individuell begleitet. | Gesundheitstraining Kiel – Analyse & Betreuung | Neu: Körperanalyse, Sportdiagnostik, Trainingsplanung, Rückenfitness | health.html | Fitness-Trainingswege, Gesundheitskurse, Rückbildung-Anker, Firmenfitness, Kontakt | Gesundheitsmotiv und Arztporträt konkretisiert | H1/Title/Description/Canonical vollständig; InBody 770, Planung und Betreuung erläutert
+Kurse | Fitnesskurse Kiel | Fitnesskurse in Kiel. Deinen Kurs finden. | Fitnesskurse Kiel – LES MILLS, Yoga & mehr | 28 Kursarten einschließlich Rückbildung und PDF-Kursplan | kurse.html | Sechs Kurswelten, Kursplan, Rückenfitness/Gesundheit, Kontakt | Alle Karten mit eigenem responsivem Kursmotiv | 28 Angebote; sieben ergänzende offizielle LES-MILLS-Links
 Wellness | Fitnessstudio mit Sauna Kiel | Dein Fitnessstudio mit Sauna in Kiel. Training und Auszeit. | Fitnessstudio mit Sauna Kiel – Wellness & Ruhe | Neu: bestätigte Saunen, Dampfbad, Ruheraum und veröffentlichte Zeiten | wellness.html | Öffnungszeiten, Fitness, Kontakt | Sauna-/Ruheraum-/Wellnessmotive konkretisiert | H1/Title/Description/Canonical vollständig; keine Betriebs-/Terminzusage erfunden
 Kontakt | KIELS Kiel Kontakt / Probetraining | Kontakt zu KIELS in Kiel. Deine Frage zählt. | Kontakt – KIELS Fitness Kiel, Probetraining & Fragen | Vorhandene Adresse/Telefon/Anfragebeschreibung beibehalten | kontakt.html | Öffnungszeiten, Datenschutz; direkte Telefon/Mail/Anfahrt | Logo vorhanden, keine zusätzlichen Inhaltsbilder | Einführung priorisiert echte Telefon-/Mailanfrage; Versandhinweis bleibt
 Mitgliedschaft | Tarife / Mitgliedschaft Kiel | Nutzt Home-H1, eigener Abschnitt H2 "Welcher Tarif passt zu dir?" | Nutzt Home-Title | Nutzt Home-Description | index.html (kein separates Dokument) | index.html#mitgliedschaft, Mail-/Telefonberatung | Keine eigenen Bilder; keine künstlichen Alt-Texte | Alle drei Tarifkarten; Late-Night vollständig bestätigt
@@ -63,19 +64,18 @@ Nicht allein aus Namen konstruierte URLs; keine Studios/Blogs/Embeds.
 
 KIELS-Kurs | Offizielles Programm | Offizielle geprüfte URL | Eingebaut
 BODYPUMP | BODYPUMP | https://www.lesmills.com/de/programme/bodypump | Ja
-Strength Development | LES MILLS STRENGTH DEVELOPMENT | https://www.lesmills.com/de/programme/strength-development | Ja
 BODYBALANCE® | BODYBALANCE | https://www.lesmills.com/de/programme/bodybalance | Ja
 BODYATTACK® | BODYATTACK | https://www.lesmills.com/de/programme/bodyattack | Ja
-LM Step® | LMI STEP | https://www.lesmills.com/de/programme/lmi-step | Ja
+LES MILLS STEP® | LMI STEP | https://www.lesmills.com/de/programme/lmi-step | Ja
 BODYCOMBAT® | BODYCOMBAT | https://www.lesmills.com/de/programme/bodycombat | Ja
 LES MILLS CORE® | LES MILLS CORE | https://www.lesmills.com/de/programme/les-mills-core | Ja
 LES MILLS TONE® | LES MILLS TONE | https://www.lesmills.com/de/programme/les-mills-tone | Ja
 
-LM Step wird auf der offiziellen deutschen Seite als LMI STEP geführt.
+LES MILLS STEP wird auf der offiziellen deutschen Seite als LMI STEP geführt.
 Step-Abfolgen, Cardio-/Kraftübungen, Step und optionale Gewichtsscheiben stimmen
 mit dem vorhandenen KIELS-Kurs überein. Die abweichende offizielle Bezeichnung
-bleibt transparent; die KIELS-Karte wurde nicht in einen anderen Kurs umbenannt.
-Vollständiges 25-Angebote-Inventar und Zuordnungsbelege: course-links.json.
+bleibt im Linktext transparent.
+Vollständiges 28-Angebote-Inventar und Zuordnungsbelege: course-links.json.
 
 UX/Technik der Kurslinks
 Je LES-MILLS-Karte genau ein "Mehr über [Programm] erfahren"-Textlink innerhalb
@@ -89,19 +89,16 @@ Die alten unsichtbaren Linktemplates und der BODYPUMP-Offenhinweis entfallen.
 Bewusst ohne externe Links
 Jumping und Zumba bleiben auf ausdrückliche Freigabe lokal beschrieben.
 Kein externer Anbieterlink erforderlich oder gesucht.
-Lokale Angebote: Wirbelsäulengymnastik, Aufbau Rückbildung, Rückenfit, Yoga,
-Pilates, Cycling, Bauch Beine Po, Step BBP, Fitnessboxen, Step Workout,
-Faszien Yoga, Flow Yoga, Ashtanga Yoga, Stretching und Bauch Intensiv.
-Rückenfit verlinkt ausschließlich intern auf health.html#rueckenfit.
+Lokale Angebote umfassen unter anderem Aufbau Rückbildung, Rückenfitness, Yoga,
+Pilates, Cycling, BBP, Step-BBP, Fitnessboxen, Step Workout, Body Workout, TRX,
+Yin-Yoga, Mobility & Stretch, Stretching und Bauch Intensiv.
+Rückenfitness verlinkt ausschließlich intern auf health.html#rueckenfitness.
 Rückbildung hat den stabilen lokalen Anker kurse.html#rueckbildung.
 
-Kursplan-PDF – vorbereitet, noch keine Datei
-Bereich kurse.html#kursplan mit verständlichem Status und Kontaktlink.
-Kein falscher Dateiname, leeres href, aktiver Download oder erfundene PDF.
-Sobald die freigegebene PDF geliefert wird, dort genau einen beschreibenden
-Download-Link einsetzen; Dateipfad, Version/Stand und Erreichbarkeit prüfen.
-Eigene PDF-Ressourcen gehören unter 02-next\assets und werden vom vorhandenen
-Builder übernommen, sobald sie im HTML unter assets referenziert sind.
+Kursplan-PDF
+Die weiterhin freigegebene Fassung Mai 2026 ist als lokale, versionierte
+Ressource eingebunden. Der Build- und Medienaudit prüft auch PDF-Signatur,
+Pfadauflösung und Auslieferung.
 
 Zukunftsanforderung: Kursplan-Upload für Mitarbeiter – NICHT IMPLEMENTIERT
 Nur berechtigte Mitarbeiter sollen PDF-Pläne einfach austauschen können,
@@ -140,7 +137,6 @@ Genehmigter Freigabelink nur für dieses Deployment; Zugriffsdaten ausschließli
 lokal im ignorierten .vercel. Projektweiter Login-Schutz unverändert.
 
 Konkrete verbleibende fachliche Punkte
-- Aktuelle Kursplan-PDF liefern.
 - Nächster Sauna-Samstag: kein konkreter Termin/Programm geliefert.
 - Aktueller Betrieb des Dampfbads und Arzt-/Physiotherapie-Termine sind nicht
   neu bestätigt; vorhandene Hinweise zur persönlichen Nachfrage bleiben.
@@ -380,7 +376,7 @@ Bewusst unverändert / offene Daten
 - TODO Inhalt: Kinderbetreuungs-Altersgruppen, genauer Anmeldeweg, Kosten/
   Tarifumfang und verantwortlicher Ansprechpartner verbindlich klären.
   Vorhandene veröffentlichte Zeiten und Hinweis "Mit Anmeldung" bleiben.
-- Aktuelle Kursplan-PDF und andere schon dokumentierte Betriebsdaten bleiben offen.
+- Andere schon dokumentierte Betriebsdaten bleiben offen.
 - Einschränkung: lokale Chromium-/Touch-Emulation, kein echter iOS-/Android-
   Gerätetest und kein vollständiger Screenreader- oder Lab-Performance-Test.
   Externe Google-/Matterport-Ziele nicht als automatisch geprüfte Inhalte ausgeben.

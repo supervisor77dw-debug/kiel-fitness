@@ -84,6 +84,14 @@ test("frozen resources resolve within each version without referencing live root
  }
 });
 
+test("released course plan is served locally as a PDF", async () => {
+ const expected = fs.readFileSync(path.join(versions, "02-next", "assets", "documents", "kiels-kursplan-mai-2026.pdf"));
+ const response = await fetch(base + "/next/assets/documents/kiels-kursplan-mai-2026.pdf");
+ assert.equal(response.status, 200);
+ assert.match(response.headers.get("content-type"), /application\/pdf/);
+ assert.deepEqual(Buffer.from(await response.arrayBuffer()), expected);
+});
+
 test("authentic homepage studio image is served from the optimized local WebP asset", async () => {
  const home = fs.readFileSync(path.join(versions, "02-next", "index.html"), "utf8");
  assert.match(home, /<img src="assets\/home-studio-kiels\.webp" alt="Trainingsfläche mit Kraftgeräten im KIELS-Studio in Kiel" loading="lazy" width="2000" height="1333">/);

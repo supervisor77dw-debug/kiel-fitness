@@ -5,7 +5,7 @@ const { execFileSync } = require("node:child_process");
 const root = path.resolve(__dirname, "..");
 const nextRoot = path.join(root, "site-versions", "02-next");
 const sharedRoot = path.join(root, "site-versions", "shared");
-const mediaExtension = /\.(?:avif|gif|ico|jpe?g|png|svg|webp)(?:$|[?#])/i;
+const mediaExtension = /\.(?:avif|gif|ico|jpe?g|pdf|png|svg|webp)(?:$|[?#])/i;
 
 function normalizeReference(reference) {
  const value = reference.trim();
@@ -62,7 +62,7 @@ function extractMediaReferences(text, sourceFile) {
   add("css-url", match[1], match.index);
  }
  if (path.extname(sourceFile).toLowerCase() === ".js") {
-  for (const match of text.matchAll(/["'`]([^"'`]+\.(?:avif|gif|ico|jpe?g|png|svg|webp)(?:[?#][^"'`]*)?)["'`]/gi)) {
+  for (const match of text.matchAll(/["'`]([^"'`]+\.(?:avif|gif|ico|jpe?g|pdf|png|svg|webp)(?:[?#][^"'`]*)?)["'`]/gi)) {
    add("javascript-string", match[1], match.index);
   }
  }
@@ -120,6 +120,7 @@ function validSignature(filename) {
  if (extension === ".svg") return /<svg[\s>]/i.test(buffer.toString("utf8", 0, Math.min(buffer.length, 4096)));
  if (extension === ".ico") return buffer.length >= 4 && buffer[0] === 0 && buffer[1] === 0 && buffer[2] === 1 && buffer[3] === 0;
  if (extension === ".avif") return buffer.length >= 12 && buffer.toString("ascii", 4, 12).includes("ftyp");
+ if (extension === ".pdf") return buffer.length >= 5 && buffer.toString("ascii", 0, 5) === "%PDF-";
  return false;
 }
 

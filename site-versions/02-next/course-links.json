@@ -1,9 +1,10 @@
 {
-  "updatedAt": "2026-10-03",
+  "updatedAt": "2026-10-12",
+  "source": "KIELS Kursplan Mai 2026, weiterhin freigegeben",
   "courses": [
     {
-      "id": "course-01",
-      "name": "BODYPUMP",
+      "id": "course-bodypump",
+      "name": "BODYPUMP®",
       "category": "Power & Kraftausdauer",
       "categoryId": "power",
       "group": "LES MILLS",
@@ -16,30 +17,13 @@
       "status": "Offizielle deutsche Programmseite geprüft und eingebaut",
       "officialProgram": "BODYPUMP",
       "verifiedAt": "2026-10-03",
-      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Beschreibung stimmen überein."
+      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Kurszuordnung stimmen überein."
     },
     {
-      "id": "course-02",
-      "name": "Strength Development",
+      "id": "course-bodypump-heavy",
+      "name": "BODYPUMP HEAVY®",
       "category": "Power & Kraftausdauer",
       "categoryId": "power",
-      "group": "LES MILLS",
-      "linked": true,
-      "currentTargets": [
-        "https://www.lesmills.com/de/programme/strength-development"
-      ],
-      "officialLinkUseful": true,
-      "officialUrl": "https://www.lesmills.com/de/programme/strength-development",
-      "status": "Offizielle deutsche Programmseite geprüft und eingebaut",
-      "officialProgram": "LES MILLS STRENGTH DEVELOPMENT",
-      "verifiedAt": "2026-10-03",
-      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Beschreibung stimmen überein."
-    },
-    {
-      "id": "course-03",
-      "name": "Wirbelsäulengymnastik",
-      "category": "Rücken, Rückbildung & Gesundheit",
-      "categoryId": "gesundheit",
       "group": "KIELS/lokales Angebot",
       "linked": false,
       "currentTargets": [],
@@ -48,7 +32,62 @@
       "status": "Kein externer Link erforderlich"
     },
     {
-      "id": "course-04",
+      "id": "course-les-mills-tone",
+      "name": "LES MILLS TONE®",
+      "category": "Power & Kraftausdauer",
+      "categoryId": "power",
+      "group": "LES MILLS",
+      "linked": true,
+      "currentTargets": [
+        "https://www.lesmills.com/de/programme/les-mills-tone"
+      ],
+      "officialLinkUseful": true,
+      "officialUrl": "https://www.lesmills.com/de/programme/les-mills-tone",
+      "status": "Offizielle deutsche Programmseite geprüft und eingebaut",
+      "officialProgram": "LES MILLS TONE",
+      "verifiedAt": "2026-10-03",
+      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Kurszuordnung stimmen überein."
+    },
+    {
+      "id": "course-body-workout",
+      "name": "Body Workout",
+      "category": "Power & Kraftausdauer",
+      "categoryId": "power",
+      "group": "KIELS/lokales Angebot",
+      "linked": false,
+      "currentTargets": [],
+      "officialLinkUseful": false,
+      "officialUrl": null,
+      "status": "Kein externer Link erforderlich"
+    },
+    {
+      "id": "course-trx",
+      "name": "TRX",
+      "category": "Power & Kraftausdauer",
+      "categoryId": "power",
+      "group": "KIELS/lokales Angebot",
+      "linked": false,
+      "currentTargets": [],
+      "officialLinkUseful": false,
+      "officialUrl": null,
+      "status": "Kein externer Link erforderlich"
+    },
+    {
+      "id": "course-rueckenfitness",
+      "name": "Rückenfitness",
+      "category": "Rücken, Rückbildung & Gesundheit",
+      "categoryId": "gesundheit",
+      "group": "KIELS/lokales Angebot",
+      "linked": true,
+      "currentTargets": [
+        "health.html#rueckenfitness"
+      ],
+      "officialLinkUseful": false,
+      "officialUrl": null,
+      "status": "Bestehendes Gesundheitsangebot intern verlinkt"
+    },
+    {
+      "id": "course-aufbau-rueckbildung",
       "name": "Aufbau Rückbildung",
       "category": "Rücken, Rückbildung & Gesundheit",
       "categoryId": "gesundheit",
@@ -60,7 +99,7 @@
       "status": "Kein externer Link erforderlich"
     },
     {
-      "id": "course-05",
+      "id": "course-yoga",
       "name": "Yoga",
       "category": "Body & Mind",
       "categoryId": "body-mind",
@@ -72,7 +111,7 @@
       "status": "Kein externer Link erforderlich"
     },
     {
-      "id": "course-06",
+      "id": "course-pilates",
       "name": "Pilates",
       "category": "Body & Mind",
       "categoryId": "body-mind",
@@ -84,7 +123,7 @@
       "status": "Kein externer Link erforderlich"
     },
     {
-      "id": "course-07",
+      "id": "course-bodybalance",
       "name": "BODYBALANCE®",
       "category": "Body & Mind",
       "categoryId": "body-mind",
@@ -98,10 +137,58 @@
       "status": "Offizielle deutsche Programmseite geprüft und eingebaut",
       "officialProgram": "BODYBALANCE",
       "verifiedAt": "2026-10-03",
-      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Beschreibung stimmen überein."
+      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Kurszuordnung stimmen überein."
     },
     {
-      "id": "course-08",
+      "id": "course-ashtanga-yoga",
+      "name": "Ashtanga Yoga",
+      "category": "Body & Mind",
+      "categoryId": "body-mind",
+      "group": "KIELS/lokales Angebot",
+      "linked": false,
+      "currentTargets": [],
+      "officialLinkUseful": false,
+      "officialUrl": null,
+      "status": "Kein externer Link erforderlich"
+    },
+    {
+      "id": "course-flow-yoga",
+      "name": "Flow Yoga",
+      "category": "Body & Mind",
+      "categoryId": "body-mind",
+      "group": "KIELS/lokales Angebot",
+      "linked": false,
+      "currentTargets": [],
+      "officialLinkUseful": false,
+      "officialUrl": null,
+      "status": "Kein externer Link erforderlich"
+    },
+    {
+      "id": "course-yin-yoga",
+      "name": "Yin-Yoga",
+      "category": "Body & Mind",
+      "categoryId": "body-mind",
+      "group": "KIELS/lokales Angebot",
+      "linked": false,
+      "currentTargets": [],
+      "officialLinkUseful": false,
+      "officialUrl": null,
+      "status": "Kein externer Link erforderlich"
+    },
+    {
+      "id": "course-faszien-yoga",
+      "name": "Faszien-Yoga",
+      "category": "Body & Mind",
+      "categoryId": "body-mind",
+      "group": "KIELS/lokales Angebot",
+      "linked": false,
+      "currentTargets": [],
+      "officialLinkUseful": false,
+      "officialUrl": null,
+      "status": "Kein externer Link erforderlich"
+    },
+    {
+      "id": "course-bodyattack",
       "name": "BODYATTACK®",
       "category": "Cardio & Ausdauer",
       "categoryId": "cardio",
@@ -115,99 +202,10 @@
       "status": "Offizielle deutsche Programmseite geprüft und eingebaut",
       "officialProgram": "BODYATTACK",
       "verifiedAt": "2026-10-03",
-      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Beschreibung stimmen überein."
+      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Kurszuordnung stimmen überein."
     },
     {
-      "id": "course-09",
-      "name": "LM Step®",
-      "category": "Cardio & Ausdauer",
-      "categoryId": "cardio",
-      "group": "LES MILLS",
-      "linked": true,
-      "currentTargets": [
-        "https://www.lesmills.com/de/programme/lmi-step"
-      ],
-      "officialLinkUseful": true,
-      "officialUrl": "https://www.lesmills.com/de/programme/lmi-step",
-      "status": "Offizielle deutsche Programmseite geprüft und eingebaut",
-      "officialProgram": "LMI STEP",
-      "verifiedAt": "2026-10-03",
-      "verification": "Offizielle deutsche Seite nennt LMI STEP und beschreibt das Ganzkörper-Step-Workout mit Step und Gewichtsscheiben; passt zum vorhandenen LM-Step-Angebot."
-    },
-    {
-      "id": "course-10",
-      "name": "Cycling",
-      "category": "Cardio & Ausdauer",
-      "categoryId": "cardio",
-      "group": "KIELS/lokales Angebot",
-      "linked": false,
-      "currentTargets": [],
-      "officialLinkUseful": false,
-      "officialUrl": null,
-      "status": "Kein externer Link erforderlich"
-    },
-    {
-      "id": "course-11",
-      "name": "Bauch Beine Po",
-      "category": "Cardio & Ausdauer",
-      "categoryId": "cardio",
-      "group": "KIELS/lokales Angebot",
-      "linked": false,
-      "currentTargets": [],
-      "officialLinkUseful": false,
-      "officialUrl": null,
-      "status": "Kein externer Link erforderlich"
-    },
-    {
-      "id": "course-12",
-      "name": "Step BBP",
-      "category": "Cardio & Ausdauer",
-      "categoryId": "cardio",
-      "group": "KIELS/lokales Angebot",
-      "linked": false,
-      "currentTargets": [],
-      "officialLinkUseful": false,
-      "officialUrl": null,
-      "status": "Kein externer Link erforderlich"
-    },
-    {
-      "id": "course-13",
-      "name": "Jumping®",
-      "category": "Cardio & Ausdauer",
-      "categoryId": "cardio",
-      "group": "Externes Programm",
-      "linked": false,
-      "currentTargets": [],
-      "officialLinkUseful": false,
-      "officialUrl": null,
-      "status": "Bewusst ohne externen Detail-Link – Freigabe Etappe 5D"
-    },
-    {
-      "id": "course-14",
-      "name": "Fitnessboxen",
-      "category": "Cardio & Ausdauer",
-      "categoryId": "cardio",
-      "group": "KIELS/lokales Angebot",
-      "linked": false,
-      "currentTargets": [],
-      "officialLinkUseful": false,
-      "officialUrl": null,
-      "status": "Kein externer Link erforderlich"
-    },
-    {
-      "id": "course-15",
-      "name": "Step Workout",
-      "category": "Cardio & Ausdauer",
-      "categoryId": "cardio",
-      "group": "KIELS/lokales Angebot",
-      "linked": false,
-      "currentTargets": [],
-      "officialLinkUseful": false,
-      "officialUrl": null,
-      "status": "Kein externer Link erforderlich"
-    },
-    {
-      "id": "course-16",
+      "id": "course-bodycombat",
       "name": "BODYCOMBAT®",
       "category": "Cardio & Ausdauer",
       "categoryId": "cardio",
@@ -221,13 +219,30 @@
       "status": "Offizielle deutsche Programmseite geprüft und eingebaut",
       "officialProgram": "BODYCOMBAT",
       "verifiedAt": "2026-10-03",
-      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Beschreibung stimmen überein."
+      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Kurszuordnung stimmen überein."
     },
     {
-      "id": "course-17",
-      "name": "Faszien Yoga",
-      "category": "Beweglichkeit",
-      "categoryId": "beweglichkeit",
+      "id": "course-les-mills-step",
+      "name": "LES MILLS STEP®",
+      "category": "Cardio & Ausdauer",
+      "categoryId": "cardio",
+      "group": "LES MILLS",
+      "linked": true,
+      "currentTargets": [
+        "https://www.lesmills.com/de/programme/lmi-step"
+      ],
+      "officialLinkUseful": true,
+      "officialUrl": "https://www.lesmills.com/de/programme/lmi-step",
+      "status": "Offizielle deutsche Programmseite geprüft und eingebaut",
+      "officialProgram": "LMI STEP",
+      "verifiedAt": "2026-10-03",
+      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Kurszuordnung stimmen überein."
+    },
+    {
+      "id": "course-cycling",
+      "name": "Cycling",
+      "category": "Cardio & Ausdauer",
+      "categoryId": "cardio",
       "group": "KIELS/lokales Angebot",
       "linked": false,
       "currentTargets": [],
@@ -236,43 +251,79 @@
       "status": "Kein externer Link erforderlich"
     },
     {
-      "id": "course-18",
-      "name": "Flow Yoga",
-      "category": "Beweglichkeit",
-      "categoryId": "beweglichkeit",
-      "group": "KIELS/lokales Angebot",
-      "linked": false,
-      "currentTargets": [],
-      "officialLinkUseful": false,
-      "officialUrl": null,
-      "status": "Kein externer Link erforderlich"
-    },
-    {
-      "id": "course-19",
-      "name": "Ashtanga Yoga",
-      "category": "Beweglichkeit",
-      "categoryId": "beweglichkeit",
-      "group": "KIELS/lokales Angebot",
-      "linked": false,
-      "currentTargets": [],
-      "officialLinkUseful": false,
-      "officialUrl": null,
-      "status": "Kein externer Link erforderlich"
-    },
-    {
-      "id": "course-20",
-      "name": "Zumba®",
-      "category": "Beweglichkeit",
-      "categoryId": "beweglichkeit",
+      "id": "course-jumping",
+      "name": "Jumping®",
+      "category": "Cardio & Ausdauer",
+      "categoryId": "cardio",
       "group": "Externes Programm",
       "linked": false,
       "currentTargets": [],
       "officialLinkUseful": false,
       "officialUrl": null,
-      "status": "Bewusst ohne externen Detail-Link – Freigabe Etappe 5D"
+      "status": "Kein externer Link erforderlich"
     },
     {
-      "id": "course-21",
+      "id": "course-fitnessboxen",
+      "name": "Fitnessboxen",
+      "category": "Cardio & Ausdauer",
+      "categoryId": "cardio",
+      "group": "KIELS/lokales Angebot",
+      "linked": false,
+      "currentTargets": [],
+      "officialLinkUseful": false,
+      "officialUrl": null,
+      "status": "Kein externer Link erforderlich"
+    },
+    {
+      "id": "course-step-workout",
+      "name": "Step Workout",
+      "category": "Cardio & Ausdauer",
+      "categoryId": "cardio",
+      "group": "KIELS/lokales Angebot",
+      "linked": false,
+      "currentTargets": [],
+      "officialLinkUseful": false,
+      "officialUrl": null,
+      "status": "Kein externer Link erforderlich"
+    },
+    {
+      "id": "course-step-bbp",
+      "name": "Step-BBP",
+      "category": "Cardio & Ausdauer",
+      "categoryId": "cardio",
+      "group": "KIELS/lokales Angebot",
+      "linked": false,
+      "currentTargets": [],
+      "officialLinkUseful": false,
+      "officialUrl": null,
+      "status": "Kein externer Link erforderlich"
+    },
+    {
+      "id": "course-bauch-beine-po",
+      "name": "BBP / Bauch Beine Po",
+      "category": "Cardio & Ausdauer",
+      "categoryId": "cardio",
+      "group": "KIELS/lokales Angebot",
+      "linked": false,
+      "currentTargets": [],
+      "officialLinkUseful": false,
+      "officialUrl": null,
+      "status": "Kein externer Link erforderlich"
+    },
+    {
+      "id": "course-zumba",
+      "name": "Zumba®",
+      "category": "Cardio & Ausdauer",
+      "categoryId": "cardio",
+      "group": "Externes Programm",
+      "linked": false,
+      "currentTargets": [],
+      "officialLinkUseful": false,
+      "officialUrl": null,
+      "status": "Kein externer Link erforderlich"
+    },
+    {
+      "id": "course-stretching",
       "name": "Stretching",
       "category": "Beweglichkeit",
       "categoryId": "beweglichkeit",
@@ -284,10 +335,10 @@
       "status": "Kein externer Link erforderlich"
     },
     {
-      "id": "course-22",
-      "name": "Bauch Intensiv",
-      "category": "Weitere Kurswelten",
-      "categoryId": "weitere",
+      "id": "course-mobility-stretch",
+      "name": "Mobility & Stretch",
+      "category": "Beweglichkeit",
+      "categoryId": "beweglichkeit",
       "group": "KIELS/lokales Angebot",
       "linked": false,
       "currentTargets": [],
@@ -296,10 +347,10 @@
       "status": "Kein externer Link erforderlich"
     },
     {
-      "id": "course-23",
+      "id": "course-les-mills-core",
       "name": "LES MILLS CORE®",
-      "category": "Weitere Kurswelten",
-      "categoryId": "weitere",
+      "category": "Core & Bauchtraining",
+      "categoryId": "core",
       "group": "LES MILLS",
       "linked": true,
       "currentTargets": [
@@ -310,38 +361,19 @@
       "status": "Offizielle deutsche Programmseite geprüft und eingebaut",
       "officialProgram": "LES MILLS CORE",
       "verifiedAt": "2026-10-03",
-      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Beschreibung stimmen überein."
+      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Kurszuordnung stimmen überein."
     },
     {
-      "id": "course-24",
-      "name": "LES MILLS TONE®",
-      "category": "Weitere Kurswelten",
-      "categoryId": "weitere",
-      "group": "LES MILLS",
-      "linked": true,
-      "currentTargets": [
-        "https://www.lesmills.com/de/programme/les-mills-tone"
-      ],
-      "officialLinkUseful": true,
-      "officialUrl": "https://www.lesmills.com/de/programme/les-mills-tone",
-      "status": "Offizielle deutsche Programmseite geprüft und eingebaut",
-      "officialProgram": "LES MILLS TONE",
-      "verifiedAt": "2026-10-03",
-      "verification": "Offizielle deutsche Programmübersicht und Programmseite auf lesmills.com geprüft; Programmname und Beschreibung stimmen überein."
-    },
-    {
-      "id": "course-25",
-      "name": "Rückenfit",
-      "category": "Rücken, Rückbildung & Gesundheit",
-      "categoryId": "gesundheit",
+      "id": "course-bauch-intensiv",
+      "name": "Bauch Intensiv",
+      "category": "Core & Bauchtraining",
+      "categoryId": "core",
       "group": "KIELS/lokales Angebot",
-      "linked": true,
-      "currentTargets": [
-        "health.html#rueckenfit"
-      ],
+      "linked": false,
+      "currentTargets": [],
       "officialLinkUseful": false,
       "officialUrl": null,
-      "status": "Bestehendes Gesundheitsangebot separat im Kurskatalog dargestellt; nur intern verlinkt"
+      "status": "Kein externer Link erforderlich"
     }
   ]
 }
