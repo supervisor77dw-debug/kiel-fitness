@@ -1,6 +1,7 @@
 const API_BASE = "https://services.leadconnectorhq.com";
 const API_VERSION = "2021-07-28";
 const CHILDCARE_CAMPAIGN = "KIELS-P04-FAMILIENFITNESS";
+const CHILDCARE_SUBMISSION_FIELD = "P04 Anfrage-ID";
 const INTEREST_LABELS = {
  trial: "Probetraining",
  membership: "Mitgliedschaft & Tarife",
@@ -190,7 +191,8 @@ function checkFieldDefinitions(definitions) {
   inspectField(definitions, "Interesse / Anliegen (Mehrfach)"),
   inspectField(definitions, "Standort"),
   inspectField(definitions, "Beschäftigtengröße"),
-  inspectField(definitions, "Bestehendes Firmenfitness-Angebot")
+  inspectField(definitions, "Bestehendes Firmenfitness-Angebot"),
+  inspectField(definitions, CHILDCARE_SUBMISSION_FIELD)
  ];
  const find = name => fields.find(field => field.requestedName === name);
  const requirements = [
@@ -226,6 +228,11 @@ function checkFieldDefinitions(definitions) {
   }],
   ["Bestehendes Firmenfitness-Angebot", field => {
    for (const value of ["Ja", "Nein", "Nicht sicher"]) exactOptionValue(field, value);
+  }],
+  [CHILDCARE_SUBMISSION_FIELD, field => {
+   if (!["TEXT", "LARGE_TEXT"].includes(String(field.dataType || "").toUpperCase())) {
+    throw new IntegrationError("childcare_submission_field_type");
+   }
   }]
  ];
  for (const [name, validate] of requirements) {
@@ -396,6 +403,12 @@ function buildCustomFields(lead, definitions) {
   if (labels.some(value => !value)) throw new IntegrationError("interest_mapping_unavailable");
   fields.push(customFieldValue(interestField, labels, labels.map(value => [value])));
  }
+ if (lead.requestType === "childcare_inquiry") {
+  fields.push(customFieldValue(
+   customFieldDefinition(definitions, CHILDCARE_SUBMISSION_FIELD),
+   lead.submissionId
+  ));
+ }
 
  if (lead.requestType?.startsWith("employer_")) {
   if (lead.location) {
@@ -439,6 +452,13 @@ function exactEmail(contact, email) {
 
 function exactPhone(contact, phone) {
  return typeof contact.phone === "string" && normalizePhone(contact.phone) === normalizePhone(phone);
+}
+
+function contactFieldValue(contact, fieldId) {
+ if (!Array.isArray(contact.customFields)) return null;
+ const field = contact.customFields.find(value => value?.id === fieldId);
+ const value = field?.value ?? field?.fieldValue ?? field?.field_value;
+ return typeof value === "string" ? value : null;
 }
 
 function createHighLevelAdapter({ env = process.env, fetchImpl = globalThis.fetch, timeoutMs = 12000 } = {}) {
@@ -486,6 +506,9 @@ function createHighLevelAdapter({ env = process.env, fetchImpl = globalThis.fetc
    );
    const definitions = fieldsResponse.customFields;
    const customFields = buildCustomFields(lead, definitions);
+   const submissionField = lead.requestType === "childcare_inquiry"
+    ? customFieldDefinition(definitions, CHILDCARE_SUBMISSION_FIELD)
+    : null;
    const contactBody = {
     firstName: lead.firstName,
     lastName: lead.lastName,
@@ -525,6 +548,10 @@ function createHighLevelAdapter({ env = process.env, fetchImpl = globalThis.fetc
     exactEmail(contact, lead.email) || (lead.phone && exactPhone(contact, lead.phone))
    );
    if (matches.length > 1) throw new IntegrationError("ambiguous_contact");
+   if (matches.length === 1 && submissionField &&
+     contactFieldValue(matches[0], submissionField.id) === lead.submissionId) {
+    return deliveryResult("delivery_success");
+   }
 
    let result;
    if (matches.length === 1) {

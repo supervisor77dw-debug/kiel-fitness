@@ -28,12 +28,27 @@ HighLevel-Location: `PgUgGcE7pj6GoqIzjEVr`
   Production-Runtime vorhanden. Das Token selbst wurde nicht ausgelesen.
 - Die aktuelle geschützte Vercel-Preview besitzt diese Variablen nicht und
   bleibt deshalb absichtlich fail-closed. Sie kann keinen Kontakt schreiben.
+- Die Private Integration `KIELS Website Lead Integration` besitzt bestätigt
+  genau die benötigten Scopes `locations/customFields.readonly`,
+  `contacts.readonly` und `contacts.write`.
+- Mehrfachkontakte sind deaktiviert. HighLevel prüft primär E-Mail und
+  sekundär Telefonnummer.
 - Der Adapter sucht vor jedem Schreiben exakt nach E-Mail und normalisierter
   Telefonnummer. Bei mehreren oder widersprüchlichen Treffern bricht er ab.
 - Bei einem eindeutigen Treffer wird der Kontakt aktualisiert. Ohne Treffer
   wird `/contacts/upsert` mit `createNewIfDuplicateAllowed: false` verwendet.
 - Der Adapter erstellt selbst keine Opportunity, startet keinen Workflow,
   sendet keine Nachricht und bucht keinen Termin.
+- Der veröffentlichte Workflow
+  `KIELS | 01 | Neuer Lead – Eingang & Pipeline` startet ausschließlich über
+  einen eingehenden Webhook und erstellt danach selbst Kontakt, Opportunity,
+  Protokolleintrag, Bestätigungs-E-Mail und interne Benachrichtigung.
+- Die vorhandene Opportunity nutzt `Marketing Pipeline` → `New Lead`,
+  Status `Open`, vollständigen Kontaktnamen und bisher die Quelle
+  `Website – Wix Kontakt`. Doppelte Opportunities sind deaktiviert.
+- Die interne E-Mail-Benachrichtigung geht bestätigt von
+  `kontakt@send.kiel-fitness.de` an den HighLevel-Benutzer `Dirk Wilkens`
+  mit `dirk@kiel-fitness.de`.
 
 ### Bestätigte Kontaktfelder
 
@@ -47,44 +62,61 @@ HighLevel-Location: `PgUgGcE7pj6GoqIzjEVr`
 | `Standort` | Text | Für Firmenfitness |
 | `Beschäftigtengröße` | Single options | 1-9, 10-49, 50-249, 250+ |
 | `Bestehendes Firmenfitness-Angebot` | Single options | Ja, Nein, Nicht sicher |
+| `P04 Anfrage-ID` | Text | Neu anzulegen; idempotentes Signal für genau einen P04-Workflow-Durchlauf pro Anfragevorgang |
 
 ### Noch nicht bestätigt
 
-- Ob das Private-Integration-Token neben dem bestätigten Feld-Lesezugriff
-  auch `contacts.readonly` und `contacts.write` besitzt.
-- Welche aktiven Workflows auf Kontaktanlage oder Kontaktaktualisierung
-  reagieren.
-- Ob Kontakte automatisch einer Person, Pipeline oder Opportunity zugeordnet
-  werden.
-- Ob interne Benachrichtigungen existieren.
 - Welche Kalender und Terminprozesse aktiv sind.
-- Ob die Location doppelte Kontakte erlaubt und ob E-Mail oder Telefon als
-  primäres Dublettenkriterium eingestellt ist.
 - Es gibt im Adapter derzeit weder P04-Tag noch `assignedTo`, Opportunity oder
   Kalender-ID. Diese Werte dürfen nicht erfunden werden.
+- Das neue Feld `P04 Anfrage-ID` und der abgegrenzte P04-Workflow bestehen
+  noch nicht.
+- Ein echter Kontakt-Write und ein vollständiger Ende-zu-Ende-Test wurden
+  noch nicht freigegeben oder ausgeführt.
 
-## 2. Location und Private Integration prüfen
+## 2. Architekturentscheidung
 
-**Menüpfad:** `Settings` → `Business Profile`  
-**Zweck:** Sicherstellen, dass die Website in die richtige Location schreibt.
+Der bestehende Webhook-Workflow wird für P04 **nicht direkt aufgerufen**.
+Seine erste Aktion erstellt selbst einen Kontakt. Die Website hat zu diesem
+Zeitpunkt aber bereits dedupliziert und den Kontakt angelegt oder aktualisiert.
+Ein zusätzlicher Webhook-Aufruf würde deshalb zwei konkurrierende
+Kontaktpfade, unsichere Retry-Semantik und das Risiko doppelter
+Bestätigungs-E-Mails erzeugen.
 
-1. Location öffnen und die Location-ID kontrollieren.
-2. Erwarteter Wert: `PgUgGcE7pj6GoqIzjEVr`.
-3. Bei Abweichung nichts ändern und die abweichende ID melden.
+Gewählt wird die bestehende direkte Kontaktintegration mit einer minimalen,
+klar abgegrenzten Ergänzung:
 
-**Benötigte Rückmeldung:**
+1. Die Website schreibt pro fachlichem Anfragevorgang eine UUID in
+   `P04 Anfrage-ID`.
+2. Ein identischer technischer Retry verwendet dieselbe UUID. Erkennt der
+   Adapter diese UUID bereits am Kontakt, erfolgt kein zweiter Schreibvorgang.
+3. Eine bewusst neue Anfrage desselben Kontakts erhält eine neue UUID und
+   genau ein Kontakt-Update.
+4. Ein separater HighLevel-Workflow reagiert ausschließlich auf die Änderung
+   von `P04 Anfrage-ID` und filtert zusätzlich
+   `Kampagne / Lead-Detail = KIELS-P04-FAMILIENFITNESS`.
+5. Dieser Workflow kann die bewährten Opportunity-, Protokoll-, Bestätigungs-
+   und internen Benachrichtigungsaktionen übernehmen, ohne erneut einen
+   Kontakt anzulegen.
 
-- Screenshot des Bereichs mit Location-Name und Location-ID.
-- Schriftliche Bestätigung, dass es die produktive KIELS-Location ist.
+Damit bleiben die vorhandenen API-Rechte ausreichend. Es werden keine
+Opportunity-, Workflow-, Kalender- oder Messaging-API-Scopes benötigt.
 
-**Menüpfad:** `Settings` → `Private Integrations`  
+## 3. Location und Private Integration – bestätigt
+
+**Deutscher Menüpfad:** `Einstellungen` → `Unternehmensprofil`
+(`Settings` → `Business Profile`)
+
+Bestätigte Location-ID: `PgUgGcE7pj6GoqIzjEVr`.
+
+**Deutscher Menüpfad:** `Einstellungen` → `Private Integrationen`
+(`Settings` → `Private Integrations`)
 Je nach HighLevel-Navigation kann der Punkt unter `Other Settings` liegen.
 
-**Zweck:** Berechtigungen des vorhandenen, in Vercel hinterlegten Tokens
-prüfen. Kein neues Token erstellen, solange das bestehende Token identifiziert
-werden kann.
+**Zweck:** Den bestätigten minimalen Berechtigungsumfang dokumentieren. Kein
+neues Token erstellen und keine zusätzlichen Scopes ergänzen.
 
-Erforderliche Mindestberechtigungen:
+Bestätigte Mindestberechtigungen:
 
 - `locations/customFields.readonly`
 - `contacts.readonly`
@@ -97,55 +129,43 @@ Nicht erforderlich für den aktuellen Adapter:
 - Calendars oder Appointments schreiben
 - Conversations, E-Mail oder SMS schreiben
 
-**Kontrolle:**
+Integration: `KIELS Website Lead Integration`. Keine weiteren Berechtigungen
+hinzufügen. Tokenwert weiterhin nicht anzeigen, kopieren oder fotografieren.
 
-1. Die für die Website bestimmte Private Integration öffnen.
-2. Nur Name, Status und Scopes kontrollieren.
-3. Tokenwert nicht anzeigen, kopieren oder fotografieren.
-4. Fehlende Scopes notieren, aber nicht ungefragt hinzufügen.
+## 4. Kontaktfeld `P04 Anfrage-ID` anlegen
 
-**Benötigte Rückmeldung:**
+**Deutscher Menüpfad:** `Einstellungen` → `Benutzerdefinierte Felder` →
+Objekt `Kontakt` (`Settings` → `Custom Fields` → `Contact`)
 
-- Screenshot nur der Scope-Liste, Token vollständig ausgeblendet.
-- Kennzeichnung, welche der drei Mindestberechtigungen vorhanden sind.
+Die acht bisherigen Felder sind bestätigt und werden nicht verändert.
 
-## 3. Kontaktfelder kontrollieren
+Neu anzulegen:
 
-**Menüpfad:** `Settings` → `Custom Fields` → Objekt `Contact`  
-**Zweck:** Sicherstellen, dass der Adapter exakt auf die vorhandenen Felder
-auflösen kann.
+- Objekt: `Kontakt`
+- Name: `P04 Anfrage-ID`
+- Typ: einzeiliger Text beziehungsweise `Text`
+- Optionen: keine
+- Pflichtfeld: nein
+- Standardwert: leer
 
-1. Die acht Felder aus der Tabelle in Abschnitt 1 suchen.
-2. Namen, Objekttyp `Contact`, Feldtyp und Optionen vergleichen.
-3. Keine Feldnamen oder Optionen ändern: Der bestehende Adapter löst sie
-   anhand der exakten normalisierten Namen auf.
-4. Besonders prüfen:
-   - `Kampagne / Lead-Detail` ist ein Textfeld.
-   - `Nachricht / Anfrage` ist ein Large-Text-Feld.
-   - `Rückruf erwünscht` enthält `Ja`.
-   - `Interesse / Anliegen (Mehrfach)` ist mehrfach auswählbar.
+Zweck: Technisches, nicht personenbezogenes Idempotenzsignal. Der Wert ist
+eine serverseitig erzeugte UUID und darf nicht manuell vorbelegt werden.
 
-**Bereits bestehend:** Alle acht Felder wurden über die Production-Readiness
-gefunden und als kompatibel gemeldet.
+**Benötigte Rückmeldung:** Screenshot der Felddefinition mit Name, Objekt und
+Typ. Keine Feld-ID muss manuell in den Code eingetragen werden.
 
-**Noch erforderlich:** Nur visuelle Gegenprüfung; keine Neuerstellung.
+## 5. Dubletten-Einstellungen – bestätigt
 
-**Benötigte Rückmeldung:**
-
-- Ein Screenshot der Feldliste.
-- Detail-Screenshots nur bei einer Abweichung.
-
-## 4. Dubletten-Einstellungen kontrollieren
-
-**Menüpfad:** `Settings` → `Business Profile` → Bereich
-`Contact Deduplication Preferences` beziehungsweise `Allow Duplicate Contacts`
+**Deutscher Menüpfad:** `Einstellungen` → `Unternehmensprofil` → Bereich
+`Kontakt-Deduplizierung` (`Contact Deduplication Preferences`)
 
 **Zweck:** Das Verhalten der Location dokumentieren, nicht eigenständig
 verändern.
 
-1. Status von `Allow Duplicate Contacts` notieren.
-2. Notieren, ob E-Mail, Telefonnummer oder beide als Suchkriterium gelten.
-3. Einstellung nicht ändern.
+- Mehrfachkontakte: deaktiviert
+- Primärer Abgleich: E-Mail
+- Sekundärer Abgleich: Telefonnummer
+- Keine Änderung erforderlich.
 
 Der Website-Adapter schützt unabhängig davon zusätzlich:
 
@@ -154,60 +174,61 @@ Der Website-Adapter schützt unabhängig davon zusätzlich:
 - Update nur bei genau einem Treffer,
 - Upsert mit `createNewIfDuplicateAllowed: false`.
 
-**Benötigte Rückmeldung:**
+## 6. Separaten P04-Workflow als Entwurf anlegen
 
-- Screenshot der vollständigen Dubletten-Einstellung.
-- Schriftlich: Duplikate erlaubt `Ja/Nein`; Suchkriterium
-  `E-Mail/Telefon/beide`.
+**Deutscher Menüpfad:** `Automatisierungen` → `Workflows`
+(`Automation` → `Workflows`)
 
-## 5. Workflows und Automationsrisiken prüfen
+Den veröffentlichten Workflow
+`KIELS | 01 | Neuer Lead – Eingang & Pipeline` nicht verändern. Stattdessen
+duplizieren und als Entwurf anlegen:
 
-**Menüpfad:** `Automation` → `Workflows`  
-**Zweck:** Erkennen, ob API-Kontaktanlage oder -aktualisierung unbeabsichtigt
-Nachrichten oder andere Aktionen auslösen kann.
+Vorgeschlagener Name:
+`KIELS | P04 | Familienfitness – Eingang & Pipeline`
 
-Alle veröffentlichten Workflows auf folgende Trigger prüfen:
+Änderungen gegenüber der Kopie:
 
-- `Contact Created`
-- `Contact Changed`
-- `Contact Updated`
-- Änderung von `Lead-Quelle`
-- Änderung von `Kampagne / Lead-Detail`
-- Änderung von `Nachricht / Anfrage`
-- Tag hinzugefügt
-- Opportunity erstellt oder Stage geändert
+1. Eingehenden Webhook-Trigger entfernen.
+2. Aktion `Kontakt erstellen` entfernen.
+3. Trigger setzen: Kontaktfeld `P04 Anfrage-ID` wurde geändert.
+4. Triggerfilter ergänzen:
+   `Kampagne / Lead-Detail` ist exakt
+   `KIELS-P04-FAMILIENFITNESS`.
+5. Re-Entry aktivieren, damit eine spätere neue Anfrage desselben Kontakts
+   mit neuer Anfrage-ID verarbeitet werden kann.
+6. Opportunity-Aktion prüfen:
+   - Pipeline: `Marketing Pipeline`
+   - Phase: `New Lead`
+   - Name: vollständiger Kontaktname
+   - Status: `Open`
+   - Quelle: `Website – P04 Familienfitness`
+   - doppelte Opportunities: deaktiviert
+7. Bestehende Aktion `Website-Anfrage protokollieren` beibehalten und auf die
+   aktuellen Kontaktfelder beziehen.
+8. Bestehende Bestätigungs-E-Mail kopiert beibehalten, aber Inhalt und
+   Absender vor Veröffentlichung fachlich kontrollieren.
+9. Bestehende interne Benachrichtigung kopiert beibehalten:
+   - Art: E-Mail
+   - Absender: `kontakt@send.kiel-fitness.de`
+   - Empfänger: Benutzer `Dirk Wilkens`
+   - Zieladresse: `dirk@kiel-fitness.de`
+10. Workflow als `Entwurf` speichern, nicht veröffentlichen.
 
-Ein HighLevel-Trigger `Form Submitted` für ein internes HighLevel-Formular
-sollte durch die KIELS-Website nicht ausgelöst werden, weil die Website direkt
-die Contact API verwendet. Trotzdem dokumentieren, falls ein Workflow
-zusätzlich auf Kontaktanlage oder Feldänderung reagiert.
+**Benötigte Rückmeldung vor Code-/E2E-Freigabe:**
 
-Für jeden passenden Workflow dokumentieren:
+- Screenshot von Trigger und beiden Feldbedingungen.
+- Screenshot der vollständigen Aktionsübersicht.
+- Screenshot der Opportunity-Aktion.
+- Screenshot der Bestätigungs-E-Mail-Einstellung.
+- Screenshot der internen Benachrichtigung.
+- Bestätigung, dass der Workflow weiterhin `Entwurf` ist.
 
-1. Name und Status `Draft/Published`.
-2. Trigger und sämtliche Filter.
-3. Re-Entry-Einstellung.
-4. Aktionen in Reihenfolge.
-5. Enthaltene E-Mail-, SMS-, WhatsApp- oder Voicemail-Aktionen.
-6. `Add Opportunity`, `Assign To User`, `Add Tag`,
-   `Internal Notification` und Webhooks.
-7. Absender, Empfänger und Wartezeiten, ohne persönliche Inhalte offenzulegen.
+## 7. P04-Tag und Lead-Zuordnung
 
-**Höchstes Risiko:** Ein allgemeiner veröffentlichter `Contact Created`- oder
-`Contact Updated`-Workflow ohne Filter könnte bereits durch den späteren
-E2E-Test ausgelöst werden.
-
-**Benötigte Rückmeldung:**
-
-- Screenshot der Workflow-Liste mit Status.
-- Für jeden potenziell passenden Workflow je ein Screenshot von Trigger,
-  Filtern und Aktionsübersicht.
-- Schriftliche Bestätigung, ob eine externe Nachricht möglich ist.
-
-## 6. P04-Tag und Lead-Zuordnung festlegen
-
-**Menüpfad Tags:** `Settings` → `Tags`  
-**Menüpfad Benutzer:** `Settings` → `My Staff` beziehungsweise `Team`  
+**Deutscher Menüpfad Tags:** `Einstellungen` → `Tags`
+(`Settings` → `Tags`)
+**Deutscher Menüpfad Benutzer:** `Einstellungen` → `Mein Team`
+(`Settings` → `My Staff` beziehungsweise `Team`)
 
 **Aktueller Stand:**
 
@@ -216,15 +237,12 @@ E2E-Test ausgelöst werden.
 - Die verlässliche technische Kennung steht in
   `Kampagne / Lead-Detail = KIELS-P04-FAMILIENFITNESS`.
 
-**Empfehlung:**
+Ein Tag ist für die gewählte Architektur nicht erforderlich. Die eindeutige
+Zuordnung erfolgt über `Kampagne / Lead-Detail` und `P04 Anfrage-ID`.
 
-1. Noch keinen Tag als Voraussetzung für die Lead-Erkennung verwenden.
-2. Falls ein Tag gewünscht ist, exakter vorgeschlagener Wert:
-   `KIELS-P04-FAMILIENFITNESS`.
-3. Einen Tag erst nach Workflow-Prüfung erstellen.
-4. Ein späterer P04-Workflow kann auf das Kampagnenfeld filtern und als erste
-   Aktion diesen Tag hinzufügen.
-5. Verantwortliche Person oder Team erst nach Benennung eintragen.
+Optional kann der Workflow nach erfolgreichem Start den Tag
+`KIELS-P04-FAMILIENFITNESS` hinzufügen. Dies ist keine Voraussetzung für den
+E2E-Test und sollte nicht als zusätzlicher Trigger verwendet werden.
 
 **Benötigte Entscheidung/Rückmeldung:**
 
@@ -233,65 +251,33 @@ E2E-Test ausgelöst werden.
 - Screenshot der vorhandenen relevanten Tags und Benutzer, keine E-Mail-
   Adressen oder Telefonnummern veröffentlichen.
 
-## 7. Pipeline-Struktur dokumentieren
+## 8. Pipeline-Struktur – bestätigt
 
-**Menüpfad:** `Opportunities` → `Pipelines`  
-Alternativ, je nach Navigation: `Settings` → `Pipelines`.
+**Deutscher Menüpfad:** `Chancen` → `Pipelines`
+(`Opportunities` → `Pipelines`)
+Alternativ: `Einstellungen` → `Pipelines`.
 
-**Aktueller Stand:** Der Website-Adapter legt keine Opportunity an. Eine
-vorhandene Pipeline-Zuordnung kann daher nur über eine bestehende Automation
-erfolgen.
+- Pipeline: `Marketing Pipeline`
+- Phase: `New Lead`
+- Status: `Open`
+- Name: vollständiger Kontaktname
+- Doppelte Opportunities: deaktiviert
+- P04-Quelle im neuen Workflow: `Website – P04 Familienfitness`
 
-Zu dokumentieren:
+## 9. Interne Benachrichtigung – bestätigt
 
-1. Namen aller fachlich passenden Pipelines.
-2. Stage-Namen und Reihenfolge.
-3. Pflichtfelder, Standard-Owner und Lost-/Won-Logik.
-4. Workflows, die Opportunities automatisch anlegen oder verschieben.
+**Deutscher Menüpfad:** `Automatisierungen` → `Workflows` → P04-Workflow
+**Aktion:** `Interne Benachrichtigung senden`
+(`Send Internal Notification`)
 
-**Vorschlag, erst nach fachlicher Freigabe:**
+- Art: E-Mail
+- Absender: `kontakt@send.kiel-fitness.de`
+- Empfänger: HighLevel-Benutzer `Dirk Wilkens`
+- Zieladresse: `dirk@kiel-fitness.de`
+- Keine automatische Weiterleitung an andere Mitarbeiter.
+- Bestehende Aktion kopieren, nicht neu erfinden.
 
-- Vorhandene allgemeine Lead-Pipeline wiederverwenden, falls vorhanden.
-- Start-Stage der P04-Leads eindeutig benennen beziehungsweise auswählen.
-- Keine neue Pipeline nur für P04 anlegen, solange Volumen und Prozess das
-  nicht rechtfertigen.
-
-**Benötigte Rückmeldung:**
-
-- Screenshot der Pipeline-Liste.
-- Screenshot der vorgesehenen Pipeline mit allen Stages.
-- Gewünschte Pipeline und Start-Stage als Text.
-
-## 8. Interne Benachrichtigung vorbereiten
-
-**Menüpfad:** `Automation` → `Workflows` → passender P04-Workflow  
-**Mögliche Aktion:** `Send Internal Notification`
-
-Eine sichere erste Ausbaustufe darf nur intern informieren:
-
-- Trigger/Filter:
-  `Kampagne / Lead-Detail` ist exakt `KIELS-P04-FAMILIENFITNESS`.
-- Kein Trigger allein auf `Contact Created`.
-- Re-Entry zunächst deaktivieren, bis das Update-Verhalten getestet ist.
-- Empfänger: vom Auftraggeber benannte KIELS-Person oder Team.
-- Inhalt:
-  - Kontaktname
-  - Telefonnummer und E-Mail
-  - Rückrufwunsch
-  - `Nachricht / Anfrage`
-  - Link zum HighLevel-Kontakt
-- Keine automatische Nachricht an den Kontakt.
-
-Workflow zunächst nur als `Draft` erstellen. Veröffentlichung erst nach
-separater Freigabe und kontrolliertem Test.
-
-**Benötigte Rückmeldung:**
-
-- Gewünschte interne Empfänger.
-- Kanal: In-App, interne E-Mail oder beides.
-- Screenshot des Draft-Workflows mit Trigger, Filter und Aktion.
-
-## 9. Einwilligungen und Kommunikation
+## 10. Einwilligungen und Kommunikation
 
 **Aktueller technischer Stand:**
 
@@ -323,10 +309,11 @@ Aufbewahrungsfrist müssen vom Verantwortlichen freigegeben werden.
 - Bestätigung, ob dedizierte P04-Consent-Felder künftig gewünscht sind.
 - Falls ja: erst Feldnamen und Datentypen abstimmen, danach Code anpassen.
 
-## 10. Kalender und Terminprozess prüfen
+## 11. Kalender und Terminprozess prüfen
 
-**Menüpfad:** `Calendars` → `Calendar Settings`  
-Alternativ: `Settings` → `Calendars`.
+**Deutscher Menüpfad:** `Kalender` → `Kalendereinstellungen`
+(`Calendars` → `Calendar Settings`)
+Alternativ: `Einstellungen` → `Kalender`.
 
 **Aktueller Stand:**
 
@@ -357,7 +344,7 @@ Zu dokumentieren:
 - Detail-Screenshot des vorgesehenen Kalenders ohne sensible Zugangsdaten.
 - Schriftlich: Kalendername, Owner, Buchungslink und aktive Erinnerungen.
 
-## 11. Kontrollierter Ende-zu-Ende-Test
+## 12. Kontrollierter Ende-zu-Ende-Test
 
 Erst nach ausdrücklicher Freigabe und nach Abschluss der Workflow-Prüfung:
 
@@ -385,22 +372,17 @@ Erst nach ausdrücklicher Freigabe und nach Abschluss der Workflow-Prüfung:
 9. Testkontakt nach dokumentierter Freigabe entweder kennzeichnen, behalten
    oder datenschutzgerecht löschen.
 
-## 12. Rückmeldepaket für die technische Fortsetzung
+## 13. Rückmeldepaket für die technische Fortsetzung
 
 Bitte gesammelt bereitstellen:
 
-1. Location-ID-Bestätigung.
-2. Scope-Liste der Private Integration ohne Token.
-3. Dubletten-Einstellung.
-4. Kontaktfeldliste.
-5. Workflow-Liste und Details aller potenziell passenden Workflows.
-6. Pipeline-Liste, gewünschte Pipeline und Start-Stage.
-7. Verantwortliche Person beziehungsweise Team.
-8. Gewünschter interner Benachrichtigungskanal.
-9. Kalenderliste und vorgesehener Terminprozess.
-10. Entscheidung zum P04-Tag.
-11. Entscheidung zu dedizierten Consent-Feldern.
-12. Separate ausdrückliche Freigabe für den echten E2E-Test.
+1. Screenshot des neuen Felds `P04 Anfrage-ID`.
+2. Screenshots des P04-Workflow-Entwurfs gemäß Abschnitt 6.
+3. Kalenderliste und vorgesehener Terminprozess, sofern ein Kalender später
+   integriert werden soll.
+4. Entscheidung zum optionalen P04-Tag.
+5. Entscheidung zu dedizierten Consent-Feldern.
+6. Separate ausdrückliche Freigabe für den echten E2E-Test.
 
 Ohne dieses Rückmeldepaket bleibt die Integration technisch vorbereitet und
 mock-getestet, darf aber nicht als real Ende-zu-Ende-funktionsfähig bezeichnet

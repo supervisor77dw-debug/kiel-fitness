@@ -55,6 +55,13 @@ authorization and `Version: 2021-07-28`.
    If no exact match exists, `POST /contacts/upsert` creates/upserts with
    `createNewIfDuplicateAllowed: false`.
 
+For P04, the adapter also writes the server-generated submission UUID to the
+existing-or-required contact text field `P04 Anfrage-ID`. If a retry finds the
+same UUID already stored on the exact contact, it confirms the contact state
+without a second write. A later intentional request has a new UUID and causes
+one update. This field is the idempotent trigger signal for a dedicated
+HighLevel P04 workflow.
+
 If email and phone resolve to different contacts, multiple exact matches
 exist, a search result is incomplete, or a required HighLevel field/value
 cannot be resolved, the adapter stops without updating or creating a
@@ -81,6 +88,7 @@ Only server-controlled values are used for source and campaign attribution:
 | Employer inquiry | `Kampagne / Lead-Detail`: `Firmenfitness` |
 | Employee referral | `Kampagne / Lead-Detail`: `Firmenfitness Empfehlung` |
 | Kinderbetreuung campaign | `Kampagne / Lead-Detail`: `KIELS-P04-FAMILIENFITNESS` |
+| Kinderbetreuung request identity | `P04 Anfrage-ID`: server-generated submission UUID |
 | Interest selections | Existing `Interesse / Anliegen (Mehrfach)`, mapped to the listed German options; the legacy single-select `Interesse / Anliegen` is not written |
 | Message | Existing `Nachricht / Anfrage`, passed as entered (no trimming) |
 | Checked callback checkbox | Existing `Rückruf erwünscht`, mapped to an actual available affirmative option; unchecked is omitted |
@@ -95,6 +103,22 @@ IDs or silently dropping campaign data. The campaign form never treats form
 submission as marketing consent: the optional checkbox is recorded as `Ja` or
 `Nein`. The adapter itself does not enroll the contact in a workflow, send a
 message, create an opportunity or book an appointment.
+
+## P04 workflow architecture
+
+The existing published workflow `KIELS | 01 | Neuer Lead – Eingang & Pipeline`
+is webhook-triggered and creates a contact itself. The website must not call
+that webhook after its own deduplicated contact write: doing so would create
+two competing contact paths and unsafe retry/email behavior.
+
+P04 therefore keeps the direct contact adapter and requires a separate
+HighLevel workflow triggered only when `P04 Anfrage-ID` changes, additionally
+filtered by `Kampagne / Lead-Detail = KIELS-P04-FAMILIENFITNESS`. The workflow
+can reuse the established opportunity, logging, confirmation-email and
+internal-notification actions, but must omit both the inbound-webhook trigger
+and the create-contact action. This design needs no API scopes beyond the
+verified `locations/customFields.readonly`, `contacts.readonly` and
+`contacts.write`.
 
 The Firmenfitness-specific field names/options must be present in the live
 contact-field definitions.

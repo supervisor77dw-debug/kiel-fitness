@@ -23,7 +23,8 @@ const customFields = [
  { id: "interest-id", name: "Interesse / Anliegen (Mehrfach)", model: "contact", dataType: "MULTIPLE_OPTIONS", picklistOptions: interestOptions },
  { id: "location-id", name: "Standort", model: "contact", dataType: "TEXT", picklistOptions: [] },
  { id: "size-id", name: "Beschäftigtengröße", model: "contact", dataType: "SINGLE_OPTIONS", picklistOptions: ["1-9", "10-49", "50-249", "250+"] },
- { id: "offer-id", name: "Bestehendes Firmenfitness-Angebot", model: "contact", dataType: "SINGLE_OPTIONS", picklistOptions: ["Ja", "Nein", "Nicht sicher"] }
+ { id: "offer-id", name: "Bestehendes Firmenfitness-Angebot", model: "contact", dataType: "SINGLE_OPTIONS", picklistOptions: ["Ja", "Nein", "Nicht sicher"] },
+ { id: "p04-submission-id", name: "P04 Anfrage-ID", model: "contact", dataType: "TEXT", picklistOptions: [] }
 ];
 
 const valid = () => ({
@@ -41,6 +42,17 @@ function jsonResponse(body, status = 200) {
 
 function mockApi({ existingContacts = [], failureAt, failureStatus = 502, delayUntilAbort = false } = {}) {
  const calls = [];
+ const contacts = existingContacts.map(contact => ({
+  ...contact,
+  customFields: Array.isArray(contact.customFields) ? contact.customFields.map(field => ({ ...field })) : []
+ }));
+ const mergeContact = (contact, body) => {
+  const fields = new Map(contact.customFields.map(field => [field.id, field]));
+  for (const fieldValue of body.customFields || []) {
+   fields.set(fieldValue.id, { id: fieldValue.id, value: fieldValue.field_value });
+  }
+  Object.assign(contact, body, { customFields: [...fields.values()] });
+ };
  const fetchImpl = async (url, options) => {
   const parsed = new URL(url);
   const method = options.method || "GET";
@@ -58,18 +70,26 @@ function mockApi({ existingContacts = [], failureAt, failureStatus = 502, delayU
   }
   if (parsed.pathname === "/contacts/" && method === "GET") {
    const query = parsed.searchParams.get("query");
-   const matches = existingContacts.filter(contact => contact.email === query || contact.phone === query);
+   const matches = contacts.filter(contact => contact.email === query || contact.phone === query);
    return jsonResponse({ contacts: matches.map(({ id }) => ({ id })), count: matches.length });
   }
   const contactMatch = parsed.pathname.match(/^\/contacts\/([^/]+)$/);
   if (contactMatch && method === "GET") {
-   const found = existingContacts.find(contact => contact.id === decodeURIComponent(contactMatch[1]));
+   const found = contacts.find(contact => contact.id === decodeURIComponent(contactMatch[1]));
    return found ? jsonResponse({ contact: found }) : jsonResponse({ message: "not found" }, 404);
   }
   if (contactMatch && method === "PUT") {
-   return jsonResponse({ contact: { id: decodeURIComponent(contactMatch[1]) } });
+   const id = decodeURIComponent(contactMatch[1]);
+   const contact = contacts.find(value => value.id === id);
+   if (!contact) return jsonResponse({ message: "not found" }, 404);
+   mergeContact(contact, options.body ? JSON.parse(options.body) : {});
+   return jsonResponse({ contact: { id } });
   }
   if (parsed.pathname === "/contacts/upsert" && method === "POST") {
+   const body = options.body ? JSON.parse(options.body) : {};
+   const contact = { id: "created-contact-id", customFields: [] };
+   mergeContact(contact, body);
+   contacts.push(contact);
    return jsonResponse({ new: true, contact: { id: "created-contact-id" } }, 201);
   }
   throw new Error(`Unexpected mocked HighLevel request: ${method} ${parsed.pathname}`);
@@ -119,6 +139,7 @@ function childcareInput(overrides = {}) {
   message: "", callbackRequested: false, privacyAccepted: true, marketingConsent: false,
   website: "", landingPage: "https://kiels.example/kinderbetreuung.html",
   utmSource: "facebook", utmMedium: "paid_social", utmCampaign: "familienfitness",
+  submissionId: "d473b2c0-a213-48fa-a17c-f13b4cddae87",
   ...overrides
  };
 }
@@ -136,6 +157,9 @@ test("readiness inspection validates every existing contact field and option wit
  const missing = checkFieldDefinitions(customFields.filter(item => item.id !== "interest-id"));
  assert.equal(missing.ready, false);
  assert.deepEqual(missing.missing, ["Interesse / Anliegen (Mehrfach)"]);
+ const missingP04 = checkFieldDefinitions(customFields.filter(item => item.id !== "p04-submission-id"));
+ assert.equal(missingP04.ready, false);
+ assert.deepEqual(missingP04.missing, ["P04 Anfrage-ID"]);
  let calls = 0;
  const readiness = await checkHighLevelReadiness({
   env: TEST_ENV,
@@ -331,9 +355,54 @@ test("childcare campaign captures attribution and separate consent without trigg
  assert.match(message, /UTM Campaign: familienfitness/);
  assert.match(message, /Datenschutzhinweis bestätigt: Ja/);
  assert.match(message, /Werbeeinwilligung: Nein/);
+ assert.equal(field(create.body, "p04-submission-id"), childcareInput().submissionId);
  const submittedAt = message.match(/Zeitpunkt: (.+)/)[1];
  assert.ok(Date.parse(submittedAt) >= before);
  assert.equal(api.calls.some(call => /opportun|workflow|message|email|sms|calendar/i.test(call.url.pathname)), false);
+});
+
+test("an identical childcare retry is acknowledged without a second contact write", async () => {
+ const api = mockApi();
+ const handler = mockHandler(api);
+ const input = childcareInput();
+ assert.equal((await request(input, {}, handler)).status, 200);
+ assert.equal((await request(input, {}, handler)).status, 200);
+ const writes = api.calls.filter(call => call.method === "PUT" || call.url.pathname === "/contacts/upsert");
+ assert.equal(writes.length, 1);
+ assert.equal(writes[0].url.pathname, "/contacts/upsert");
+});
+
+test("a new childcare request for the same contact updates once with a new request id", async () => {
+ const api = mockApi();
+ const handler = mockHandler(api);
+ assert.equal((await request(childcareInput(), {}, handler)).status, 200);
+ const nextSubmissionId = "44f1c2f0-8fd6-48e8-99f0-b1180f7f5dd0";
+ assert.equal((await request(childcareInput({
+  submissionId: nextSubmissionId,
+  message: "Neue Anfrage für einen anderen Trainingstag."
+ }), {}, handler)).status, 200);
+ const writes = api.calls.filter(call => call.method === "PUT" || call.url.pathname === "/contacts/upsert");
+ assert.equal(writes.length, 2);
+ assert.equal(writes[0].url.pathname, "/contacts/upsert");
+ assert.equal(writes[1].method, "PUT");
+ assert.equal(field(writes[1].body, "p04-submission-id"), nextSubmissionId);
+});
+
+test("P04 request id is required only for childcare delivery", async () => {
+ const definitions = customFields.filter(item => item.id !== "p04-submission-id");
+ const api = mockApi();
+ const standardFetch = api.fetchImpl;
+ api.fetchImpl = async (url, options) => {
+  if (new URL(url).pathname.endsWith("/customFields")) {
+   api.calls.push({ url: new URL(url), method: "GET", options, body: null });
+   return jsonResponse({ customFields: definitions });
+  }
+  return standardFetch(url, options);
+ };
+ assert.equal((await request(valid(), {}, mockHandler(api))).status, 200);
+ const childcareResult = await request(childcareInput(), {}, mockHandler(api));
+ assert.equal(childcareResult.status, 502);
+ assert.equal(childcareResult.body.code, "delivery_failed");
 });
 
 test("childcare campaign updates an exact contact and validates consent server-side", async () => {
@@ -493,6 +562,21 @@ test("API failure responses and network errors do not expose credentials or lead
  } finally {
   console.error = original;
  }
+});
+
+test("missing contact permissions fail without success or follow-up writes", async () => {
+ const searchDenied = mockApi({ failureAt: "/contacts/", failureStatus: 403 });
+ const searchResult = await request(childcareInput(), {}, mockHandler(searchDenied));
+ assert.equal(searchResult.status, 502);
+ assert.equal(searchResult.body.code, "delivery_failed");
+ assert.equal(searchDenied.calls.some(call => call.method === "PUT" || call.url.pathname === "/contacts/upsert"), false);
+
+ const writeDenied = mockApi({ failureAt: "/contacts/upsert", failureStatus: 403 });
+ const writeResult = await request(childcareInput(), {}, mockHandler(writeDenied));
+ assert.equal(writeResult.status, 502);
+ assert.equal(writeResult.body.code, "delivery_failed");
+ assert.equal(writeDenied.calls.filter(call => call.url.pathname === "/contacts/upsert").length, 1);
+ assert.equal(writeDenied.calls.some(call => /workflow|opportun|message|email|sms/i.test(call.url.pathname)), false);
 });
 
 test("network failures and HTTP success without a contact ID are never reported as success", async () => {

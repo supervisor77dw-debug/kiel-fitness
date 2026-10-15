@@ -621,6 +621,16 @@ P04 Familienfitness Landingpage, 15.10.2026
   ausdruecklich freigegebenen E2E-Test unbestaetigt.
 - Manuelle HighLevel-Pruefung:
   ..\..\KIELS_HIGHLEVEL_MANUELLE_EINRICHTUNG.md
+- Verifizierter HighLevel-Istzustand: Private Integration mit
+  locations/customFields.readonly, contacts.readonly und contacts.write;
+  Mehrfachkontakte deaktiviert mit E-Mail vor Telefon; bestehender
+  Webhook-Workflow erstellt Kontakt, Marketing-Pipeline-Opportunity,
+  Protokolleintrag, Bestaetigungs-E-Mail und interne E-Mail an Dirk.
+- Der vorhandene Webhook wird fuer P04 nicht direkt aufgerufen, da die Website
+  den Kontakt bereits dedupliziert schreibt. Stattdessen liefert das neue
+  Kontakt-Textfeld P04 Anfrage-ID ein idempotentes Signal fuer einen separaten
+  P04-Workflow ohne Aktion Kontakt erstellen. Derselbe technische Retry
+  schreibt nicht erneut; ein neuer Anfragevorgang erhaelt eine neue UUID.
 
 Bildintegration Runde 1, 11.10.2026
 - Freigegebene Quellen:
