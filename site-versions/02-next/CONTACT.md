@@ -157,14 +157,22 @@ redaction. The readiness check is a GET-only field/schema read. No
 automated test sends a real lead.
 
 The local environment was checked for variable presence only; neither
-HighLevel variable is available to the local process. No live API request,
-production lead, Vercel deployment or push has been made. Although Vercel
-environment variables are reported as configured, runtime recognition by
-the newly built function cannot be verified until an approved deployment.
+HighLevel variable is available to the local process. The production
+readiness endpoint reported both runtime variables and all required field
+definitions as ready on 2026-10-15. This was a read-only custom-field request;
+no production lead was submitted.
+
+The protected P04 preview deployment is
+`https://kiel-fitness-cyk1izdxs-supervisor77dw-debugs-projects.vercel.app`.
+Its preview runtime intentionally has no HighLevel variables and therefore
+returns `delivery_not_configured` without an outbound HighLevel call. A real
+end-to-end write still requires the owner's explicit approval.
 
 Before production approval, verify the actual KIELS custom-field definitions
 and options in the target location, the Vercel runtime variable scopes, and
 the privacy information/processing agreement, legal basis and retention
 period. The website privacy wording describes the technical transfer but
 has not been legally reviewed. A controlled test lead still requires the
-owner's approval.
+owner's approval. Manual HighLevel UI checks for token scopes, duplicate
+settings, workflows, pipelines, ownership, notifications and calendars are
+documented in the repository-root `KIELS_HIGHLEVEL_MANUELLE_EINRICHTUNG.md`.

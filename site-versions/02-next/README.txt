@@ -609,6 +609,18 @@ P04 Familienfitness Landingpage, 15.10.2026
   Nachricht / Anfrage dokumentiert. Der Adapter startet weder Workflow noch
   Marketingnachricht, Pipeline-Opportunity oder Termin.
 - Zunaechst Entwicklungs-/Previewstand. Keine Anzeigen gestartet.
+- Commit 42e200e enthaelt den reproduzierbaren P04-Stand.
+- Geschuetzte Vercel-Preview:
+  https://kiel-fitness-cyk1izdxs-supervisor77dw-debugs-projects.vercel.app
+- Die Preview-Runtime besitzt absichtlich keine HighLevel-Secrets und liefert
+  beim gueltigen Formularversuch explizit delivery_not_configured. Es wurde
+  kein echter Kontakt angelegt.
+- Production-Readiness meldete Location-Konfiguration und vorhandene Felder
+  am 15.10.2026 als kompatibel. Kontakt-Schreibrechte, Workflows, Pipeline,
+  Benachrichtigungen und Kalender bleiben bis zur manuellen Pruefung und einem
+  ausdruecklich freigegebenen E2E-Test unbestaetigt.
+- Manuelle HighLevel-Pruefung:
+  ..\..\KIELS_HIGHLEVEL_MANUELLE_EINRICHTUNG.md
 
 Bildintegration Runde 1, 11.10.2026
 - Freigegebene Quellen:
