@@ -203,6 +203,12 @@ p + p { margin-top: 16px; }
 .childcare-notes .info-card,.childcare-notes .support-panel { height: 100%; }
 .childcare-notes ul { margin: 20px 0 0; padding-left: 20px; color: var(--muted); }
 .childcare-notes li + li { margin-top: 10px; }
+.childcare-lead { display: grid; grid-template-columns: minmax(0,.8fr) minmax(0,1.2fr); gap: 64px; align-items: start; }
+.childcare-lead-copy { position: sticky; top: calc(var(--header-offset,var(--header-height)) + 32px); }
+.childcare-lead-copy > p:not(.eyebrow) { margin-top: 20px; color: var(--muted); }
+.childcare-lead .consent-choice { margin-top: 16px; align-items: start; }
+.childcare-lead .consent-choice a { color: var(--yellow); text-decoration: underline; text-underline-offset: 3px; }
+.childcare-lead .submit { width: 100%; }
 .extras-grid .text-link { font-size: 14px; }
 .hours-grid { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 20px; }
 .hours { padding: 26px; border-radius: 16px; border: 1px solid var(--line); }
@@ -498,6 +504,8 @@ body[data-page="kurse"] .page-hero { align-items: start; }
 @media (max-width: 1000px) {
  .info-grid { grid-template-columns: 1fr; }
  .contact-grid, .split-grid { gap: 28px; }
+ .childcare-lead { grid-template-columns: 1fr; gap: 32px; }
+ .childcare-lead-copy { position: static; }
  .wellness-impressions { grid-template-columns: 1fr; }
  .studio-photo-grid.four-up { grid-template-columns: repeat(2,minmax(0,1fr)); }
 }

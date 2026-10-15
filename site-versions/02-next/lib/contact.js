@@ -1,6 +1,8 @@
 const INTERESTS = ["trial", "membership", "courses", "health", "wellness", "existing-membership", "other"];
 const SOURCE_PAGES = ["Home", "Fitness", "Wellness", "Health", "Kurse", "Kontakt", "Firmenfitness", "Arbeitgeberempfehlen"];
 const FIRM_FITNESS_REQUEST_TYPES = ["employer_inquiry", "employer_referral"];
+const CHILDCARE_REQUEST_TYPE = "childcare_inquiry";
+const CHILDCARE_CAMPAIGN = "KIELS-P04-FAMILIENFITNESS";
 const MAX_BODY_BYTES = 16384;
 const { randomUUID } = require("node:crypto");
 const ATTRIBUTION_LIMITS = {
@@ -13,6 +15,7 @@ function validateContact(input) {
  if (!input || typeof input !== "object" || Array.isArray(input)) {
   return { valid: false, errors: {} };
  }
+ if (input.requestType === CHILDCARE_REQUEST_TYPE) return validateChildcareRequest(input);
  if (Object.hasOwn(input, "requestType")) return validateFirmFitnessRequest(input);
  const errors = {};
  const text = (key, max) => {
@@ -76,6 +79,85 @@ function validateContact(input) {
    interests: [...new Set(input.interests)], callbackRequested: input.callbackRequested,
    preferredContact: input.callbackRequested ? "phone" : "email",
    sourcePage: input.sourcePage, submittedAt: new Date().toISOString(),
+   ...attribution, submissionId: input.submissionId || randomUUID()
+  }
+ };
+}
+
+function validateChildcareRequest(input) {
+ const errors = {};
+ const text = (key, max, required = true) => {
+  const value = input[key];
+  if (!required && (value === undefined || value === null || value === "")) return "";
+  const normalized = typeof value === "string" ? (key === "message" ? value : value.trim()) : "";
+  const controls = key === "message" ? /[\u0000-\u0008\u000b\u000c\u000e-\u001f\u007f]/ : /[\u0000-\u001f\u007f]/;
+  if (typeof value !== "string" || (required && !normalized.trim()) || normalized.length > max || controls.test(value)) {
+   errors[key] = "Bitte überprüfe dieses Feld.";
+   return "";
+  }
+  return normalized;
+ };
+ if (input.schemaVersion !== 1) errors.schemaVersion = "Bitte lade das Formular erneut.";
+ if (input.sourcePage !== "Kinderbetreuung") errors.sourcePage = "Bitte lade das Formular erneut.";
+ const firstName = text("firstName", 80);
+ const lastName = text("lastName", 80);
+ const email = text("email", 254);
+ const phone = text("phone", 32);
+ const message = text("message", 2000, false);
+ if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = "Bitte gib eine gültige E-Mail-Adresse ein.";
+ const digits = phone.replace(/\D/g, "");
+ const normalizedDigits = phone.startsWith("+") ? digits : phone.startsWith("00") ? digits.slice(2) : "49" + digits.replace(/^0/, "");
+ if (!/^\+?[0-9 ()/.\-]+$/.test(phone) || digits.length < 6 || normalizedDigits.length > 15) {
+  errors.phone = "Bitte gib eine gültige Telefonnummer ein.";
+ }
+ if (input.callbackRequested !== false && input.callbackRequested !== true) {
+  errors.callbackRequested = "Bitte überprüfe den Rückrufwunsch.";
+ }
+ if (input.privacyAccepted !== true) errors.privacyAccepted = "Bitte bestätige die Datenschutzhinweise.";
+ if (typeof input.marketingConsent !== "boolean") errors.marketingConsent = "Bitte lade das Formular erneut.";
+ if (typeof input.website !== "string" || input.website !== "") errors.website = "Die Anfrage konnte nicht verarbeitet werden.";
+ const allowed = new Set([
+  "schemaVersion", "requestType", "sourcePage", "firstName", "lastName", "email", "phone", "message",
+  "callbackRequested", "privacyAccepted", "marketingConsent", "website", "submissionId",
+  ...Object.keys(ATTRIBUTION_LIMITS)
+ ]);
+ for (const key of Object.keys(input)) if (!allowed.has(key)) errors[key] = "Dieses Feld wird nicht unterstützt.";
+ const attribution = {};
+ for (const [key, max] of Object.entries(ATTRIBUTION_LIMITS)) {
+  const value = input[key];
+  if (value === undefined || value === null || value === "") {
+   attribution[key] = null;
+  } else if (typeof value !== "string" || value.length > max || /[\u0000-\u001f\u007f]/.test(value)) {
+   errors[key] = "Bitte lade die Seite erneut.";
+  } else {
+   attribution[key] = value.trim() || null;
+   if (attribution[key] && (key === "landingPage" || key === "referrer")) {
+    try {
+     const url = new URL(attribution[key]);
+     if (!["https:", "http:"].includes(url.protocol) || url.username || url.password || url.search || url.hash) {
+      errors[key] = "Bitte lade die Seite erneut.";
+     }
+    } catch (error) {
+     if (!(error instanceof TypeError)) throw error;
+     errors[key] = "Bitte lade die Seite erneut.";
+    }
+   }
+  }
+ }
+ if (input.submissionId != null && (typeof input.submissionId !== "string" || !/^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(input.submissionId))) {
+  errors.submissionId = "Bitte lade die Seite erneut.";
+ }
+ if (Object.keys(errors).length) return { valid: false, errors };
+ return {
+  valid: true,
+  lead: {
+   schemaVersion: 1, requestType: CHILDCARE_REQUEST_TYPE, campaignId: CHILDCARE_CAMPAIGN,
+   firstName, lastName, name: firstName + " " + lastName, email, phone: "+" + normalizedDigits,
+   message, interests: [], childcareInterest: true, callbackRequested: input.callbackRequested,
+   preferredContact: input.callbackRequested ? "phone" : "email",
+   privacyAccepted: true, marketingConsent: input.marketingConsent,
+   sourcePage: "Kinderbetreuung", submittedAt: new Date().toISOString(),
+   leadSource: "Website", leadSourceDetail: CHILDCARE_CAMPAIGN,
    ...attribution, submissionId: input.submissionId || randomUUID()
   }
  };
@@ -179,4 +261,7 @@ function validateFirmFitnessRequest(input) {
  };
 }
 
-module.exports = { validateContact, MAX_BODY_BYTES, ATTRIBUTION_LIMITS, FIRM_FITNESS_REQUEST_TYPES };
+module.exports = {
+ validateContact, MAX_BODY_BYTES, ATTRIBUTION_LIMITS, FIRM_FITNESS_REQUEST_TYPES,
+ CHILDCARE_REQUEST_TYPE, CHILDCARE_CAMPAIGN
+};

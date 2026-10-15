@@ -2,7 +2,8 @@
 
 ## Request path
 
-The contact page and both Firmenfitness forms use the same endpoint:
+The contact page, the Kinderbetreuung campaign form and both Firmenfitness
+forms use the same endpoint:
 
 `Website form -> POST /api/contact -> server validation -> HighLevel API v2`
 
@@ -79,11 +80,21 @@ Only server-controlled values are used for source and campaign attribution:
 | Other ordinary contact request | `Kampagne / Lead-Detail`: `Kontaktformular` |
 | Employer inquiry | `Kampagne / Lead-Detail`: `Firmenfitness` |
 | Employee referral | `Kampagne / Lead-Detail`: `Firmenfitness Empfehlung` |
+| Kinderbetreuung campaign | `Kampagne / Lead-Detail`: `KIELS-P04-FAMILIENFITNESS` |
 | Interest selections | Existing `Interesse / Anliegen (Mehrfach)`, mapped to the listed German options; the legacy single-select `Interesse / Anliegen` is not written |
 | Message | Existing `Nachricht / Anfrage`, passed as entered (no trimming) |
 | Checked callback checkbox | Existing `Rückruf erwünscht`, mapped to an actual available affirmative option; unchecked is omitted |
 | Company name | Standard HighLevel `companyName` |
 | Firmenfitness location, employee size, existing offer | Existing `Standort`, `Beschäftigtengröße`, and `Bestehendes Firmenfitness-Angebot` fields, when submitted |
+
+The Kinderbetreuung request writes its childcare interest, server timestamp,
+campaign identifier, clean landing-page URL, UTM values, privacy
+acknowledgement and the separate marketing-consent status as a structured
+entry in the existing `Nachricht / Anfrage` field. This avoids inventing field
+IDs or silently dropping campaign data. The campaign form never treats form
+submission as marketing consent: the optional checkbox is recorded as `Ja` or
+`Nein`. The adapter itself does not enroll the contact in a workflow, send a
+message, create an opportunity or book an appointment.
 
 The Firmenfitness-specific field names/options must be present in the live
 contact-field definitions.
@@ -107,8 +118,9 @@ an unsupported selection/type fails closed.
 ## Validation and error behavior
 
 The shared handler keeps its same-origin check, JSON content-type check,
-16 KiB request limit, honeypot and server-side field validation. Normal
-contact requests require first name, last name, email, phone and message.
+16 KiB request limit, honeypot and server-side field validation. Normal contact requests require first name, last name, email, phone and
+message. Kinderbetreuung requests require first name, last name, email, phone
+and privacy acknowledgement; their message and marketing consent are optional.
 Firmenfitness validates its own request schema and only requires a phone
 when a callback is requested. Message line breaks and surrounding whitespace
 are preserved.

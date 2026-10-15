@@ -1,5 +1,6 @@
 const API_BASE = "https://services.leadconnectorhq.com";
 const API_VERSION = "2021-07-28";
+const CHILDCARE_CAMPAIGN = "KIELS-P04-FAMILIENFITNESS";
 const INTEREST_LABELS = {
  trial: "Probetraining",
  membership: "Mitgliedschaft & Tarife",
@@ -67,9 +68,29 @@ function getContactId(value) {
 }
 
 function mapCampaignDetail(lead) {
+ if (lead.requestType === "childcare_inquiry") return CHILDCARE_CAMPAIGN;
  if (lead.requestType === "employer_referral") return "Firmenfitness Empfehlung";
  if (lead.requestType === "employer_inquiry") return "Firmenfitness";
  return lead.interests.includes("trial") ? "Probetraining" : "Kontaktformular";
+}
+
+function childcareMessage(lead) {
+ const lines = [
+  lead.message ? `Anfrage: ${lead.message}` : "Anfrage: KIELS mit Kinderbetreuung kennenlernen",
+  "Betreuungsinteresse: Kinderbetreuung",
+  `Kampagne: ${CHILDCARE_CAMPAIGN}`,
+  `Quelle: ${lead.leadSource}`,
+  `Landingpage: ${lead.landingPage || "nicht übermittelt"}`,
+  `UTM Source: ${lead.utmSource || "nicht übermittelt"}`,
+  `UTM Medium: ${lead.utmMedium || "nicht übermittelt"}`,
+  `UTM Campaign: ${lead.utmCampaign || "nicht übermittelt"}`,
+  `UTM Content: ${lead.utmContent || "nicht übermittelt"}`,
+  `UTM Term: ${lead.utmTerm || "nicht übermittelt"}`,
+  `Zeitpunkt: ${lead.submittedAt}`,
+  "Datenschutzhinweis bestätigt: Ja",
+  `Werbeeinwilligung: ${lead.marketingConsent ? "Ja" : "Nein"}`
+ ];
+ return lines.join("\n");
 }
 
 function customFieldDefinition(definitions, name) {
@@ -175,7 +196,7 @@ function checkFieldDefinitions(definitions) {
  const requirements = [
   ["Lead-Quelle", field => { customFieldValue(field, "Website"); }],
   ["Kampagne / Lead-Detail", field => {
-   for (const value of ["Probetraining", "Kontaktformular", "Firmenfitness", "Firmenfitness Empfehlung"]) {
+   for (const value of ["Probetraining", "Kontaktformular", "Firmenfitness", "Firmenfitness Empfehlung", CHILDCARE_CAMPAIGN]) {
     customFieldValue(field, value);
    }
   }],
@@ -365,8 +386,9 @@ function buildCustomFields(lead, definitions) {
   fields.push(callbackValue(customFieldDefinition(definitions, "Rückruf erwünscht"), true));
  }
 
- if (lead.message) {
-  fields.push(customFieldValue(customFieldDefinition(definitions, "Nachricht / Anfrage"), lead.message));
+ const message = lead.requestType === "childcare_inquiry" ? childcareMessage(lead) : lead.message;
+ if (message) {
+  fields.push(customFieldValue(customFieldDefinition(definitions, "Nachricht / Anfrage"), message));
  }
  if (lead.interests.length) {
   const interestField = customFieldDefinition(definitions, "Interesse / Anliegen (Mehrfach)");

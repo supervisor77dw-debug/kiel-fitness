@@ -597,6 +597,19 @@ Medien-Auslieferung und Go-Live-Sperre, 10.10.2026
   Medienaudit fehlende Quelldateien, Build-Dateien oder HTTP-Status ungleich
   200 meldet.
 
+P04 Familienfitness Landingpage, 15.10.2026
+- Fuehrender Arbeitsstand: kinderbetreuung.html unter site-versions/02-next.
+- Kampagnenkennung: KIELS-P04-FAMILIENFITNESS.
+- Vorhandene authentische Motive und verbindliche Betreuungszeiten bleiben
+  unveraendert. Die Seite besitzt jetzt eine mobile Anfrage direkt auf der
+  Landingpage sowie eine getrennte, freiwillige Werbeeinwilligung.
+- Der bestehende HighLevel-Adapter dedupliziert weiterhin per exakter
+  E-Mail-/Telefonpruefung. Kampagne, Betreuungsinteresse, Landingpage, UTM,
+  Serverzeitpunkt sowie beide Einwilligungsstatus werden im vorhandenen Feld
+  Nachricht / Anfrage dokumentiert. Der Adapter startet weder Workflow noch
+  Marketingnachricht, Pipeline-Opportunity oder Termin.
+- Zunaechst Entwicklungs-/Previewstand. Keine Anzeigen gestartet.
+
 Bildintegration Runde 1, 11.10.2026
 - Freigegebene Quellen:
   ../08_BILDOPTIMIERUNG_2026/

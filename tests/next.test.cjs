@@ -559,7 +559,7 @@ test("postnatal Aufbau Rückbildung and established Rückenfitness remain separa
  assert.doesNotMatch(courses + health, /Aufbau Rückenbildung|Rückenfit(?!ness)|Wirbelsäulengymnastik/);
 });
 test("all main pages have unique local SEO metadata, meaningful headings and accessible images", () => {
- const focus = { index: "Fitnessstudio", fitness: "Fitnesstraining", health: "Gesundheitstraining", kurse: "Fitnesskurse", wellness: "Fitnessstudio mit Sauna", kinderbetreuung: "Fitness", kontakt: "Kontakt" };
+ const focus = { index: "Fitnessstudio", fitness: "Fitnesstraining", health: "Gesundheitstraining", kurse: "Fitnesskurse", wellness: "Fitnessstudio mit Sauna", kinderbetreuung: "Kinderbetreuung", kontakt: "Kontakt" };
  const titles = new Set(), descriptions = new Set();
  for (const [page, intent] of Object.entries(focus)) {
   const html = fs.readFileSync(path.join(next, page + ".html"), "utf8");

@@ -325,7 +325,8 @@ const pageIntent = {
  fitness: "trial",
  health: "health",
  kurse: "courses",
- wellness: "wellness"
+ wellness: "wellness",
+ kinderbetreuung: "childcare"
 }[document.body.dataset.page];
 document.querySelectorAll('a[href="kontakt.html"]').forEach(link => {
  const label = link.textContent.toLowerCase();
@@ -342,9 +343,9 @@ if (contactForm) {
  const submit = contactForm.querySelector('button[type="submit"]');
  const status = contactForm.querySelector(".contact-status");
  const fields = [...contactForm.querySelectorAll("[required]")];
- const pages = { "index.html": "Home", "fitness.html": "Fitness", "wellness.html": "Wellness", "health.html": "Health", "kurse.html": "Kurse", "kontakt.html": "Kontakt" };
- let sourcePage = "Kontakt";
- if (document.referrer) {
+ const pages = { "index.html": "Home", "fitness.html": "Fitness", "wellness.html": "Wellness", "health.html": "Health", "kurse.html": "Kurse", "kontakt.html": "Kontakt", "kinderbetreuung.html": "Kinderbetreuung" };
+ let sourcePage = contactForm.dataset.sourcePage || "Kontakt";
+ if (!contactForm.dataset.sourcePage && document.referrer) {
   const referrer = new URL(document.referrer);
   if (referrer.origin === location.origin) {
    const filename = referrer.pathname.split("/").pop() || "index.html";
@@ -411,10 +412,17 @@ if (contactForm) {
   const data = new FormData(contactForm);
   const payload = {
    firstName: data.get("firstName").trim(), lastName: data.get("lastName").trim(),
-   email: data.get("email").trim(), phone: data.get("phone").trim(), message: data.get("message"),
+   email: data.get("email").trim(), phone: data.get("phone").trim(), message: data.get("message") || "",
    interests: data.getAll("interests"), callbackRequested: data.get("callbackRequested") === "true",
    sourcePage, website: data.get("website"), ...attribution
   };
+  if (contactForm.dataset.requestType) {
+   payload.schemaVersion = 1;
+   payload.requestType = contactForm.dataset.requestType;
+   payload.privacyAccepted = data.get("privacyAccepted") === "true";
+   payload.marketingConsent = data.get("marketingConsent") === "true";
+   delete payload.interests;
+  }
   const fingerprint = JSON.stringify(payload);
   if (!pendingSubmission || pendingSubmission.fingerprint !== fingerprint) {
    pendingSubmission = { fingerprint, id: crypto.randomUUID() };

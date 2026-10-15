@@ -112,6 +112,17 @@ function firmFitnessInput(requestType = "employer_inquiry", overrides = {}) {
  };
 }
 
+function childcareInput(overrides = {}) {
+ return {
+  schemaVersion: 1, requestType: "childcare_inquiry", sourcePage: "Kinderbetreuung",
+  firstName: "Erika", lastName: "Muster", email: "erika@example.test", phone: "0431 54020",
+  message: "", callbackRequested: false, privacyAccepted: true, marketingConsent: false,
+  website: "", landingPage: "https://kiels.example/kinderbetreuung.html",
+  utmSource: "facebook", utmMedium: "paid_social", utmCampaign: "familienfitness",
+  ...overrides
+ };
+}
+
 function field(body, id) {
  return body.customFields.find(value => value.id === id)?.field_value;
 }
@@ -300,6 +311,50 @@ test("an existing contact found by email and phone is updated once", async () =>
  assert.equal(result.body.code, "delivery_success");
  assert.equal(api.calls.filter(call => call.method === "PUT" && call.url.pathname.endsWith(existing.id)).length, 1);
  assert.equal(api.calls.some(call => call.url.pathname === "/contacts/upsert"), false);
+});
+
+test("childcare campaign captures attribution and separate consent without triggering automation", async () => {
+ const api = mockApi();
+ const before = Date.now();
+ const result = await request(childcareInput(), {}, mockHandler(api));
+ assert.equal(result.status, 200);
+ const create = api.calls.find(call => call.url.pathname === "/contacts/upsert");
+ assert.equal(create.body.createNewIfDuplicateAllowed, false);
+ assert.equal(create.body.source, "Website");
+ assert.equal(field(create.body, "detail-id"), "KIELS-P04-FAMILIENFITNESS");
+ const message = field(create.body, "message-id");
+ assert.match(message, /Betreuungsinteresse: Kinderbetreuung/);
+ assert.match(message, /Kampagne: KIELS-P04-FAMILIENFITNESS/);
+ assert.match(message, /Landingpage: https:\/\/kiels\.example\/kinderbetreuung\.html/);
+ assert.match(message, /UTM Source: facebook/);
+ assert.match(message, /UTM Medium: paid_social/);
+ assert.match(message, /UTM Campaign: familienfitness/);
+ assert.match(message, /Datenschutzhinweis bestätigt: Ja/);
+ assert.match(message, /Werbeeinwilligung: Nein/);
+ const submittedAt = message.match(/Zeitpunkt: (.+)/)[1];
+ assert.ok(Date.parse(submittedAt) >= before);
+ assert.equal(api.calls.some(call => /opportun|workflow|message|email|sms|calendar/i.test(call.url.pathname)), false);
+});
+
+test("childcare campaign updates an exact contact and validates consent server-side", async () => {
+ const existing = { id: "family-contact", email: "erika@example.test", phone: "+4943154020" };
+ const api = mockApi({ existingContacts: [existing] });
+ const result = await request(childcareInput({ marketingConsent: true }), {}, mockHandler(api));
+ assert.equal(result.status, 200);
+ const update = api.calls.find(call => call.method === "PUT" && call.url.pathname.endsWith(existing.id));
+ assert.ok(update);
+ assert.match(field(update.body, "message-id"), /Werbeeinwilligung: Ja/);
+ assert.equal(api.calls.some(call => call.url.pathname === "/contacts/upsert"), false);
+ for (const [key, value] of [
+  ["privacyAccepted", false],
+  ["marketingConsent", "false"],
+  ["sourcePage", "Kontakt"],
+  ["requestType", "unknown"]
+ ]) {
+  const invalid = await request(childcareInput({ [key]: value }));
+  assert.equal(invalid.status, 400, key);
+  assert.ok(invalid.body.errors[key], key);
+ }
 });
 
 test("email and phone matches pointing to different contacts fail closed as ambiguous", async () => {
@@ -496,6 +551,7 @@ test("custom source and interest values are fixed server mappings, not client su
  assert.equal(field(create.body, "detail-id"), "Probetraining");
  assert.equal(mapCampaignDetail({ requestType: "employer_referral", interests: [] }), "Firmenfitness Empfehlung");
  assert.equal(mapCampaignDetail({ requestType: "employer_inquiry", interests: [] }), "Firmenfitness");
+ assert.equal(mapCampaignDetail({ requestType: "childcare_inquiry", interests: [] }), "KIELS-P04-FAMILIENFITNESS");
 });
 
 test("message text is not trimmed by either server-side request contract", () => {

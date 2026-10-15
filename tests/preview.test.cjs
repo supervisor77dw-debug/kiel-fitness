@@ -157,6 +157,11 @@ test("childcare pages use both approved responsive image sources", async () => {
   assert.match(response.headers.get("content-type"), /image\/webp/);
  }
  assert.match(home, /href="kinderbetreuung\.html">Kinderbetreuung entdecken/);
+ assert.match(childcare, /<h1>Dein Training\. Unsere Kinderbetreuung\.<\/h1>/);
+ assert.match(childcare, /KIELS mit Kinderbetreuung kennenlernen/);
+ assert.match(childcare, /data-request-type="childcare_inquiry"/);
+ assert.match(childcare, /name="privacyAccepted" value="true" required/);
+ assert.match(childcare, /name="marketingConsent" value="true"/);
  assert.match(childcare, /Montag–Freitag[\s\S]*08:30–12:00 Uhr[\s\S]*15:00–19:00 Uhr/);
  assert.match(childcare, /Samstag–Sonntag[\s\S]*08:30–12:00 Uhr/);
 });
