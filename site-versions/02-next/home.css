@@ -147,6 +147,7 @@ p + p { margin-top: 16px; }
 .studio-photo-grid.four-up { grid-template-columns: repeat(4,minmax(0,1fr)); }
 .studio-photo-grid.four-up .media-card > img { aspect-ratio: 3/2; }
 .studio-photo-grid .media-card > img.full-frame { object-fit: contain; background: var(--navy-soft); }
+.fitness-personal-image img { aspect-ratio: 4/3; object-fit: contain; background: var(--navy-soft); }
 .image-label { position: absolute; bottom: 16px; left: 16px; right: 16px; padding: 10px 14px; background: rgba(7,23,32,.88); border: 1px solid var(--line); border-radius: 8px; font-size: 12px; }
 .studio-copy > p:not(.eyebrow) { color: var(--muted); margin-top: 24px; }
 .studio-copy .button { margin-top: 24px; }

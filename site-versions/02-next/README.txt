@@ -645,3 +645,16 @@ Bildintegration Runde 1, 11.10.2026
 - Alle Bilder unterhalb des initial sichtbaren Bereichs verwenden Lazy
   Loading, definierte Abmessungen, srcset und sizes. Die bestehenden Hero-
   Bilder und die LES-MILLS-Kursmotive bleiben unveraendert.
+
+Basti Bildintegration, Oktober 2026
+- Die Startseite zeigt im vorhandenen Bistro-/Loungeabschnitt das authentische
+  Gemeinschaftsmotiv IMG_4444 statt bistro-coffee.
+- Die Fitnessseite zeigt IMG_4430 im bestehenden Cardiobereich statt der
+  leeren Trainingsflaeche sowie das Personal-Training-Motiv 20261015 statt
+  fitness-main.png. Alle drei Motive nutzen die gelieferten 800-/1200-WebPs.
+- Hochformat und Personal-Training-Motiv werden vollstaendig dargestellt,
+  damit Personen und Koepfe auf Desktop und Mobil nicht abgeschnitten werden.
+- IMG_4438 bleibt Reserve, da IMG_4444 die staerkere Gemeinschaftsszene zeigt.
+  Die Gesundheitsseite bleibt bewusst unveraendert, weil InBody- und Arztmotiv
+  ihre Inhalte genauer vermitteln. Kurs- und Wellnessmotive wurden nicht
+  ersetzt.

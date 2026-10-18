@@ -295,7 +295,7 @@ test("homepage and primary service pages use the approved responsive imagery", (
  const openingIndex = home.indexOf('id="opening-title"');
  assert.ok(extrasIndex >= 0 && extrasIndex < bistroIndex && bistroIndex < openingIndex);
  assert.match(home, /href="#bistro-lounge">Bistro &amp; Lounge ansehen/);
- assert.match(home, /src="assets\/areas\/bistro-coffee-724\.webp"[^>]*srcset="[^"]*bistro-coffee-1448\.webp 1448w"[^>]*alt="Eine KIELS-Mitarbeiterin reicht einem Mitglied am Bistro-Tresen einen Kaffee"[^>]*loading="lazy"[^>]*width="1448" height="1086"/);
+ assert.match(home, /src="assets\/basti\/kiels-basti-bistro-IMG_4444-800\.webp"[^>]*srcset="[^"]*kiels-basti-bistro-IMG_4444-1200\.webp 1200w"[^>]*alt="Zwei Personen sitzen mit Getränken im Gespräch in der KIELS Bistro-Lounge"[^>]*loading="lazy"[^>]*width="1200" height="900"/);
  assert.doesNotMatch(home, /Bistro im Wellnessbereich|href="wellness\.html">Bistro/);
  const wellness = fs.readFileSync(path.join(next, "wellness.html"), "utf8");
  assert.match(wellness, /Bistro &amp; Lounge findest du direkt beim Empfang/);
@@ -303,7 +303,8 @@ test("homepage and primary service pages use the approved responsive imagery", (
  assert.doesNotMatch(wellness, /<h2>Bistro &amp; Lounge<\/h2>|Zwischen den Saunagängen/);
  const fitness = fs.readFileSync(path.join(next, "fitness.html"), "utf8");
  assert.match(fitness, /fitness-spaces-title/);
- assert.match(fitness, /training-floor-800\.webp/);
+ assert.match(fitness, /kiels-basti-cardio-IMG_4430-800\.webp/);
+ assert.match(fitness, /kiels-basti-personal-training-20261015-800\.webp/);
  assert.match(fitness, /keiser-circuit-800\.webp/);
  assert.match(fitness, /functional-fitness-768\.webp/);
  assert.match(fitness, /free-weights-768\.webp/);
@@ -324,7 +325,6 @@ test("homepage and primary service pages use the approved responsive imagery", (
   "home-training-800.webp", "home-training-1600.webp",
   "home-relaxation-800.webp", "home-relaxation-1600.webp",
   "home-wellness-800.webp", "home-wellness-1600.webp",
-  "training-floor-800.webp", "training-floor-1600.webp",
   "keiser-circuit-800.webp", "keiser-circuit-1600.webp",
   "functional-fitness-768.webp", "functional-fitness-1536.webp",
   "free-weights-768.webp", "free-weights-1536.webp",
@@ -336,8 +336,7 @@ test("homepage and primary service pages use the approved responsive imagery", (
   "wellness-mixed-sauna-800.webp", "wellness-mixed-sauna-1600.webp",
   "wellness-lounge-800.webp", "wellness-lounge-1600.webp",
   "wellness-kneipp-724.webp", "wellness-kneipp-1448.webp",
-  "wellness-terrace-724.webp", "wellness-terrace-1448.webp",
-  "bistro-coffee-724.webp", "bistro-coffee-1448.webp"
+  "wellness-terrace-724.webp", "wellness-terrace-1448.webp"
  ];
  const references = [home, fitness, courses, wellness].join("\n");
  for (const asset of assets) {
@@ -346,7 +345,21 @@ test("homepage and primary service pages use the approved responsive imagery", (
   assert.equal(fs.readFileSync(file).toString("ascii", 8, 12), "WEBP", `${asset} is WebP`);
   assert.match(references, new RegExp(`assets/areas/${asset.replace(".", "\\.")}`));
  }
- assert.equal((references.match(/srcset="assets\/areas\//g) || []).length, 18);
+ const bastiAssets = [
+  "kiels-basti-bistro-IMG_4444-800.webp", "kiels-basti-bistro-IMG_4444-1200.webp",
+  "kiels-basti-cardio-IMG_4430-800.webp", "kiels-basti-cardio-IMG_4430-1200.webp",
+  "kiels-basti-personal-training-20261015-800.webp",
+  "kiels-basti-personal-training-20261015-1200.webp"
+ ];
+ for (const asset of bastiAssets) {
+  const file = path.join(next, "assets", "basti", asset);
+  assert.ok(fs.statSync(file).size < 500_000, `${asset} is optimized for web delivery`);
+  assert.equal(fs.readFileSync(file).toString("ascii", 8, 12), "WEBP", `${asset} is WebP`);
+  assert.match(references, new RegExp(`assets/basti/${asset.replace(".", "\\.")}`));
+ }
+ assert.equal((references.match(/srcset="assets\/areas\//g) || []).length, 16);
+ assert.equal((references.match(/srcset="assets\/basti\//g) || []).length, 3);
+ assert.doesNotMatch(home + fitness, /bistro-coffee-|training-floor-|fitness-main\.png/);
  assert.doesNotMatch(references, /KI-retuschiert|KI-generiert|optimiert-v01|ki-bearbeitung|ki-retusche/i);
 });
 test("approved Biosauna photo is responsive while health diagnostics stay distinct", () => {

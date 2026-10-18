@@ -104,7 +104,7 @@ test("authentic homepage studio image is served from the optimized local WebP as
 
 test("approved round-one and location images use responsive local derivatives", async () => {
  const pages = {
-  "index.html": ["assets/areas/bistro-coffee-724.webp", "assets/areas/bistro-coffee-1448.webp"],
+  "index.html": ["assets/basti/kiels-basti-bistro-IMG_4444-800.webp", "assets/basti/kiels-basti-bistro-IMG_4444-1200.webp"],
   "fitness.html": ["assets/areas/free-weights-768.webp", "assets/areas/free-weights-1536.webp"],
   "kurse.html": ["assets/areas/course-spinning-800.webp", "assets/areas/course-spinning-1600.webp"],
   "wellness.html": ["assets/areas/wellness-terrace-724.webp", "assets/areas/wellness-terrace-1448.webp"],
@@ -133,6 +133,23 @@ test("final course and infrared sauna images are served as local WebP assets", a
   "assets/courses/kiels-kurs-ashtanga-yoga-neu-20261012-1200.webp",
   "assets/wellness/kiels-wellness-infrarotsauna-800.webp",
   "assets/wellness/kiels-wellness-infrarotsauna-1200.webp"
+ ];
+ for (const asset of assets) {
+  const response = await fetch(base + "/next/" + asset);
+  assert.equal(response.status, 200, asset);
+  assert.match(response.headers.get("content-type"), /image\/webp/);
+  assert.equal(Buffer.from(await response.arrayBuffer()).toString("ascii", 8, 12), "WEBP", asset);
+ }
+});
+
+test("Basti studio photos are served as responsive local WebP assets", async () => {
+ const assets = [
+  "assets/basti/kiels-basti-bistro-IMG_4444-800.webp",
+  "assets/basti/kiels-basti-bistro-IMG_4444-1200.webp",
+  "assets/basti/kiels-basti-cardio-IMG_4430-800.webp",
+  "assets/basti/kiels-basti-cardio-IMG_4430-1200.webp",
+  "assets/basti/kiels-basti-personal-training-20261015-800.webp",
+  "assets/basti/kiels-basti-personal-training-20261015-1200.webp"
  ];
  for (const asset of assets) {
   const response = await fetch(base + "/next/" + asset);
