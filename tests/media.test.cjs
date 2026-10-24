@@ -4,7 +4,8 @@ const fs = require("node:fs");
 const http = require("node:http");
 const path = require("node:path");
 const { execFileSync } = require("node:child_process");
-const { auditMedia, productiveSourceFiles } = require("../tools/media-audit.cjs");
+const { createHash } = require("node:crypto");
+const { approvedMediaManifest, auditMedia, collectMediaReferences, productiveSourceFiles, webpSize } = require("../tools/media-audit.cjs");
 
 const root = path.resolve(__dirname, "..");
 const output = path.join(root, ".vercel", `media-audit-${process.pid}`);
@@ -32,9 +33,51 @@ test("all productive media references resolve with exact case and valid files", 
  assert.ok(entries.length > 50, "expected a complete media inventory");
  const missing = failures(entries, entry =>
   entry.unsafe || !entry.sourceExists || !entry.exactCase || !entry.validMedia || !entry.gitTracked ||
-  (entry.approvedOriginal && !entry.originalExists)
+  entry.approvedIntegrity === false
  );
  assert.equal(missing, "", missing);
+});
+
+// Etappe 6 (AW-20261024-GE-CLAUDE-KIELS-NEXT-UEBERNAHME-006-TESTFINAL): Die freigegebenen Originale bleiben bewusst ausserhalb des
+// oeffentlichen Repositorys. Verbindlich sind die versionierten Ableitungen laut site-versions/approved-media-manifest.json.
+test("approved authentic derivatives match the integrity manifest and originals stay out of the repository", () => {
+ const manifest = approvedMediaManifest();
+ const tracked = execFileSync("git", ["ls-files", "-z"], { cwd: root }).toString("utf8").split("\0").filter(Boolean).map(value => value.replaceAll("\\", "/"));
+ const nextDir = path.join(root, "site-versions", "02-next");
+ assert.equal(manifest.schema, "kiels.approved-media/1");
+ assert.equal(manifest.originals.length, 5);
+ const listed = new Set();
+ for (const entry of manifest.originals) {
+  assert.match(entry.originalSha256, /^[0-9a-f]{64}$/, entry.original);
+  assert.equal(entry.originalInRepository, false, entry.original);
+  const originalName = path.posix.basename(entry.original);
+  assert.ok(!tracked.some(file => path.posix.basename(file) === originalName), `${originalName} darf nicht versioniert sein`);
+  assert.ok(entry.derivatives.length >= 2, `${entry.original}: responsive Varianten fehlen`);
+  const widths = entry.derivatives.map(item => item.width);
+  assert.equal(Math.max(...widths), 2 * Math.min(...widths), `${entry.original}: Standard- und doppelte Breite erwartet`);
+  for (const derivative of entry.derivatives) {
+   listed.add(derivative.path);
+   const relative = `site-versions/02-next/${derivative.path}`;
+   assert.ok(tracked.includes(relative), `${relative} nicht versioniert`);
+   const buffer = fs.readFileSync(path.join(nextDir, ...derivative.path.split("/")));
+   assert.equal(buffer.length, derivative.bytes, `${derivative.path}: Groesse`);
+   assert.deepEqual(webpSize(buffer), { width: derivative.width, height: derivative.height }, `${derivative.path}: kein gueltiges WebP oder falsche Masse`);
+   assert.ok(derivative.width <= entry.originalWidth && derivative.height <= entry.originalHeight, `${derivative.path}: groesser als das Original`);
+   assert.equal(createHash("sha256").update(buffer).digest("hex"), derivative.sha256, `${derivative.path}: Pruefsumme`);
+  }
+  for (const page of entry.pages) {
+   const html = fs.readFileSync(path.join(nextDir, page), "utf8");
+   for (const derivative of entry.derivatives) assert.ok(html.includes(derivative.path), `${page}: ${derivative.path} nicht referenziert`);
+  }
+ }
+ // keine authentische Ableitung ausserhalb des Manifests, weder im Bestand noch in den Seiten
+ const authenticFiles = tracked.filter(file => /^site-versions\/02-next\/assets\/kiels-authentic\/[^/]+$/.test(file)).map(file => file.slice("site-versions/02-next/".length));
+ assert.deepEqual(authenticFiles.sort(), [...listed].sort());
+ const referenced = new Set(collectMediaReferences().filter(item => /^assets\/kiels-authentic\//.test(item.path)).map(item => item.path));
+ for (const item of referenced) assert.ok(listed.has(item), `${item} nicht im Freigabemanifest`);
+ const declaredPages = new Set(manifest.originals.flatMap(entry => entry.pages));
+ for (const item of referenced) assert.ok(manifest.originals.some(entry => entry.derivatives.some(d => d.path === item) && entry.pages.length), `${item}: verwendende Seite nicht im Manifest`);
+ assert.ok(declaredPages.size > 0);
 });
 
 test("the published build contains and serves every local media URL", async () => {
