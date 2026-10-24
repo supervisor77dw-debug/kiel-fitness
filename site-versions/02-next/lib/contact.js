@@ -118,7 +118,7 @@ function validateChildcareRequest(input) {
  if (typeof input.website !== "string" || input.website !== "") errors.website = "Die Anfrage konnte nicht verarbeitet werden.";
  const allowed = new Set([
   "schemaVersion", "requestType", "sourcePage", "firstName", "lastName", "email", "phone", "message",
-  "callbackRequested", "privacyAccepted", "marketingConsent", "website", "submissionId",
+  "callbackRequested", "privacyAccepted", "marketingConsent", "website", "submissionId", "submittedAt",
   ...Object.keys(ATTRIBUTION_LIMITS)
  ]);
  for (const key of Object.keys(input)) if (!allowed.has(key)) errors[key] = "Dieses Feld wird nicht unterstützt.";
@@ -212,7 +212,7 @@ function validateFirmFitnessRequest(input) {
  if (typeof input.website !== "string" || input.website !== "") errors.website = "Die Anfrage konnte nicht verarbeitet werden.";
  const allowed = new Set([
   "schemaVersion", "requestType", "sourcePage", "companyName", "firstName", "lastName", "email", "phone",
-  "location", "employeeSize", "existingOffer", "message", "callbackRequested", "website", "submissionId",
+  "location", "employeeSize", "existingOffer", "message", "callbackRequested", "website", "submissionId", "submittedAt",
   ...Object.keys(ATTRIBUTION_LIMITS)
  ]);
  for (const key of Object.keys(input)) if (!allowed.has(key)) errors[key] = "Dieses Feld wird nicht unterstützt.";

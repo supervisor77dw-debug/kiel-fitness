@@ -17,10 +17,8 @@ if (fs.existsSync(output)) throw new Error("Staging output already exists. Inspe
 const staticRoot = path.join(output, "static");
 const functionsRoot = path.join(output, "functions", "api");
 const contactFunctionRoot = path.join(functionsRoot, "contact.func");
-const readinessFunctionRoot = path.join(functionsRoot, "highlevel-readiness.func");
 fs.mkdirSync(staticRoot, { recursive: true });
 fs.mkdirSync(path.join(contactFunctionRoot, "lib"), { recursive: true });
-fs.mkdirSync(path.join(readinessFunctionRoot, "lib"), { recursive: true });
 const files = [];
 function copy(source, destination, relative) {
  fs.mkdirSync(path.dirname(destination), { recursive: true });
@@ -44,7 +42,7 @@ for (const relative of resources) {
 const handler = fs.readFileSync(path.join(next, "api", "contact.js"), "utf8");
 fs.mkdirSync(path.join(contactFunctionRoot, "api"), { recursive: true });
 fs.writeFileSync(path.join(contactFunctionRoot, "api", "contact.js"), handler);
-for (const file of ["contact.js", "highlevel.js"]) {
+for (const file of ["contact.js", "aiw-lead.js"]) {
  copy(path.join(next, "lib", file), path.join(contactFunctionRoot, "lib", file), "function/lib/" + file);
 }
 copy(path.join(root, "tools", "contact-http.cjs"), path.join(contactFunctionRoot, "contact-http.cjs"), "function/contact-http.cjs");
@@ -54,23 +52,17 @@ const { serveContact } = require("./contact-http.cjs");
 module.exports = (req, res) => serveContact(req, res, { handler, maxBytes: MAX_BODY_BYTES });
 `);
 fs.writeFileSync(path.join(contactFunctionRoot, ".vc-config.json"), JSON.stringify({ runtime: "nodejs22.x", handler: "entry.cjs", launcherType: "Nodejs", maxDuration: 15 }, null, 2));
-fs.mkdirSync(path.join(readinessFunctionRoot, "api"), { recursive: true });
-copy(path.join(next, "api", "highlevel-readiness.js"), path.join(readinessFunctionRoot, "api", "highlevel-readiness.js"), "function/api/highlevel-readiness.js");
-copy(path.join(next, "lib", "highlevel.js"), path.join(readinessFunctionRoot, "lib", "highlevel.js"), "function/readiness-lib/highlevel.js");
-fs.writeFileSync(path.join(readinessFunctionRoot, "entry.cjs"), 'module.exports = require("./api/highlevel-readiness");\n');
-fs.writeFileSync(path.join(readinessFunctionRoot, ".vc-config.json"), JSON.stringify({ runtime: "nodejs22.x", handler: "entry.cjs", launcherType: "Nodejs", shouldAddHelpers: true, maxDuration: 12 }, null, 2));
 fs.writeFileSync(path.join(output, "config.json"), JSON.stringify({
  version: 3,
  routes: [
   { src: "/api/contact", dest: "/api/contact" },
-  { src: "/api/highlevel-readiness", dest: "/api/highlevel-readiness" },
   { handle: "filesystem" },
   { src: "/", dest: "/index.html" }
  ]
 }, null, 2));
 fs.writeFileSync(path.join(output, "staging-manifest.json"), JSON.stringify({
  mode: "staging",
- delivery: "Server-only; requires HIGHLEVEL_PRIVATE_TOKEN and HIGHLEVEL_LOCATION_ID at runtime",
+ delivery: "Disabled by default. Server-only AIW_LEAD_ENABLED, AIW_LEAD_ENDPOINT, AIW_LEAD_TOKEN and AIW_PRIVACY_NOTICE_VERSION required; no HighLevel fallback",
  sourceRoot: "site-versions/02-next",
  resources: resources.size,
  files

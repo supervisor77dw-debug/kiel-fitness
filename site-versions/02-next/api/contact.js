@@ -1,7 +1,8 @@
 const { validateContact, MAX_BODY_BYTES } = require("../lib/contact");
-const { createHighLevelAdapter } = require("../lib/highlevel");
+const { createAiwLeadAdapter } = require("../lib/aiw-lead");
 
-function createContactHandler({ submitLead = createHighLevelAdapter() } = {}) {
+function createContactHandler({ submitLead, requireReceipt = submitLead === undefined } = {}) {
+ submitLead ??= createAiwLeadAdapter();
  return async function contact(req, res) {
  res.setHeader("Cache-Control", "no-store");
  res.setHeader("X-Content-Type-Options", "nosniff");
@@ -21,14 +22,21 @@ function createContactHandler({ submitLead = createHighLevelAdapter() } = {}) {
    return reply(403, { success: false, code: "invalid_origin", message: "Diese Anfrage ist nicht erlaubt." });
   }
  }
+ if (requireReceipt && (!req.headers.origin || (req.headers["sec-fetch-site"] && req.headers["sec-fetch-site"] !== "same-origin"))) {
+  return reply(403, { success: false, code: "invalid_origin", message: "Diese Anfrage ist nicht erlaubt." });
+ }
  if ((req.headers["content-type"] || "").split(";")[0].trim().toLowerCase() !== "application/json") {
   return reply(415, { success: false, code: "invalid_content_type", message: "Das Formular ben\u00f6tigt JSON-Daten und JavaScript." });
  }
+ if (req.headers["content-encoding"]) return reply(415, {success:false,code:"invalid_content_type",message:"Diese Kodierung wird nicht unterstützt."});
  if (Number(req.headers["content-length"]) > MAX_BODY_BYTES) {
   return reply(413, { success: false, code: "body_too_large", message: "Die Anfrage ist zu gro\u00df." });
  }
  let input = req.body;
- if (Buffer.isBuffer(input)) input = input.toString("utf8");
+ if (Buffer.isBuffer(input)) {
+  try { input = new TextDecoder('utf8',{fatal:true}).decode(input); }
+  catch { return reply(400, {success:false,code:"validation_error",message:"Die Anfrage enthält ungültige Daten."}); }
+ }
  if (typeof input === "string") {
   if (Buffer.byteLength(input) > MAX_BODY_BYTES) {
    return reply(413, { success: false, code: "body_too_large", message: "Die Anfrage ist zu gro\u00df." });
@@ -42,6 +50,9 @@ function createContactHandler({ submitLead = createHighLevelAdapter() } = {}) {
  if (Buffer.byteLength(JSON.stringify(input ?? null)) > MAX_BODY_BYTES) {
   return reply(413, { success: false, code: "body_too_large", message: "Die Anfrage ist zu gro\u00df." });
  }
+ if (requireReceipt && (!input || typeof input.submissionId !== "string" || typeof input.submittedAt !== "string")) {
+  return reply(400, { success: false, code: "validation_error", message: "Bitte lade das Formular erneut." });
+ }
  const result = validateContact(input);
  if (!result.valid) {
   const spam = typeof input?.website === "string" && input.website !== "";
@@ -51,7 +62,7 @@ function createContactHandler({ submitLead = createHighLevelAdapter() } = {}) {
    errors: result.errors
   });
  }
- const delivery = await submitLead(result.lead);
+ const delivery = await submitLead({...result.lead, ...(requireReceipt ? {submittedAt:input.submittedAt} : {})});
  return reply(delivery.status, delivery.body);
  };
 }

@@ -26,11 +26,13 @@ test("frozen current and resource snapshot match all reference hashes", () => {
 });
 
 test("next keeps independent delivery modules and the existing form contract", () => {
- assert.deepEqual(
-  fs.readFileSync(path.join(versions, "01-current", "api/contact.js")),
-  fs.readFileSync(path.join(versions, "02-next", "api/contact.js")),
-  "api/contact.js"
- );
+ // AW-20261024-GE-CLAUDE-KIELS-AIW-LEAD-LIVE-INTEGRATION-009: 02-next liefert an das AIW-Lead-Management,
+ // der eingefrorene Stand 01-current bleibt unveraendert beim bisherigen Adapter.
+ const currentHandler = fs.readFileSync(path.join(versions, "01-current", "api/contact.js"), "utf8");
+ const nextHandler = fs.readFileSync(path.join(versions, "02-next", "api/contact.js"), "utf8");
+ assert.match(nextHandler, /require\("\.\.\/lib\/aiw-lead"\)/);
+ assert.doesNotMatch(nextHandler, /highlevel/i);
+ assert.match(currentHandler, /require\("\.\.\/lib\/highlevel"\)/);
  const currentContact = fs.readFileSync(path.join(versions, "01-current", "lib/contact.js"), "utf8");
  const nextContact = fs.readFileSync(path.join(versions, "02-next", "lib/contact.js"), "utf8");
  assert.notEqual(nextContact, currentContact);
@@ -49,7 +51,8 @@ test("next keeps independent delivery modules and the existing form contract", (
  const nextFieldNames = [...nextContactForm.matchAll(/\bname="([^"]+)"/g)].map(match => match[1]);
  assert.equal(nextFieldNames.join(","), currentFieldNames.join(","));
  assert.match(nextContactForm, /^<form class="contact-form" action="api\/contact" method="post" data-contact-form aria-describedby="contact-privacy">/);
- assert.match(nextContactForm, /HighLevel \(LeadConnector\)/);
+ assert.doesNotMatch(nextContactForm, /HighLevel|LeadConnector/);
+ assert.match(nextContactForm, /zur Bearbeitung deiner Anfrage an KIELS übermittelt/);
  assert.notEqual(require("../site-versions/01-current/api/contact"), require("../site-versions/02-next/api/contact"));
  assert.notEqual(require("../site-versions/01-current/lib/contact"), require("../site-versions/02-next/lib/contact"));
 });

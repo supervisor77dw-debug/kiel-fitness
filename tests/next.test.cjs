@@ -81,10 +81,9 @@ test("legal pages and global footer use the unified accessible navigation and lo
 test("deployment builder reads server runtime configuration without embedding credentials", () => {
  const source = fs.readFileSync(path.join(root, "tools", "build-staging.cjs"), "utf8");
  assert.match(source, /fs\.writeFileSync\(path\.join\(contactFunctionRoot, "api", "contact\.js"\), handler\)/);
- assert.match(source, /highlevel-readiness\.func/);
- assert.match(source, /api\/highlevel-readiness/);
- assert.match(source, /launcherType: "Nodejs", shouldAddHelpers: true/);
- assert.match(source, /HIGHLEVEL_PRIVATE_TOKEN and HIGHLEVEL_LOCATION_ID at runtime/);
+ assert.doesNotMatch(source, /highlevel-readiness\.func|api\/highlevel-readiness/);
+ assert.match(source, /launcherType: "Nodejs"/);
+ assert.match(source, /AIW_LEAD_ENABLED, AIW_LEAD_ENDPOINT, AIW_LEAD_TOKEN and AIW_PRIVACY_NOTICE_VERSION required/);
  assert.doesNotMatch(source, /HIGHLEVEL_ENABLED:\s*["']false["']/);
  assert.doesNotMatch(source, /HIGHLEVEL_PRIVATE_TOKEN:\s*["'][^"']+["']/);
  assert.doesNotMatch(source, /HIGHLEVEL_LOCATION_ID:\s*["'][^"']+["']/);
@@ -615,5 +614,7 @@ test("Git-triggered Vercel builds use the Next output with fail-closed runtime c
  const builder = fs.readFileSync(path.join(root, "tools", "build-staging.cjs"), "utf8");
  assert.match(builder, /"site-versions", "02-next"/);
  assert.match(builder, /mode: "staging"/);
- assert.match(builder, /HIGHLEVEL_PRIVATE_TOKEN and HIGHLEVEL_LOCATION_ID at runtime/);
+ // AW-20261024-GE-CLAUDE-KIELS-AIW-LEAD-LIVE-INTEGRATION-009: Zielsystem ist das AIW-Lead-Management, kein HighLevel-Rueckfall.
+ assert.match(builder, /AIW_LEAD_ENABLED, AIW_LEAD_ENDPOINT, AIW_LEAD_TOKEN and AIW_PRIVACY_NOTICE_VERSION required; no HighLevel fallback/);
+ assert.doesNotMatch(builder, /highlevel\.js|highlevel-readiness|HIGHLEVEL_/i);
 });

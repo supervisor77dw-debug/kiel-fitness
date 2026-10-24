@@ -15,10 +15,10 @@ async function serveContact(req, res, { handler, maxBytes }) {
    }
    chunks.push(chunk);
   }
-  req.body = Buffer.concat(chunks).toString("utf8");
+  req.body = Buffer.concat(chunks);
   await handler(req, res);
  } catch (error) {
-  console.error("Contact HTTP endpoint failed:", error.name);
+  console.error("Contact HTTP endpoint failed.");
   if (!res.headersSent) res.status(500).json({ success: false, code: "delivery_failed", message: "Die Anfrage konnte nicht verarbeitet werden." });
   else res.destroy();
  }
