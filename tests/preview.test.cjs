@@ -225,13 +225,13 @@ test("local API aliases preserve validation/spam and cannot activate HighLevel",
      assert.equal(result.success, false);
     }
    }
+   // AW-...-LEAD-LIVE-INTEGRATION-009: keine HighLevel-Bereitschaftsabfrage mehr fuer 02-next.
    const readiness = await fetch(localBase + "/next/api/highlevel-readiness", {
     headers: { origin: localBase }
    });
-   assert.equal(readiness.status, 503);
-   const result = await readiness.json();
-   assert.deepEqual(result.runtime, { tokenPresent: false, locationPresent: false });
-   assert.equal(result.error, "configuration_missing");
+   assert.equal(readiness.status, 404);
+   const bootstrap = await fetch(localBase + "/next/bootstrap.js");
+   assert.equal(bootstrap.status, 200);
   } finally { await new Promise(resolve => local.close(resolve)); }
  } finally {
   if (previousToken === undefined) delete process.env.HIGHLEVEL_PRIVATE_TOKEN;

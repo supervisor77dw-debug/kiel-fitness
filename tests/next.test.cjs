@@ -618,3 +618,17 @@ test("Git-triggered Vercel builds use the Next output with fail-closed runtime c
  assert.match(builder, /AIW_LEAD_ENABLED, AIW_LEAD_ENDPOINT, AIW_LEAD_TOKEN and AIW_PRIVACY_NOTICE_VERSION required; no HighLevel fallback/);
  assert.doesNotMatch(builder, /highlevel\.js|highlevel-readiness|HIGHLEVEL_/i);
 });
+// AW-20261024-GE-CLAUDE-KIELS-AIW-LEAD-LIVE-INTEGRATION-009: strenge CSP (script-src 'self') ohne Inline-Skript oder -Handler.
+test("productive pages need no inline script or inline event handler", () => {
+ for (const file of fs.readdirSync(next).filter(name => name.endsWith(".html"))) {
+  const html = fs.readFileSync(path.join(next, file), "utf8");
+  assert.doesNotMatch(html, /<[a-z][^>]*\son[a-z]+\s*=/i, file);
+  for (const script of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
+   if (/type="application\/ld\+json"/.test(script[1])) continue;
+   assert.equal(script[2].trim(), "", `${file}: Inline-Skript`);
+   assert.match(script[1], /\bsrc="[^"]+\.js"/, file);
+  }
+  assert.match(html, /<script src="bootstrap\.js"><\/script>[\s\S]*<script src="script\.js" defer><\/script>/, file);
+ }
+ assert.match(fs.readFileSync(path.join(next, "bootstrap.js"), "utf8"), /classList\.remove\("prototype-js"\)/);
+});

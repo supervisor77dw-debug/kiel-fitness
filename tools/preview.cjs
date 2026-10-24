@@ -9,13 +9,14 @@ const mime = { ".html": "text/html; charset=utf-8", ".css": "text/css; charset=u
 
 function deliveryFor(directory) {
  const { createContactHandler } = require(path.join(directory, "api", "contact.js"));
- const { createHighLevelAdapter } = require(path.join(directory, "lib", "highlevel.js"));
  const { MAX_BODY_BYTES } = require(path.join(directory, "lib", "contact.js"));
  // Local previews must never activate delivery, even with inherited production variables.
- return {
-  handler: createContactHandler({ submitLead: createHighLevelAdapter({ env: {} }) }),
-  maxBytes: MAX_BODY_BYTES
- };
+ // 02-next liefert an das AIW-Lead-Management (AW-...-LEAD-LIVE-INTEGRATION-009); 01-current bleibt eingefroren.
+ const aiw = path.join(directory, "lib", "aiw-lead.js");
+ const submitLead = fs.existsSync(aiw)
+  ? require(aiw).createAiwLeadAdapter({ env: {} })
+  : require(path.join(directory, "lib", "highlevel.js")).createHighLevelAdapter({ env: {} });
+ return { handler: createContactHandler({ submitLead }), maxBytes: MAX_BODY_BYTES };
 }
 
 function createPreviewServer() {
@@ -36,22 +37,6 @@ function createPreviewServer() {
   const version = match?.[1];
   if (version) res.setHeader("X-Robots-Tag", "noindex, nofollow");
   const versionApi = version && match[2] === "api/contact";
-  const readinessApi = version && match[2] === "api/highlevel-readiness";
-  if (readinessApi) {
-   res.setHeader("Cache-Control", "no-store");
-   res.setHeader("X-Content-Type-Options", "nosniff");
-   if (req.method !== "GET") {
-    res.setHeader("Allow", "GET");
-    res.status(405).json({ ready: false, error: "method_not_allowed" });
-    return;
-   }
-   const { checkHighLevelReadiness } = require(path.join(
-    root, "site-versions", versions[version], "lib", "highlevel.js"
-   ));
-   const result = await checkHighLevelReadiness({ env: {} });
-   res.status(result.status).json(result.body);
-   return;
-  }
   if (pathname === "/api/contact" || versionApi) {
    // The unchanged current form uses /api/contact; keep it on its frozen handler.
    const delivery = versionApi ? deliveries[version] : deliveries.current;
@@ -77,7 +62,7 @@ function createPreviewServer() {
   const selector = pathname === "/";
   const relative = version ? match[2] || "index.html" : prototype ? "previews/home-prototype.html" : selector ? "tools/preview-index.html" : pathname.slice(1);
   if (selector || prototype || relative.startsWith("previews/")) res.setHeader("X-Robots-Tag", "noindex, nofollow");
-  const permitted = /^(?:assets\/|wix-clone\/|(?:index|fitness|wellness|health|kurse|kontakt|kinderbetreuung|agbs|hausordnung|impressum|datenschutz|firmenfitness|arbeitgeber-empfehlen)\.html$|(?:script\.js|firmenfitness\.js|responsive\.css|styles\.css|home\.css)$|previews\/home-prototype\.(?:html|css)$)/;
+  const permitted = /^(?:assets\/|wix-clone\/|(?:index|fitness|wellness|health|kurse|kontakt|kinderbetreuung|agbs|hausordnung|impressum|datenschutz|firmenfitness|arbeitgeber-empfehlen)\.html$|(?:bootstrap\.js|script\.js|firmenfitness\.js|responsive\.css|styles\.css|home\.css)$|previews\/home-prototype\.(?:html|css)$)/;
   if ((!selector && !permitted.test(relative)) || /(?:^|\/)\.\.(?:\/|$)|\\/.test(relative) || relative.endsWith(".bak")) {
    res.status(404).end("Not found");
    return;
