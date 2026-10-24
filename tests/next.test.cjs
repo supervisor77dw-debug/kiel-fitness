@@ -558,6 +558,19 @@ test("final course, health and wellness harmonization uses the approved responsi
  assert.match(wellness, /die Kabine ist noch nicht in Betrieb/);
  assert.doesNotMatch(wellness, /Dampfbad|wellness-dampfbad\.png/);
 });
+// AW-20261024-GE-CLAUDE-KIELS-VERCEL-MERGE-LAUNCHVORBEREITUNG-007: unbestaetigte Wellness-Angaben bis zur Fachfreigabe neutralisiert.
+test("unconfirmed steam room and ladies sauna Friday hours are not published as current facts", () => {
+ const { productiveSourceFiles } = require("../tools/media-audit.cjs");
+ const productive = productiveSourceFiles().map(file => fs.readFileSync(path.join(next, file), "utf8")).join("\n");
+ assert.doesNotMatch(productive, /Dampfbad|Dampfsauna|dampfbad/);
+ const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
+ const ladies = home.match(/<article class="hours"[^>]*><h3>Damensauna<\/h3>[\s\S]*?<\/article>/)[0];
+ assert.match(ladies, /<dt>Freitag<\/dt><dd data-fachfreigabe="offen">Bitte im Studio erfragen<\/dd>/);
+ assert.doesNotMatch(ladies.match(/<dl>[\s\S]*<\/dl>/)[0].replace(/<dt>Freitag<\/dt><dd[^>]*>[^<]*<\/dd>/, ""), /Freitag/);
+ assert.match(ladies, /<dt>Montag–Donnerstag<\/dt><dd>09:00–12:00 Uhr<br>16:00–20:00 Uhr<\/dd>/);
+ assert.match(home, /<h3>Gemischte Sauna<\/h3>/);
+ assert.match(home, /<h3>Biosauna<\/h3>/);
+});
 test("postnatal Aufbau Rückbildung and established Rückenfitness remain separate", () => {
  const courses = fs.readFileSync(path.join(next, "kurse.html"), "utf8");
  const health = fs.readFileSync(path.join(next, "health.html"), "utf8");

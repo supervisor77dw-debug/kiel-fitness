@@ -666,6 +666,11 @@ Navigation: Kinderbetreuung aufgenommen, "Mitgliedschaft" -> "Tarife", "Home" = 
 Keiser-Videos auf fitness.html gebuendelt. Hero und Zielkarten als WebP (assets/opt).
 JSON-LD ExerciseGym, absolute og:url. Mindestschrift 13 px, Tippflaechen >= 44 px.
 Fachlich offen (data-fachfreigabe="offen" in index.html): Dampfbad, Damensauna Freitag.
+Veroeffentlichung (AW-20261024-GE-CLAUDE-KIELS-VERCEL-MERGE-LAUNCHVORBEREITUNG-007): bis zur fachlichen
+Bestaetigung neutralisiert. Dampfbad-Karte in index.html entfernt (vorher: "Dampfbad, Montag–Sonntag
+10:00–21:00 Uhr"). Damensauna Freitag: "Bitte im Studio erfragen" (data-fachfreigabe="offen").
+Nach Bestaetigung wieder ergaenzbar: Dampfbad-Karte mit bestaetigten Zeiten bzw. Freitagszeiten der
+Damensauna; Test "unconfirmed steam room ..." in tests/next.test.cjs dann gezielt anpassen.
 Herkunft: AI Workspace AW-20261024-GE-CLAUDE-KIELS-NEXT-UEBERNAHME-006.
 
 Teststrategie freigegebene Originalbilder (Etappe 6, AW-20261024-GE-CLAUDE-KIELS-NEXT-UEBERNAHME-006-TESTFINAL):
