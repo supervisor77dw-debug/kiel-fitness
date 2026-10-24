@@ -678,3 +678,223 @@ test("the browser has no HighLevel configuration, and firm forms require confirm
  assert.equal(/HIGHLEVEL_|highlevel|webhook/i.test(browserCode + firmBrowserCode), false);
  assert.match(firmBrowserCode, /response\.ok && result\?\.success === true/);
 });
+
+// AW-20261024-GE-CLAUDE-KIELS-LEAD-INTEGRATION-008: Lead-Ereignisfelder und Workflow-Start je angenommener Anfrage.
+const { EVENT_FIELDS, EVENT_STATUS, mapRequestType } = require("../lib/highlevel");
+const eventFieldDefinitions = [
+ { id: "event-request-id", name: EVENT_FIELDS.requestId, model: "contact", dataType: "TEXT", picklistOptions: [] },
+ { id: "event-type-id", name: EVENT_FIELDS.requestType, model: "contact", dataType: "TEXT", picklistOptions: [] },
+ { id: "event-time-id", name: EVENT_FIELDS.submittedAt, model: "contact", dataType: "TEXT", picklistOptions: [] },
+ { id: "event-page-id", name: EVENT_FIELDS.sourcePage, model: "contact", dataType: "TEXT", picklistOptions: [] },
+ { id: "event-status-id", name: EVENT_FIELDS.status, model: "contact", dataType: "TEXT", picklistOptions: [] }
+];
+const WORKFLOW_ENV = { ...TEST_ENV, HIGHLEVEL_WEBSITE_WORKFLOW_ID: "wf-website-anfrage-0001" };
+const REQUEST_ID = "7b0f7a52-1c1e-4c43-9a55-2f8d1f3f6a10";
+
+function mockEventApi({ definitions = [...customFields, ...eventFieldDefinitions], workflowStatus = 200, workflowBody = { succeeded: true }, workflowHangs = false, ...options } = {}) {
+ const api = mockApi(options);
+ const standardFetch = api.fetchImpl;
+ api.workflowCalls = () => api.calls.filter(call => /\/workflow\//.test(call.url.pathname));
+ api.fetchImpl = async (url, requestOptions) => {
+  const parsed = new URL(url);
+  if (parsed.pathname.endsWith("/customFields")) {
+   api.calls.push({ url: parsed, method: "GET", options: requestOptions, body: null });
+   return jsonResponse({ customFields: definitions });
+  }
+  if (/^\/contacts\/[^/]+\/workflow\/[^/]+$/.test(parsed.pathname)) {
+   api.calls.push({ url: parsed, method: requestOptions.method, options: requestOptions, body: JSON.parse(requestOptions.body) });
+   if (workflowHangs) {
+    return new Promise((resolve, reject) => requestOptions.signal.addEventListener("abort", () => reject(new Error("aborted")), { once: true }));
+   }
+   return jsonResponse(workflowBody, workflowStatus);
+  }
+  return standardFetch(url, requestOptions);
+ };
+ return api;
+}
+
+function contactWrites(api) {
+ return api.calls.filter(call => call.url.pathname === "/contacts/upsert" || (call.method === "PUT" && field(call.body, "event-request-id") !== undefined));
+}
+
+async function captureLogs(run) {
+ const logs = [];
+ const original = { error: console.error, info: console.info };
+ console.error = (...args) => logs.push(args.join(" "));
+ console.info = (...args) => logs.push(args.join(" "));
+ try { return { result: await run(), logs }; }
+ finally { console.error = original.error; console.info = original.info; }
+}
+
+test("readiness reports optional lead event fields and workflow configuration without changing core readiness", async () => {
+ const core = checkFieldDefinitions(customFields);
+ assert.equal(core.ready, true);
+ assert.equal(core.events.ready, false);
+ assert.deepEqual(core.events.missing, Object.values(EVENT_FIELDS));
+ const full = checkFieldDefinitions([...customFields, ...eventFieldDefinitions]);
+ assert.equal(full.events.ready, true);
+ const wrongType = checkFieldDefinitions([...customFields, ...eventFieldDefinitions.slice(1),
+  { ...eventFieldDefinitions[0], dataType: "SINGLE_OPTIONS", picklistOptions: ["x"] }]);
+ assert.equal(wrongType.events.ready, false);
+ assert.equal(wrongType.events.incompatible[0].reason, "event_field_type");
+ const readiness = await checkHighLevelReadiness({
+  env: WORKFLOW_ENV,
+  fetchImpl: async () => jsonResponse({ customFields: [...customFields, ...eventFieldDefinitions] })
+ });
+ assert.equal(readiness.status, 200);
+ assert.deepEqual(readiness.body.workflow, { configured: true, valid: true, ready: true });
+ assert.equal(JSON.stringify(readiness.body).includes(WORKFLOW_ENV.HIGHLEVEL_WEBSITE_WORKFLOW_ID), false);
+ const unconfigured = await checkHighLevelReadiness({ env: TEST_ENV, fetchImpl: async () => jsonResponse({ customFields }) });
+ assert.deepEqual(unconfigured.body.workflow, { configured: false, valid: false, ready: false });
+});
+
+test("all four request types write a stable lead event and map type, origin and time", async () => {
+ const cases = [
+  [{ ...valid(), interests: ["courses"], submissionId: REQUEST_ID }, "Kontakt", "Fitness"],
+  [{ ...valid(), submissionId: REQUEST_ID }, "Probetraining", "Fitness"],
+  [firmFitnessInput("employer_inquiry", { submissionId: REQUEST_ID }), "Firmenfitness", "Firmenfitness"],
+  [firmFitnessInput("employer_referral", { submissionId: REQUEST_ID }), "Firmenfitness Empfehlung", "Arbeitgeberempfehlen"],
+  [childcareInput({ submissionId: REQUEST_ID }), "Kinderbetreuung", "Kinderbetreuung"]
+ ];
+ for (const [input, type, page] of cases) {
+  const api = mockEventApi();
+  const before = Date.now();
+  const { result } = await captureLogs(() => request(input, {}, mockHandler(api)));
+  assert.equal(result.status, 200, type);
+  const create = api.calls.find(call => call.url.pathname === "/contacts/upsert");
+  assert.equal(field(create.body, "event-request-id"), REQUEST_ID, type);
+  assert.equal(field(create.body, "event-type-id"), type);
+  assert.equal(field(create.body, "event-page-id"), page);
+  assert.equal(field(create.body, "event-status-id"), EVENT_STATUS.accepted);
+  assert.ok(Date.parse(field(create.body, "event-time-id")) >= before - 1000, type);
+  assert.equal(api.workflowCalls().length, 0, `${type}: ohne Workflow-ID kein Workflow-Start`);
+ }
+ assert.equal(mapRequestType({ interests: [] }), "Kontakt");
+});
+
+test("a configured workflow is started exactly once per accepted request and marked as started", async () => {
+ const api = mockEventApi();
+ const { result, logs } = await captureLogs(() => request({ ...valid(), submissionId: REQUEST_ID }, {}, mockHandler(api, WORKFLOW_ENV)));
+ assert.equal(result.status, 200);
+ const [start] = api.workflowCalls();
+ assert.equal(api.workflowCalls().length, 1);
+ assert.equal(start.method, "POST");
+ assert.equal(start.url.pathname, "/contacts/created-contact-id/workflow/wf-website-anfrage-0001");
+ assert.equal(start.options.headers.Version, "2021-07-28");
+ assert.ok(Date.parse(start.body.eventStartTime));
+ const statusWrite = api.calls.find(call => call.method === "PUT" && field(call.body, "event-status-id") === EVENT_STATUS.started);
+ assert.ok(statusWrite, "Status 'Workflow gestartet' fehlt");
+ assert.deepEqual(Object.keys(statusWrite.body), ["customFields"]);
+ assert.ok(logs.some(line => line.includes('"outcome":"workflow_started"')));
+ const custom = await captureLogs(() => request({ ...valid(), submissionId: REQUEST_ID }, {}, mockHandler(mockEventApi(), { ...WORKFLOW_ENV, HIGHLEVEL_WORKFLOW_API_VERSION: "v3" })));
+ assert.equal(custom.result.status, 200);
+});
+
+test("an identical retry of every request type writes nothing twice and does not restart the workflow", async () => {
+ for (const input of [{ ...valid(), submissionId: REQUEST_ID }, firmFitnessInput("employer_inquiry", { submissionId: REQUEST_ID }), childcareInput({ submissionId: REQUEST_ID })]) {
+  const api = mockEventApi();
+  const handler = mockHandler(api, WORKFLOW_ENV);
+  await captureLogs(async () => {
+   assert.equal((await request(input, {}, handler)).status, 200);
+   assert.equal((await request(input, {}, handler)).status, 200);
+  });
+  assert.equal(contactWrites(api).length, 1);
+  assert.equal(api.workflowCalls().length, 1);
+ }
+});
+
+test("a new request of the same contact updates once and starts the workflow again", async () => {
+ const api = mockEventApi();
+ const handler = mockHandler(api, WORKFLOW_ENV);
+ await captureLogs(async () => {
+  await request({ ...valid(), submissionId: REQUEST_ID }, {}, handler);
+  await request({ ...valid(), message: "Zweite Anfrage.", submissionId: "0a4c2d5e-6f70-4b81-9c92-a3b4c5d6e7f8" }, {}, handler);
+ });
+ assert.equal(contactWrites(api).length, 2);
+ assert.equal(api.workflowCalls().length, 2);
+});
+
+test("a failed workflow start keeps the lead, marks the contact and is resumed by the identical retry", async () => {
+ const failing = mockEventApi({ workflowStatus: 500, workflowBody: { message: "unit-test-token sensitive@example.test" } });
+ const handler = mockHandler(failing, WORKFLOW_ENV);
+ const first = await captureLogs(() => request({ ...valid(), submissionId: REQUEST_ID }, {}, handler));
+ assert.equal(first.result.status, 200, "Anfrage ist gespeichert und wird bestaetigt");
+ assert.ok(failing.calls.some(call => call.method === "PUT" && field(call.body, "event-status-id") === EVENT_STATUS.failed));
+ assert.ok(first.logs.some(line => line.includes('"outcome":"workflow_failed"') && line.includes('"httpStatus":500')));
+ for (const secret of [TEST_ENV.HIGHLEVEL_PRIVATE_TOKEN, "sensitive@example.test", "erika@example.test", "Erika", "+4943154020", valid().message.trim()]) {
+  assert.equal(first.logs.join("\n").includes(secret), false, secret);
+ }
+ const resumedApi = mockEventApi({ existingContacts: [{
+  id: "existing-contact-id", email: "erika@example.test", phone: "+4943154020",
+  customFields: [{ id: "event-request-id", value: REQUEST_ID }, { id: "event-status-id", value: EVENT_STATUS.failed }]
+ }] });
+ const resumed = await captureLogs(() => request({ ...valid(), submissionId: REQUEST_ID }, {}, mockHandler(resumedApi, WORKFLOW_ENV)));
+ assert.equal(resumed.result.status, 200);
+ assert.equal(contactWrites(resumedApi).length, 0, "kein zweiter Kontakt-Schreibvorgang");
+ assert.equal(resumedApi.workflowCalls().length, 1, "Workflow wird genau einmal nachgeholt");
+ assert.ok(resumed.logs.some(line => line.includes('"outcome":"duplicate_resume_workflow"')));
+});
+
+test("an unconfirmed or timed-out workflow start is never reported as started", async () => {
+ const unconfirmed = mockEventApi({ workflowBody: { succeeded: false } });
+ await captureLogs(() => request({ ...valid(), submissionId: REQUEST_ID }, {}, mockHandler(unconfirmed, WORKFLOW_ENV)));
+ assert.equal(unconfirmed.calls.some(call => call.method === "PUT" && field(call.body, "event-status-id") === EVENT_STATUS.started), false);
+ assert.ok(unconfirmed.calls.some(call => call.method === "PUT" && field(call.body, "event-status-id") === EVENT_STATUS.failed));
+
+ const hanging = mockEventApi({ workflowHangs: true });
+ const { result, logs } = await captureLogs(() => request({ ...valid(), submissionId: REQUEST_ID }, {}, mockHandler(hanging, WORKFLOW_ENV, 200)));
+ assert.equal(result.status, 200, "Kontakt war bereits bestaetigt gespeichert");
+ assert.equal(hanging.calls.some(call => call.method === "PUT" && field(call.body, "event-status-id") === EVENT_STATUS.started), false);
+ assert.ok(logs.some(line => line.includes('"outcome":"workflow_failed"') && line.includes('"stage":"timeout"')));
+});
+
+test("an already started workflow is not restarted when the identical request arrives again", async () => {
+ const api = mockEventApi({ existingContacts: [{
+  id: "existing-contact-id", email: "erika@example.test", phone: "+4943154020",
+  customFields: [{ id: "event-request-id", value: REQUEST_ID }, { id: "event-status-id", value: EVENT_STATUS.started }]
+ }] });
+ const { result } = await captureLogs(() => request({ ...valid(), submissionId: REQUEST_ID }, {}, mockHandler(api, WORKFLOW_ENV)));
+ assert.equal(result.status, 200);
+ assert.equal(contactWrites(api).length, 0);
+ assert.equal(api.workflowCalls().length, 0);
+});
+
+test("missing or partial event fields and an invalid workflow id never start a workflow but keep the lead", async () => {
+ const partial = mockEventApi({ definitions: [...customFields, ...eventFieldDefinitions.slice(0, 4)] });
+ const partialRun = await captureLogs(() => request({ ...valid(), submissionId: REQUEST_ID }, {}, mockHandler(partial, WORKFLOW_ENV)));
+ assert.equal(partialRun.result.status, 200);
+ const create = partial.calls.find(call => call.url.pathname === "/contacts/upsert");
+ assert.equal(field(create.body, "event-request-id"), undefined, "keine halben Ereignisse");
+ assert.equal(partial.workflowCalls().length, 0);
+ assert.ok(partialRun.logs.some(line => line.includes('"stage":"event_fields_missing"')));
+
+ const invalid = mockEventApi();
+ const invalidRun = await captureLogs(() => request({ ...valid(), submissionId: REQUEST_ID }, {}, mockHandler(invalid, { ...WORKFLOW_ENV, HIGHLEVEL_WEBSITE_WORKFLOW_ID: "../../contacts" })));
+ assert.equal(invalidRun.result.status, 200);
+ assert.equal(invalid.workflowCalls().length, 0);
+ assert.ok(invalidRun.logs.some(line => line.includes('"outcome":"workflow_misconfigured"')));
+});
+
+test("rejected, ambiguous and failed contact writes never start a workflow", async () => {
+ const rejected = mockEventApi();
+ await captureLogs(() => request({ ...valid(), email: "invalid", submissionId: REQUEST_ID }, {}, mockHandler(rejected, WORKFLOW_ENV)));
+ assert.equal(rejected.calls.length, 0);
+ const writeFailed = mockEventApi({ failureAt: "/contacts/upsert", failureStatus: 503 });
+ const failed = await captureLogs(() => request({ ...valid(), submissionId: REQUEST_ID }, {}, mockHandler(writeFailed, WORKFLOW_ENV)));
+ assert.equal(failed.result.status, 502);
+ assert.equal(writeFailed.workflowCalls().length, 0);
+ assert.ok(failed.logs.some(line => line.includes('"outcome":"delivery_failed"') && line.includes('"stage":"contact_upsert"')));
+ const ambiguous = mockEventApi({ existingContacts: [
+  { id: "contact-a", email: "erika@example.test" }, { id: "contact-b", phone: "+4943154020" }
+ ] });
+ const ambiguousRun = await captureLogs(() => request({ ...valid(), submissionId: REQUEST_ID }, {}, mockHandler(ambiguous, WORKFLOW_ENV)));
+ assert.equal(ambiguousRun.result.status, 502);
+ assert.equal(ambiguous.workflowCalls().length, 0);
+});
+
+test("firm forms keep one request id for identical retries and no longer claim to be a local preview", () => {
+ const firmBrowserCode = fs.readFileSync(path.join(__dirname, "../firmenfitness.js"), "utf8");
+ assert.match(firmBrowserCode, /form\.pendingSubmission\.fingerprint !== fingerprint/);
+ assert.match(firmBrowserCode, /form\.pendingSubmission = null;/);
+ assert.doesNotMatch(firmBrowserCode, /lokale(n)? Vorschau/);
+});

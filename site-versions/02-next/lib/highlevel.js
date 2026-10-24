@@ -2,6 +2,23 @@ const API_BASE = "https://services.leadconnectorhq.com";
 const API_VERSION = "2021-07-28";
 const CHILDCARE_CAMPAIGN = "KIELS-P04-FAMILIENFITNESS";
 const CHILDCARE_SUBMISSION_FIELD = "P04 Anfrage-ID";
+// Lead-Ereignis je angenommener Website-Anfrage (AW-20261024-GE-CLAUDE-KIELS-LEAD-INTEGRATION-008).
+// Nur technische, nicht personenbezogene Werte; Kontaktdaten bleiben ausschliesslich in HighLevel.
+// Die Felder sind optional: Fehlen sie, bleibt das bisherige Verhalten unveraendert.
+const EVENT_FIELDS = {
+ requestId: "Website Anfrage-ID",
+ requestType: "Website Anfrageart",
+ submittedAt: "Website Anfrage-Zeitpunkt",
+ sourcePage: "Website Herkunftsseite",
+ status: "Website Anfrage-Status"
+};
+const EVENT_STATUS = {
+ accepted: "angenommen",
+ started: "Workflow gestartet",
+ failed: "Workflow fehlgeschlagen"
+};
+const REQUEST_TYPE_LABELS = ["Kontakt", "Probetraining", "Firmenfitness", "Firmenfitness Empfehlung", "Kinderbetreuung"];
+const WORKFLOW_ID_PATTERN = /^[A-Za-z0-9-]{8,64}$/;
 const INTEREST_LABELS = {
  trial: "Probetraining",
  membership: "Mitgliedschaft & Tarife",
@@ -73,6 +90,25 @@ function mapCampaignDetail(lead) {
  if (lead.requestType === "employer_referral") return "Firmenfitness Empfehlung";
  if (lead.requestType === "employer_inquiry") return "Firmenfitness";
  return lead.interests.includes("trial") ? "Probetraining" : "Kontaktformular";
+}
+
+function mapRequestType(lead) {
+ if (lead.requestType === "childcare_inquiry") return "Kinderbetreuung";
+ if (lead.requestType === "employer_referral") return "Firmenfitness Empfehlung";
+ if (lead.requestType === "employer_inquiry") return "Firmenfitness";
+ return lead.interests.includes("trial") ? "Probetraining" : "Kontakt";
+}
+
+// Strukturierte Betriebsprotokolle ohne Kontaktdaten: Anfrage-ID (UUID), Anfrageart, Stufe, Ergebnis.
+function logLeadEvent(level, outcome, lead, details = {}) {
+ const entry = {
+  event: "kiels.lead",
+  outcome,
+  requestId: typeof lead?.submissionId === "string" ? lead.submissionId : null,
+  requestType: lead ? mapRequestType(lead) : null,
+  ...details
+ };
+ (level === "error" ? console.error : console.info)(JSON.stringify(entry));
 }
 
 function childcareMessage(lead) {
@@ -245,6 +281,13 @@ function checkFieldDefinitions(definitions) {
    field.mapping = error instanceof IntegrationError ? error.stage : "invalid";
   }
  }
+ const eventFields = Object.values(EVENT_FIELDS).map(name => {
+  const field = inspectField(definitions, name);
+  if (field.found) {
+   field.mapping = ["TEXT", "LARGE_TEXT"].includes(String(field.dataType || "").toUpperCase()) ? "compatible" : "event_field_type";
+  }
+  return field;
+ });
  return {
   fields,
   missing: fields.filter(field => !field.found).map(field => field.name),
@@ -252,8 +295,39 @@ function checkFieldDefinitions(definitions) {
    name: field.name,
    reason: field.mapping
   })),
-  ready: fields.every(field => field.found && field.mapping === "compatible")
+  ready: fields.every(field => field.found && field.mapping === "compatible"),
+  events: {
+   fields: eventFields,
+   missing: eventFields.filter(field => !field.found).map(field => field.name),
+   incompatible: eventFields.filter(field => field.found && field.mapping !== "compatible").map(field => ({
+    name: field.name,
+    reason: field.mapping
+   })),
+   ready: eventFields.every(field => field.found && field.mapping === "compatible")
+  }
  };
+}
+
+// Alle fuenf Ereignisfelder oder keines: halbe Ereignisse wuerden Workflow und Dublettenpruefung verfaelschen.
+function eventFieldDefinitions(definitions) {
+ if (!Array.isArray(definitions)) return null;
+ const result = {};
+ for (const [key, name] of Object.entries(EVENT_FIELDS)) {
+  let field;
+  try { field = customFieldDefinition(definitions, name); }
+  catch { return null; }
+  if (!["TEXT", "LARGE_TEXT"].includes(String(field.dataType || "").toUpperCase())) return null;
+  result[key] = field;
+ }
+ return result;
+}
+
+function workflowConfiguration(env) {
+ const raw = typeof env.HIGHLEVEL_WEBSITE_WORKFLOW_ID === "string" ? env.HIGHLEVEL_WEBSITE_WORKFLOW_ID.trim() : "";
+ const version = typeof env.HIGHLEVEL_WORKFLOW_API_VERSION === "string" && env.HIGHLEVEL_WORKFLOW_API_VERSION.trim()
+  ? env.HIGHLEVEL_WORKFLOW_API_VERSION.trim()
+  : API_VERSION;
+ return { configured: Boolean(raw), valid: WORKFLOW_ID_PATTERN.test(raw), id: raw, version };
 }
 
 function customFieldsErrorCategory(status) {
@@ -366,9 +440,18 @@ async function checkHighLevelReadiness({ env = process.env, fetchImpl = globalTh
    return { status: 502, body: { ready: false, runtime, error: "invalid_response" } };
   }
   const mapping = checkFieldDefinitions(body.customFields);
+  const workflow = workflowConfiguration(env);
   return {
    status: mapping.ready ? 200 : 422,
-   body: { ready: mapping.ready, runtime, ...mapping }
+   body: {
+    ready: mapping.ready, runtime, ...mapping,
+    // Die Workflow-ID ist keine Zugangsangabe, wird aber nicht ausgegeben; gemeldet wird nur der Konfigurationszustand.
+    workflow: {
+     configured: workflow.configured,
+     valid: workflow.valid,
+     ready: workflow.configured && workflow.valid && mapping.events.ready
+    }
+   }
   };
  } catch (error) {
   const stage = controller.signal.aborted ? "timeout" : error instanceof IntegrationError ? error.stage : "network";
@@ -408,6 +491,14 @@ function buildCustomFields(lead, definitions) {
    customFieldDefinition(definitions, CHILDCARE_SUBMISSION_FIELD),
    lead.submissionId
   ));
+ }
+ const events = eventFieldDefinitions(definitions);
+ if (events) {
+  fields.push(customFieldValue(events.requestId, lead.submissionId));
+  fields.push(customFieldValue(events.requestType, mapRequestType(lead)));
+  fields.push(customFieldValue(events.submittedAt, lead.submittedAt));
+  fields.push(customFieldValue(events.sourcePage, lead.sourcePage));
+  fields.push(customFieldValue(events.status, EVENT_STATUS.accepted));
  }
 
  if (lead.requestType?.startsWith("employer_")) {
@@ -475,11 +566,13 @@ function createHighLevelAdapter({ env = process.env, fetchImpl = globalThis.fetc
    Accept: "application/json",
    Version: API_VERSION
   };
-  const request = async (path, { method = "GET", body } = {}, stage) => {
+  const workflow = workflowConfiguration(env);
+  const request = async (path, { method = "GET", body, version } = {}, stage) => {
    let response;
    try {
     response = await fetchImpl(`${API_BASE}${path}`, {
-     method, headers, body: body === undefined ? undefined : JSON.stringify(body),
+     method, headers: version ? { ...headers, Version: version } : headers,
+     body: body === undefined ? undefined : JSON.stringify(body),
      signal: controller.signal, redirect: "error"
     });
    } catch {
@@ -506,9 +599,54 @@ function createHighLevelAdapter({ env = process.env, fetchImpl = globalThis.fetc
    );
    const definitions = fieldsResponse.customFields;
    const customFields = buildCustomFields(lead, definitions);
-   const submissionField = lead.requestType === "childcare_inquiry"
-    ? customFieldDefinition(definitions, CHILDCARE_SUBMISSION_FIELD)
-    : null;
+   const events = eventFieldDefinitions(definitions);
+   const submissionField = events
+    ? events.requestId
+    : lead.requestType === "childcare_inquiry"
+     ? customFieldDefinition(definitions, CHILDCARE_SUBMISSION_FIELD)
+     : null;
+
+   // Workflow-Start fuer genau diese Anfrage. Der Kontakt ist zu diesem Zeitpunkt bereits gespeichert:
+   // Fehler hier fuehren nicht zum Verlust der Anfrage, sondern zu einem sichtbaren Status am Kontakt
+   // und einem Alarmprotokoll. Kein automatischer Mehrfachstart.
+   const setEventStatus = async (contactId, status) => {
+    try {
+     await request(`/contacts/${encodeURIComponent(contactId)}`, {
+      method: "PUT", body: { customFields: [customFieldValue(events.status, status)] }
+     }, "event_status");
+     return true;
+    } catch (error) {
+     logLeadEvent("error", "event_status_failed", lead, { stage: error instanceof IntegrationError ? error.stage : "unexpected", status });
+     return false;
+    }
+   };
+   const startWorkflow = async contactId => {
+    if (!workflow.configured) return "not_configured";
+    if (!workflow.valid) {
+     logLeadEvent("error", "workflow_misconfigured", lead, { stage: "workflow_id" });
+     return "misconfigured";
+    }
+    if (!events) {
+     logLeadEvent("error", "workflow_skipped", lead, { stage: "event_fields_missing" });
+     return "skipped";
+    }
+    try {
+     const started = await request(
+      `/contacts/${encodeURIComponent(contactId)}/workflow/${encodeURIComponent(workflow.id)}`,
+      { method: "POST", body: { eventStartTime: new Date().toISOString() }, version: workflow.version },
+      "workflow_start"
+     );
+     if (started.succeeded !== true && started.succeded !== true) throw new IntegrationError("workflow_not_confirmed");
+    } catch (error) {
+     const stage = error instanceof IntegrationError ? error.stage : "unexpected";
+     logLeadEvent("error", "workflow_failed", lead, { stage, httpStatus: error?.status || null });
+     if (!controller.signal.aborted) await setEventStatus(contactId, EVENT_STATUS.failed);
+     return "failed";
+    }
+    await setEventStatus(contactId, EVENT_STATUS.started);
+    logLeadEvent("info", "workflow_started", lead);
+    return "started";
+   };
    const contactBody = {
     firstName: lead.firstName,
     lastName: lead.lastName,
@@ -550,6 +688,15 @@ function createHighLevelAdapter({ env = process.env, fetchImpl = globalThis.fetc
    if (matches.length > 1) throw new IntegrationError("ambiguous_contact");
    if (matches.length === 1 && submissionField &&
      contactFieldValue(matches[0], submissionField.id) === lead.submissionId) {
+    // Wiederholung derselben Anfrage: kein zweiter Kontakt-Schreibvorgang. Der Workflow wird nur nachgeholt,
+    // wenn er fuer diese Anfrage-ID nachweislich noch nicht gestartet wurde.
+    const status = events ? contactFieldValue(matches[0], events.status.id) : null;
+    if (events && workflow.configured && status !== EVENT_STATUS.started) {
+     logLeadEvent("info", "duplicate_resume_workflow", lead, { previousStatus: status });
+     await startWorkflow(matches[0].id);
+    } else {
+     logLeadEvent("info", "duplicate_acknowledged", lead);
+    }
     return deliveryResult("delivery_success");
    }
 
@@ -565,17 +712,22 @@ function createHighLevelAdapter({ env = process.env, fetchImpl = globalThis.fetc
      method: "POST", body: { ...contactBody, createNewIfDuplicateAllowed: false }
     }, "contact_upsert");
    }
-   getContactId(result);
+   const contactId = getContactId(result);
+   logLeadEvent("info", "contact_written", lead, { stage: matches.length === 1 ? "contact_update" : "contact_upsert" });
+   await startWorkflow(contactId);
    return deliveryResult("delivery_success");
   } catch (error) {
    if (error instanceof IntegrationError) {
     if (error.stage === "timeout") {
      console.error("HighLevel API request timed out.");
+     logLeadEvent("error", "delivery_timeout", lead, { stage: "timeout" });
      return deliveryResult("delivery_timeout");
     }
     console.error("HighLevel API request failed.", error.stage, error.status || "");
+    logLeadEvent("error", "delivery_failed", lead, { stage: error.stage, httpStatus: error.status || null });
    } else {
     console.error("HighLevel API request failed.", "unexpected");
+    logLeadEvent("error", "delivery_failed", lead, { stage: "unexpected" });
    }
    return deliveryResult("delivery_failed");
   } finally {
@@ -590,5 +742,9 @@ module.exports = {
  checkFieldDefinitions,
  buildCustomFields,
  mapCampaignDetail,
- normalizePhone
+ mapRequestType,
+ normalizePhone,
+ EVENT_FIELDS,
+ EVENT_STATUS,
+ REQUEST_TYPE_LABELS
 };

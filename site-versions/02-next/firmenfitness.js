@@ -86,8 +86,14 @@
 
     payload.schemaVersion = Number(payload.schemaVersion);
     payload.callbackRequested = values.has("callbackRequested");
-    payload.submissionId = createSubmissionId();
     Object.assign(payload, getAttribution());
+    // Gleiche Eingaben nach Zeitueberschreitung oder Fehler behalten dieselbe Anfrage-ID, damit der Server
+    // die Wiederholung erkennt; geaenderte Eingaben oder eine bestaetigte Anfrage erhalten eine neue ID.
+    const fingerprint = JSON.stringify(payload);
+    if (!form.pendingSubmission || form.pendingSubmission.fingerprint !== fingerprint) {
+      form.pendingSubmission = { fingerprint, id: createSubmissionId() };
+    }
+    payload.submissionId = form.pendingSubmission.id;
     return payload;
   }
 
@@ -117,7 +123,7 @@
       }
       if (status) {
         status.hidden = false;
-        status.textContent = "Deine Eingaben werden geprüft. Diese lokale Vorschau versendet oder speichert keine Anfrage.";
+        status.textContent = "Deine Anfrage wird übermittelt …";
       }
 
       try {
@@ -135,6 +141,7 @@
         const confirmed = response.ok && result?.success === true &&
           typeof result.message === "string" && result.message.trim();
         if (confirmed) {
+          form.pendingSubmission = null;
           form.reset();
           if (callback && phone) phone.required = callback.checked;
           if (status) status.textContent = result.message;
@@ -168,7 +175,7 @@
         await navigator.clipboard.writeText(message);
         if (copyStatus) {
           copyStatus.hidden = false;
-          copyStatus.textContent = "Text und aktueller Seitenlink wurden kopiert. In der lokalen Vorschau ist der Link nicht öffentlich erreichbar.";
+          copyStatus.textContent = "Text und aktueller Seitenlink wurden kopiert.";
         }
       } catch (_error) {
         if (copyStatus) {
