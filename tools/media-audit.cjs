@@ -1,5 +1,6 @@
 const fs = require("node:fs");
 const path = require("node:path");
+const crypto = require("node:crypto");
 const { execFileSync } = require("node:child_process");
 
 const root = path.resolve(__dirname, "..");
@@ -124,15 +125,42 @@ function validSignature(filename) {
  return false;
 }
 
-function approvedOriginal(relative) {
- const names = [
-  [/^assets\/kiels-authentic\/aussenansicht-standort-\d+\.webp$/, "assets/kiels-authentic/kiels-aussenansicht-standort-freigabe-v01.png"],
-  [/^assets\/kiels-authentic\/freihantelbereich-collage-\d+\.webp$/, "assets/kiels-authentic/KIELS-Freihantelbereich-Collage.png"],
-  [/^assets\/kiels-authentic\/gastronomie-kaffeeuebergabe-\d+\.webp$/, "assets/kiels-authentic/KIELS-Gastronomie-Kaffeeuebergabe.png"],
-  [/^assets\/kiels-authentic\/kinderhort-spiellandschaft-\d+\.webp$/, "assets/kiels-authentic/kiels-kinderhort-spiellandschaft-entwurf.png"],
-  [/^assets\/kiels-authentic\/kinderhort-aufenthaltsbereich-\d+\.webp$/, "assets/kiels-authentic/kiels-kinderhort-aufenthaltsbereich-entwurf.png"]
- ];
- return names.find(([pattern]) => pattern.test(relative))?.[1] || null;
+// Freigegebene authentische Motive: Die Originale bleiben ausserhalb des oeffentlichen Repositorys. Verbindlich ist das
+// Integritaetsmanifest site-versions/approved-media-manifest.json (SHA-256, Bytes und Masse jeder versionierten WebP-Ableitung
+// sowie SHA-256 des zugehoerigen Originals). Optionaler Abgleich mit lokal vorhandenen Originalen: tools/check-local-originals.cjs.
+const approvedManifestFile = path.join(root, "site-versions", "approved-media-manifest.json");
+const authenticDerivative = /^assets\/kiels-authentic\/[^/]+\.webp$/;
+
+function approvedMediaManifest() {
+ return JSON.parse(fs.readFileSync(approvedManifestFile, "utf8"));
+}
+
+function approvedDerivative(relative, manifest = approvedMediaManifest()) {
+ for (const entry of manifest.originals) {
+  const derivative = entry.derivatives.find(item => item.path === relative);
+  if (derivative) return { ...derivative, original: entry.original, originalSha256: entry.originalSha256 };
+ }
+ return null;
+}
+
+// Breite/Hoehe aus dem WebP-Kopf (VP8X, VP8, VP8L); null, wenn kein gueltiger Kopf vorliegt
+function webpSize(buffer) {
+ if (buffer.length < 30 || buffer.toString("ascii", 0, 4) !== "RIFF" || buffer.toString("ascii", 8, 12) !== "WEBP") return null;
+ const chunk = buffer.toString("ascii", 12, 16);
+ if (chunk === "VP8X") return { width: 1 + buffer.readUIntLE(24, 3), height: 1 + buffer.readUIntLE(27, 3) };
+ if (chunk === "VP8 " && buffer[23] === 0x9d && buffer[24] === 0x01 && buffer[25] === 0x2a) return { width: buffer.readUInt16LE(26) & 0x3fff, height: buffer.readUInt16LE(28) & 0x3fff };
+ if (chunk === "VP8L" && buffer[20] === 0x2f) {
+  const bits = buffer.readUInt32LE(21);
+  return { width: 1 + (bits & 0x3fff), height: 1 + ((bits >> 14) & 0x3fff) };
+ }
+ return null;
+}
+
+function integrityMatches(filename, expected) {
+ const buffer = fs.readFileSync(filename);
+ const size = webpSize(buffer);
+ return buffer.length === expected.bytes && Boolean(size) && size.width === expected.width && size.height === expected.height &&
+  crypto.createHash("sha256").update(buffer).digest("hex") === expected.sha256;
 }
 
 function trackedFiles() {
@@ -148,6 +176,7 @@ async function auditMedia({ buildRoot = null, baseUrl = null } = {}) {
  const tracked = trackedFiles();
  const statusByPath = new Map();
  const references = collectMediaReferences();
+ const manifest = approvedMediaManifest();
  if (baseUrl) {
   await Promise.all([...new Set(references.filter(item => !item.unsafe).map(item => item.path))].map(async relative => {
    const url = new URL(encodePath(relative), baseUrl.endsWith("/") ? baseUrl : baseUrl + "/");
@@ -159,7 +188,7 @@ async function auditMedia({ buildRoot = null, baseUrl = null } = {}) {
  return references.map(reference => {
   const resolved = reference.unsafe ? null : resolveSource(reference.path);
   const resolvedRelative = resolved ? path.relative(root, resolved.filename).replaceAll("\\", "/") : null;
-  const original = approvedOriginal(reference.path);
+  const approved = reference.unsafe ? null : approvedDerivative(reference.path, manifest);
   const buildFile = buildRoot && !reference.unsafe ? path.join(buildRoot, ...reference.path.split("/")) : null;
   const live = statusByPath.get(reference.path);
   return {
@@ -169,8 +198,9 @@ async function auditMedia({ buildRoot = null, baseUrl = null } = {}) {
    validMedia: resolved ? validSignature(resolved.filename) : false,
    resolvedSource: resolvedRelative,
    gitTracked: resolvedRelative ? tracked.has(resolvedRelative) : false,
-   approvedOriginal: original,
-   originalExists: original ? fs.existsSync(path.join(root, ...original.split("/"))) : null,
+   approvedOriginal: approved?.original || null,
+   // Jede authentische Ableitung muss im Manifest stehen und byte-, mass- und pruefsummengleich sein; sonst false
+   approvedIntegrity: authenticDerivative.test(reference.path) ? Boolean(approved && resolved && integrityMatches(resolved.filename, approved)) : null,
    buildExists: buildFile ? fs.existsSync(buildFile) && fs.statSync(buildFile).isFile() : null,
    liveStatus: live?.status || null,
    liveUrl: live?.url || null
@@ -184,7 +214,7 @@ function csvCell(value) {
 }
 
 function toCsv(entries) {
- const columns = ["sourceFile", "line", "kind", "path", "resolvedSource", "sourceExists", "exactCase", "validMedia", "gitTracked", "approvedOriginal", "originalExists", "buildExists", "liveStatus", "liveUrl"];
+ const columns = ["sourceFile", "line", "kind", "path", "resolvedSource", "sourceExists", "exactCase", "validMedia", "gitTracked", "approvedOriginal", "approvedIntegrity", "buildExists", "liveStatus", "liveUrl"];
  return [columns.join(","), ...entries.map(entry => columns.map(column => csvCell(entry[column])).join(","))].join("\n") + "\n";
 }
 
@@ -227,10 +257,13 @@ if (require.main === module) main().catch(error => {
 });
 
 module.exports = {
+ approvedDerivative,
+ approvedMediaManifest,
  auditMedia,
  collectMediaReferences,
  extractMediaReferences,
  normalizeReference,
  productiveSourceFiles,
- toCsv
+ toCsv,
+ webpSize
 };

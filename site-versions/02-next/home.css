@@ -1182,3 +1182,112 @@ body[data-page="kurse"] .media-card {
  body[data-page="kurse"] .info-card,
  body[data-page="kurse"] .media-card { transition: none; }
 }
+
+/* Etappe 6 – NEXT FINAL CANDIDATE (Variante D, Designabnahme 24.10.2026; AW-20261024-GE-CLAUDE-KIELS-NEXT-UEBERNAHME-006) */
+:root { --d-ziel: 44px; --d-dauer: 160ms; --d-kurve: cubic-bezier(.2,.7,.2,1); --d-abschnitt: 88px; --d-karte: #0d2029; --d-radius: 22px; }
+
+/* Typografie und Rhythmus (aus B) */
+body { font-size: 17px; }
+p, li { max-width: 68ch; }
+.section { padding-block: var(--d-abschnitt); }
+h2 { font-size: clamp(30px, 3.4vw, 48px); letter-spacing: -.028em; }
+.section-heading > p, .hero .intro { font-size: 18px; }
+small, .hours-note, .tour-note, .image-label, .review-quote figcaption, .review-quote figcaption span, .tariff-kicker, .hero-address, .review-counter { font-size: 13px; }
+.header-inner { min-height: 88px; }
+:focus-visible { outline: 3px solid var(--yellow); outline-offset: 3px; border-radius: 4px; }
+
+/* Hero „geteilte Buehne“ (B) */
+.hero-b { grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 56px; padding-block: 40px 56px; }
+.hero-b-visual { margin: 0; border-radius: 24px; overflow: hidden; background: #000; box-shadow: 0 30px 80px -40px rgba(253,199,30,.25); }
+.hero-b-visual img { width: 100%; height: auto; aspect-ratio: 1440 / 723; }
+.v-status { display: inline-flex; align-items: center; gap: 8px; margin-right: 12px; color: var(--white); font-weight: 700; }
+.v-status[hidden] { display: none; }
+.v-status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
+.v-status.offen::before { background: #4ade80; }
+
+/* Seitennavigation (C) – Startseite; ersetzt die Schnellweg-Chips aus B */
+.c-localnav { position: sticky; top: var(--header-offset, var(--header-height, 0px)); z-index: 9; background: rgba(7,23,32,.9); -webkit-backdrop-filter: saturate(160%) blur(14px); backdrop-filter: saturate(160%) blur(14px); border-block: 1px solid var(--line); }
+.c-localnav-inner { display: flex; align-items: center; gap: 20px; min-height: 56px; }
+.c-localnav-title { font-weight: 700; font-size: 16px; white-space: nowrap; }
+.c-localnav-links { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; flex: 1; justify-content: flex-end; }
+.c-localnav-links::-webkit-scrollbar { display: none; }
+.c-localnav-links a { display: inline-flex; align-items: center; min-height: var(--d-ziel); padding: 0 12px; font-size: 15px; color: var(--muted); white-space: nowrap; border-radius: 999px; transition: color var(--d-dauer) var(--d-kurve), background-color var(--d-dauer) var(--d-kurve); }
+.c-localnav-links a:hover, .c-localnav-links a[aria-current] { color: var(--white); background: rgba(255,255,255,.08); }
+.c-localnav-cta { min-height: var(--d-ziel); padding: 8px 16px; font-size: 14px; }
+:target, [id] { scroll-margin-top: calc(var(--header-offset, 88px) + 64px); }   /* unter Kopfzeile und Seitennavigation */
+
+/* Kursseite: vorhandene Kurswelten-Navigation klebt mit (C-Prinzip, vorhandene Komponente) */
+body[data-page="kurse"] .course-jumps-wrap { position: sticky; top: var(--header-offset, var(--header-height, 0px)); z-index: 8; width: 100%; padding-inline: max(20px, calc((100% - 1240px) / 2)); background: rgba(7,23,32,.92); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-block: 1px solid var(--line); }
+body[data-page="kurse"] .course-jumps { flex-wrap: nowrap; overflow-x: auto; scrollbar-width: none; margin: 0; padding-block: 8px; }
+body[data-page="kurse"] .course-jumps::-webkit-scrollbar { display: none; }
+body[data-page="kurse"] .course-jumps .button { flex: 0 0 auto; min-height: var(--d-ziel); }
+
+/* Ziele als Kachelraster (C): eine grosse Kachel, drei kleinere; Karten dunkel wie die Marke */
+.goal-grid { grid-template-columns: repeat(6, minmax(0, 1fr)); gap: 16px; }
+.goal-card { grid-column: span 2; transition: border-color var(--d-dauer) var(--d-kurve), transform var(--d-dauer) var(--d-kurve); }
+.goal-card:first-child { grid-column: span 6; flex-direction: row; }
+.goal-card:first-child > img { width: 58%; aspect-ratio: 2.4; }
+.goal-card:first-child .goal-copy { justify-content: center; }
+.goal-card:hover { transform: translateY(-2px); border-color: var(--yellow); }
+body[data-page="index"] .goal-copy { background: var(--d-karte); }
+body[data-page="index"] .goal-copy h3 { color: var(--white); }
+body[data-page="index"] .goal-copy p { color: var(--muted); }
+body[data-page="index"] :is(.goal-copy .category, .goal-copy .card-link) { color: var(--yellow); }
+
+/* Flaechen: „Warum“ und „Oeffnungszeiten“ dunkel (C), Bewertungen bleiben das eine helle Band (Vertrauen, Abwechslung) */
+body[data-page="index"] :is(.why, .opening)::before { display: none; }
+body[data-page="index"] :is(.why, .opening) { border-top-color: var(--line); }
+body[data-page="index"] :is(.why, .opening) :is(h2, h3, dd) { color: var(--white); }
+body[data-page="index"] :is(.why, .opening) :is(.section-heading > p, dt, p) { color: var(--muted); }
+body[data-page="index"] :is(.why, .opening) :is(.eyebrow, .hours-note, .text-link) { color: var(--yellow); }
+body[data-page="index"] :is(.usp, .hours) { background: var(--d-karte); border-color: var(--line); color: var(--white); }
+.trust-section { border-block: 0; }
+.usp-grid { gap: 12px; }
+.usp { padding: 22px; } .usp h3 { font-size: 19px; } .usp p { font-size: 15px; margin-top: 8px; }
+
+/* Karten und Bedienung (B) */
+.review-quote { height: auto; min-height: 200px; }
+.review-arrow, .review-autoplay, .review-read-more { min-height: var(--d-ziel); min-width: var(--d-ziel); }
+.tariff .price { font-size: 46px; }
+.v-tour { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 24px; margin-top: 28px; padding: 24px; border: 1px solid var(--line); border-radius: var(--d-radius); background: var(--d-karte); }
+.v-tour > p:first-child { flex: 1 1 360px; color: var(--muted); }
+.v-tour .tour-note { flex-basis: 100%; margin: 0; color: var(--muted); }
+/* Einblicke mit freigegebenem Studiofoto (home-studio-kiels.webp) neben dem 3D-Tour-Text */
+.v-tour-bild { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.2fr); gap: 24px 32px; align-items: center; padding: 16px; }
+.v-tour-bild .studio-image { position: relative; margin: 0; border-radius: 16px; overflow: hidden; }
+.v-tour-bild .studio-image img { width: 100%; height: auto; aspect-ratio: 3 / 2; object-fit: cover; }
+.v-tour-text { display: flex; flex-direction: column; align-items: flex-start; gap: 14px; }
+.v-tour-text > p:first-child { color: var(--muted); }
+/* Bistro & Lounge bleibt Abschnitt der Startseite (abgenommene Vorgabe); ruhig in die dunkle Flaeche eingebettet */
+body[data-page="index"] .bistro-section::before { display: none; }
+body[data-page="index"] .bistro-section .studio-copy h2 { color: var(--white); }
+body[data-page="index"] .bistro-section .studio-copy > p:not(.eyebrow) { color: var(--muted); }
+body[data-page="index"] .bistro-section .eyebrow { color: var(--yellow); }
+body[data-page="index"] .bistro-section .studio-image img { background: var(--d-karte); }
+.extras-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.hours .v-heute { font-weight: 700; }
+body[data-page="index"] .hours .v-heute { color: var(--white); }
+.v-heute-marke { display: inline-block; margin-left: 4px; padding: 1px 8px; border-radius: 999px; background: var(--yellow); color: var(--navy); font-size: 12px; font-weight: 700; }
+.choice { min-height: var(--d-ziel); }
+.contact-form .choice input[type="checkbox"], .contact-form input[type="checkbox"] { width: 24px; height: 24px; min-width: 24px; flex: 0 0 24px; accent-color: var(--yellow); }   /* Kaestchen 24 px; Klickflaeche ist das ganze Label (>= 44 px) */
+.video-links a { min-height: var(--d-ziel); }
+
+@media (max-width: 1000px) {
+  .hero-b { grid-template-columns: 1fr; gap: 28px; }
+  .extras-grid { grid-template-columns: 1fr; }
+  .v-tour-bild { grid-template-columns: 1fr; }
+  .goal-card:first-child { flex-direction: column; } .goal-card:first-child > img { width: 100%; }
+  .goal-card { grid-column: span 3; } .goal-card:first-child { grid-column: span 6; }
+}
+@media (max-width: 760px) {
+  body { font-size: 16px; } :root { --d-abschnitt: 56px; }
+  .hero-b { padding-block: 20px 32px; }
+  .hero-b-visual { order: -1; border-radius: 18px; }
+  .c-localnav-title, .c-localnav-cta { display: none; }   /* mobil steht Probetraining in der unteren Schnellkontakt-Leiste */
+  .c-localnav-links { justify-content: flex-start; }
+  .goal-card, .goal-card:first-child { grid-column: span 6; }
+  .usp-grid { grid-template-columns: 1fr 1fr; } .usp { padding: 16px; } .usp h3 { font-size: 17px; } .usp p { font-size: 14px; }
+  .header-inner { min-height: 72px; }
+  .tariff .price { font-size: 40px; }
+}
+@media (prefers-reduced-motion: reduce) { .goal-card, .c-localnav-links a { transition: none; } .goal-card:hover { transform: none; } }

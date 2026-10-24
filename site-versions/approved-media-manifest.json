@@ -1,0 +1,136 @@
+{
+  "schema": "kiels.approved-media/1",
+  "created": "2026-10-24",
+  "reference": "AW-20261024-GE-CLAUDE-KIELS-NEXT-UEBERNAHME-006-TESTFINAL",
+  "policy": "Freigegebene Originale bleiben ausserhalb des oeffentlichen Repositorys (Nutzerentscheidung 24.10.2026). Verbindlich geprueft werden die versionierten WebP-Ableitungen gegen diese Pruefsummen; die Originale nur optional lokal (tools/check-local-originals.cjs).",
+  "originals": [
+    {
+      "original": "assets/kiels-authentic/kiels-kinderhort-spiellandschaft-entwurf.png",
+      "originalSha256": "654e3dd782daa8eb0873bb40978f1cfc8a16dc52f968fc41876ce6e319af7694",
+      "originalWidth": 1448,
+      "originalHeight": 1086,
+      "originalInRepository": false,
+      "pages": [
+        "index.html",
+        "kinderbetreuung.html"
+      ],
+      "derivatives": [
+        {
+          "path": "assets/kiels-authentic/kinderhort-spiellandschaft-724.webp",
+          "bytes": 73966,
+          "width": 724,
+          "height": 543,
+          "sha256": "eed5b412bd157fc0fbf9afa1a9e6a6b278b8073f9c028e2138a378c8061210ce"
+        },
+        {
+          "path": "assets/kiels-authentic/kinderhort-spiellandschaft-1448.webp",
+          "bytes": 211142,
+          "width": 1448,
+          "height": 1086,
+          "sha256": "75aa9b8d746c16f7fa10dde4286436dcc6159aa5774577c9101962ac9f1b38e3"
+        }
+      ]
+    },
+    {
+      "original": "assets/kiels-authentic/kiels-kinderhort-aufenthaltsbereich-entwurf.png",
+      "originalSha256": "9284ad3183ec9ea18d409e8ac972676f3932be4eebdbfe06c441df97f228bb22",
+      "originalWidth": 1448,
+      "originalHeight": 1086,
+      "originalInRepository": false,
+      "pages": [
+        "index.html",
+        "kinderbetreuung.html"
+      ],
+      "derivatives": [
+        {
+          "path": "assets/kiels-authentic/kinderhort-aufenthaltsbereich-724.webp",
+          "bytes": 75492,
+          "width": 724,
+          "height": 543,
+          "sha256": "65ead5ec4390623267f2681cc51cc62f296ff6c5632c21b1ed1ab2afd59a3968"
+        },
+        {
+          "path": "assets/kiels-authentic/kinderhort-aufenthaltsbereich-1448.webp",
+          "bytes": 217346,
+          "width": 1448,
+          "height": 1086,
+          "sha256": "7506ca6c415a7e85ae842200a00208df14876af5497b341d2b30a150df075019"
+        }
+      ]
+    },
+    {
+      "original": "assets/kiels-authentic/kiels-aussenansicht-standort-freigabe-v01.png",
+      "originalSha256": "83cb7f5e139d58698e71d94f47c8a55eeaea01d4cd673bbcd69e0c5041efc2bf",
+      "originalWidth": 1774,
+      "originalHeight": 887,
+      "originalInRepository": false,
+      "pages": [
+        "kontakt.html"
+      ],
+      "derivatives": [
+        {
+          "path": "assets/kiels-authentic/aussenansicht-standort-887.webp",
+          "bytes": 118372,
+          "width": 887,
+          "height": 444,
+          "sha256": "3b1e9038c57c03453655e4ce1032e3db7b6b1d7d9c37f9f378a67fcabeed756e"
+        },
+        {
+          "path": "assets/kiels-authentic/aussenansicht-standort-1774.webp",
+          "bytes": 377444,
+          "width": 1774,
+          "height": 887,
+          "sha256": "0574f4fde75b34c48c8b734145892a871b1497ac10349de9e90fca3252e1d953"
+        }
+      ]
+    },
+    {
+      "original": "assets/kiels-authentic/KIELS-Freihantelbereich-Collage.png",
+      "originalSha256": "2ee4441feee69b5147d11fd259fcaf816c088c7cae4e805df028f6f96efdfe82",
+      "originalWidth": 1536,
+      "originalHeight": 1024,
+      "originalInRepository": false,
+      "pages": [],
+      "derivatives": [
+        {
+          "path": "assets/kiels-authentic/freihantelbereich-collage-768.webp",
+          "bytes": 90358,
+          "width": 768,
+          "height": 512,
+          "sha256": "745218341047d60c7705910afbad61948e946ead75b24525dcec42686407cf93"
+        },
+        {
+          "path": "assets/kiels-authentic/freihantelbereich-collage-1536.webp",
+          "bytes": 246860,
+          "width": 1536,
+          "height": 1024,
+          "sha256": "34bb7762294507046f455151e7e63c20b570ad5264bb364ffb8985987c8f1ee4"
+        }
+      ]
+    },
+    {
+      "original": "assets/kiels-authentic/KIELS-Gastronomie-Kaffeeuebergabe.png",
+      "originalSha256": "ea97ca65de1e94fa65d956974c81a8a4ae21dc4ae30df80a634b42c1abbcb23a",
+      "originalWidth": 2048,
+      "originalHeight": 1536,
+      "originalInRepository": false,
+      "pages": [],
+      "derivatives": [
+        {
+          "path": "assets/kiels-authentic/gastronomie-kaffeeuebergabe-800.webp",
+          "bytes": 63572,
+          "width": 800,
+          "height": 600,
+          "sha256": "03887ce179309802d1e222d7d40fd02c86c3f95bfbca3ebc50b4226135139dfa"
+        },
+        {
+          "path": "assets/kiels-authentic/gastronomie-kaffeeuebergabe-1600.webp",
+          "bytes": 211794,
+          "width": 1600,
+          "height": 1200,
+          "sha256": "7202331c9406f608c2ca306d8a3daad9d356e634be189f192d4dff866e576e9a"
+        }
+      ]
+    }
+  ]
+}

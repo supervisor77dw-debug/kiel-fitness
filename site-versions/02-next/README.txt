@@ -658,3 +658,21 @@ Basti Bildintegration, Oktober 2026
   Die Gesundheitsseite bleibt bewusst unveraendert, weil InBody- und Arztmotiv
   ihre Inhalte genauer vermitteln. Kurs- und Wellnessmotive wurden nicht
   ersetzt.
+
+Etappe 6 – NEXT FINAL CANDIDATE (Variante D), Designabnahme 24.10.2026
+Grundlage: Variante B (Original-Hero als geteilte Buehne, fruehe Tarife) + aus C: Seitennavigation
+(Startseite, mitlaufende Kurswelten), dunkle Flaechen fuer Warum/Oeffnungszeiten, Kachelraster Ziele.
+Navigation: Kinderbetreuung aufgenommen, "Mitgliedschaft" -> "Tarife", "Home" = Logo.
+Keiser-Videos auf fitness.html gebuendelt. Hero und Zielkarten als WebP (assets/opt).
+JSON-LD ExerciseGym, absolute og:url. Mindestschrift 13 px, Tippflaechen >= 44 px.
+Fachlich offen (data-fachfreigabe="offen" in index.html): Dampfbad, Damensauna Freitag.
+Herkunft: AI Workspace AW-20261024-GE-CLAUDE-KIELS-NEXT-UEBERNAHME-006.
+
+Teststrategie freigegebene Originalbilder (Etappe 6, AW-20261024-GE-CLAUDE-KIELS-NEXT-UEBERNAHME-006-TESTFINAL):
+Die fuenf freigegebenen Original-PNG unter assets/kiels-authentic bleiben ausserhalb des oeffentlichen
+Repositorys. Verbindlich prueft tests/media.test.cjs die versionierten WebP-Ableitungen gegen
+site-versions/approved-media-manifest.json (SHA-256, Bytes, Masse, Varianten, Seitenbezug, keine
+Originale im Repository); tests/preview.test.cjs prueft die byte-identische Auslieferung. Optional und
+getrennt: node tools/check-local-originals.cjs <Ordner mit Originalen> gleicht lokal vorhandene Originale
+mit den im Manifest hinterlegten Pruefsummen ab.
+

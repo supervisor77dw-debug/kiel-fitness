@@ -72,7 +72,9 @@ test("selection, directory redirects and both complete sites are served", async 
  const next = await (await fetch(base + "/next/")).text();
  assert.match(next, /href="home\.css"/);
  assert.doesNotMatch(next, /href="home-prototype"|href="previews\//);
- assert.match(next, /href="index\.html" aria-current="page"/);
+ // Etappe 6 (Nutzerentscheidung 24.10.2026): kein Home-Punkt in der Hauptnavigation, das Logo fuehrt zur Startseite
+ assert.match(next, /<a class="brand" href="index\.html"/);
+ assert.doesNotMatch(next.slice(next.indexOf('id="main-navigation"'), next.indexOf("</nav>", next.indexOf('id="main-navigation"'))), />Home<\/a>/);
 });
 
 test("frozen resources resolve within each version without referencing live root assets", async () => {
@@ -181,6 +183,23 @@ test("childcare pages use both approved responsive image sources", async () => {
  assert.match(childcare, /name="marketingConsent" value="true"/);
  assert.match(childcare, /Montag–Freitag[\s\S]*08:30–12:00 Uhr[\s\S]*15:00–19:00 Uhr/);
  assert.match(childcare, /Samstag–Sonntag[\s\S]*08:30–12:00 Uhr/);
+});
+
+// Etappe 6 (AW-20261024-GE-CLAUDE-KIELS-NEXT-UEBERNAHME-006-TESTFINAL): freigegebene authentische Ableitungen werden ueber die
+// repository-eigene Vorschau byte-identisch zum Integritaetsmanifest ausgeliefert; die privaten Originale werden nie ausgeliefert.
+test("approved authentic derivatives are served byte-identical to the integrity manifest", async () => {
+ const manifest = JSON.parse(fs.readFileSync(path.join(versions, "approved-media-manifest.json")));
+ for (const entry of manifest.originals) {
+  for (const derivative of entry.derivatives) {
+   const response = await fetch(base + "/next/" + derivative.path);
+   assert.equal(response.status, 200, derivative.path);
+   assert.match(response.headers.get("content-type"), /image\/webp/);
+   const body = Buffer.from(await response.arrayBuffer());
+   assert.equal(crypto.createHash("sha256").update(body).digest("hex"), derivative.sha256, derivative.path);
+  }
+  const original = await fetch(base + "/next/" + entry.original);
+  assert.equal(original.status, 404, entry.original + " darf nicht ausgeliefert werden");
+ }
 });
 
 test("local API aliases preserve validation/spam and cannot activate HighLevel", async () => {
