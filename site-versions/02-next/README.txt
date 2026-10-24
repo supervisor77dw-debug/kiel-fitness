@@ -658,3 +658,12 @@ Basti Bildintegration, Oktober 2026
   Die Gesundheitsseite bleibt bewusst unveraendert, weil InBody- und Arztmotiv
   ihre Inhalte genauer vermitteln. Kurs- und Wellnessmotive wurden nicht
   ersetzt.
+
+Etappe 6 – NEXT FINAL CANDIDATE (Variante D), Designabnahme 24.10.2026
+Grundlage: Variante B (Original-Hero als geteilte Buehne, fruehe Tarife) + aus C: Seitennavigation
+(Startseite, mitlaufende Kurswelten), dunkle Flaechen fuer Warum/Oeffnungszeiten, Kachelraster Ziele.
+Navigation: Kinderbetreuung aufgenommen, "Mitgliedschaft" -> "Tarife", "Home" = Logo.
+Keiser-Videos auf fitness.html gebuendelt. Hero und Zielkarten als WebP (assets/opt).
+JSON-LD ExerciseGym, absolute og:url. Mindestschrift 13 px, Tippflaechen >= 44 px.
+Fachlich offen (data-fachfreigabe="offen" in index.html): Dampfbad, Damensauna Freitag.
+Herkunft: AI Workspace AW-20261024-GE-CLAUDE-KIELS-NEXT-UEBERNAHME-006.

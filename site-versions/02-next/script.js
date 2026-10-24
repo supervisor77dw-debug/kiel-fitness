@@ -471,3 +471,48 @@ if (contactForm) {
  });
  submit.disabled = false;
 }
+
+// Etappe 6 – NEXT FINAL CANDIDATE (Variante D): Oeffnungsstatus, heutiger Tag, aktiver Abschnitt der Seitennavigation.
+// Oeffnungsstatus und heutiger Tag aus den veroeffentlichten Zeiten (Europe/Berlin). Neu fuer C: aktiver Abschnitt in der Seitennavigation.
+// Ohne JavaScript bleibt alles sichtbar; es entsteht keine neue Zeitangabe.
+(() => {
+  const TAGE = { Montag: 1, Dienstag: 2, Mittwoch: 3, Donnerstag: 4, Freitag: 5, Samstag: 6, Sonntag: 7 };
+  const jetzt = () => {
+    const t = new Intl.DateTimeFormat("de-DE", { timeZone: "Europe/Berlin", weekday: "long", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date());
+    const g = k => t.find(p => p.type === k)?.value;
+    return { tag: TAGE[g("weekday")], min: +g("hour") * 60 + +g("minute") };
+  };
+  const bereich = dt => { const m = dt.textContent.trim().match(/^(\p{L}+)(?:[–-](\p{L}+))?/u); if (!m || !TAGE[m[1]]) return null; return [TAGE[m[1]], TAGE[m[2] || m[1]]]; };
+  const spannen = dd => [...dd.textContent.matchAll(/(\d\d):(\d\d)[–-](\d\d):(\d\d)/g)].map(m => [+m[1] * 60 + +m[2], +m[3] * 60 + +m[4], `${m[3]}:${m[4]}`]);
+  const heute = (a, j) => { for (const dt of a.querySelectorAll("dt")) { const b = bereich(dt); if (b && j.tag >= b[0] && j.tag <= b[1]) return { dt, dd: dt.nextElementSibling }; } return null; };
+
+  function oeffnung() {
+    const grid = document.querySelector("[data-v-hours]"); if (!grid) return;
+    const j = jetzt();
+    const studio = grid.querySelector(".hours"), st = document.querySelector("[data-v-status]"), hs = studio && heute(studio, j);
+    if (hs && st) {
+      const offen = spannen(hs.dd).find(([a, b]) => j.min >= a && j.min < b), spaeter = spannen(hs.dd).find(([a]) => j.min < a);
+      const hhmm = m => `${String(Math.floor(m / 60)).padStart(2, "0")}:${String(m % 60).padStart(2, "0")}`;
+      st.textContent = offen ? `Jetzt geöffnet bis ${offen[2]} Uhr` : spaeter ? `Heute ab ${hhmm(spaeter[0])} Uhr geöffnet` : "Heute bereits geschlossen";
+      st.classList.toggle("offen", !!offen); st.hidden = false;
+    }
+    for (const a of grid.querySelectorAll(".hours")) {
+      const h = heute(a, j); if (!h) continue;
+      h.dt.classList.add("v-heute"); h.dd.classList.add("v-heute");
+      const marke = document.createElement("span"); marke.className = "v-heute-marke"; marke.textContent = "heute"; h.dt.append(" ", marke);
+    }
+  }
+
+  function seitennavigation() {
+    const nav = document.querySelector(".c-localnav"); if (!nav || !("IntersectionObserver" in window)) return;
+    const links = [...nav.querySelectorAll('.c-localnav-links a[href^="#"]')];
+    const ziele = links.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
+    const io = new IntersectionObserver(eintraege => {
+      for (const e of eintraege) if (e.isIntersecting) links.forEach(a => a.getAttribute("href") === "#" + e.target.id ? a.setAttribute("aria-current", "location") : a.removeAttribute("aria-current"));
+    }, { rootMargin: "-45% 0px -50% 0px" });
+    ziele.forEach(z => io.observe(z));
+  }
+
+  const start = () => { oeffnung(); seitennavigation(); };
+  document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", start) : start();
+})();

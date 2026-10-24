@@ -72,7 +72,9 @@ test("selection, directory redirects and both complete sites are served", async 
  const next = await (await fetch(base + "/next/")).text();
  assert.match(next, /href="home\.css"/);
  assert.doesNotMatch(next, /href="home-prototype"|href="previews\//);
- assert.match(next, /href="index\.html" aria-current="page"/);
+ // Etappe 6 (Nutzerentscheidung 24.10.2026): kein Home-Punkt in der Hauptnavigation, das Logo fuehrt zur Startseite
+ assert.match(next, /<a class="brand" href="index\.html"/);
+ assert.doesNotMatch(next.slice(next.indexOf('id="main-navigation"'), next.indexOf("</nav>", next.indexOf('id="main-navigation"'))), />Home<\/a>/);
 });
 
 test("frozen resources resolve within each version without referencing live root assets", async () => {
