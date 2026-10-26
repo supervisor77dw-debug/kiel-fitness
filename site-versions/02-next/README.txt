@@ -681,3 +681,12 @@ Originale im Repository); tests/preview.test.cjs prueft die byte-identische Ausl
 getrennt: node tools/check-local-originals.cjs <Ordner mit Originalen> gleicht lokal vorhandene Originale
 mit den im Manifest hinterlegten Pruefsummen ab.
 
+Inhaltskorrektur 26.10.2026 (AW-20261026-DK-CLAUDE-KIELS-WEBSITE-INHALTSKORREKTUR-001)
+- Kinderbetreuung Montag–Freitag nur 15:00–19:00 Uhr (Vormittag entfernt, kein
+  "vormittags geschlossen"); Samstag–Sonntag 08:30–12:00 Uhr unveraendert.
+- Damensauna Montag–Sonntag 08:00–20:00 Uhr (ersetzt die bisherige offene
+  Freitagsangabe und die frueheren Zeitfenster).
+- Biosauna Montag–Samstag 08:00–20:00 Uhr; fuer Sonntag keine Zeitangabe.
+- Wirbelsaeulengymnastik: bereits nicht im Kursangebot (seit 12.10.2026), unveraendert.
+- Aufbau Rueckbildung: Bezeichnung wie im Kursplan Mai 2026 ("AUFBAU RUECKBILDUNG"),
+  Zielgruppe Frauen nach Schwangerschaft/Entbindung, unveraendert.

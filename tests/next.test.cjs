@@ -558,18 +558,29 @@ test("final course, health and wellness harmonization uses the approved responsi
  assert.match(wellness, /die Kabine ist noch nicht in Betrieb/);
  assert.doesNotMatch(wellness, /Dampfbad|wellness-dampfbad\.png/);
 });
-// AW-20261024-GE-CLAUDE-KIELS-VERCEL-MERGE-LAUNCHVORBEREITUNG-007: unbestaetigte Wellness-Angaben bis zur Fachfreigabe neutralisiert.
-test("unconfirmed steam room and ladies sauna Friday hours are not published as current facts", () => {
+// AW-20261024-GE-CLAUDE-KIELS-VERCEL-MERGE-LAUNCHVORBEREITUNG-007: kein Dampfbad als aktuelle Leistung.
+// AW-20261026-DK-CLAUDE-KIELS-WEBSITE-INHALTSKORREKTUR-001: bestaetigte Zeiten Damensauna Mo–So und Biosauna Mo–Sa 08:00–20:00.
+test("sauna hours follow the confirmed schedule and no steam room is published", () => {
  const { productiveSourceFiles } = require("../tools/media-audit.cjs");
  const productive = productiveSourceFiles().map(file => fs.readFileSync(path.join(next, file), "utf8")).join("\n");
  assert.doesNotMatch(productive, /Dampfbad|Dampfsauna|dampfbad/);
  const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
- const ladies = home.match(/<article class="hours"[^>]*><h3>Damensauna<\/h3>[\s\S]*?<\/article>/)[0];
- assert.match(ladies, /<dt>Freitag<\/dt><dd data-fachfreigabe="offen">Bitte im Studio erfragen<\/dd>/);
- assert.doesNotMatch(ladies.match(/<dl>[\s\S]*<\/dl>/)[0].replace(/<dt>Freitag<\/dt><dd[^>]*>[^<]*<\/dd>/, ""), /Freitag/);
- assert.match(ladies, /<dt>Montag–Donnerstag<\/dt><dd>09:00–12:00 Uhr<br>16:00–20:00 Uhr<\/dd>/);
- assert.match(home, /<h3>Gemischte Sauna<\/h3>/);
- assert.match(home, /<h3>Biosauna<\/h3>/);
+ const card = name => home.match(new RegExp(`<article class="hours"[^>]*><h3>${name}<\\/h3>([\\s\\S]*?)<\\/article>`));
+ assert.equal(card("Damensauna")[1], "<dl><dt>Montag–Sonntag</dt><dd>08:00–20:00 Uhr</dd></dl>");
+ assert.equal(card("Biosauna")[1], "<dl><dt>Montag–Samstag</dt><dd>08:00–20:00 Uhr</dd></dl>");
+ assert.doesNotMatch(home, /data-fachfreigabe|Bitte im Studio erfragen|09:00–12:00 Uhr|09:00–13:00 Uhr|10:00–13:00 Uhr/);
+ assert.match(home, /<h3>Gemischte Sauna<\/h3><dl><dt>Montag–Freitag<\/dt><dd>06:30–21:30 Uhr<\/dd><dt>Samstag–Sonntag<\/dt><dd>08:30–21:30 Uhr<\/dd><\/dl>/);
+});
+
+// AW-20261026-DK-CLAUDE-KIELS-WEBSITE-INHALTSKORREKTUR-001: Kinderbetreuung Mo–Fr nur nachmittags, Wochenende unveraendert.
+test("childcare hours show only offered times without morning slots on weekdays", () => {
+ const home = fs.readFileSync(path.join(next, "index.html"), "utf8");
+ const childcare = fs.readFileSync(path.join(next, "kinderbetreuung.html"), "utf8");
+ assert.match(home, /<h3>Kinderbetreuung<\/h3><dl><dt>Montag–Freitag<\/dt><dd>15:00–19:00 Uhr<\/dd><dt>Samstag–Sonntag<\/dt><dd>08:30–12:00 Uhr<\/dd><\/dl>/);
+ const weekday = childcare.match(/<article class="hours"><h3>Montag–Freitag<\/h3>([\s\S]*?)<\/article>/)[1];
+ assert.equal(weekday, "<dl><dt>Nachmittags</dt><dd>15:00–19:00 Uhr</dd></dl>");
+ assert.match(childcare, /<article class="hours"><h3>Samstag–Sonntag<\/h3><dl><dt>Vormittags<\/dt><dd>08:30–12:00 Uhr<\/dd><\/dl><\/article>/);
+ assert.doesNotMatch(home + childcare, /geschlossen/i);
 });
 test("postnatal Aufbau Rückbildung and established Rückenfitness remain separate", () => {
  const courses = fs.readFileSync(path.join(next, "kurse.html"), "utf8");

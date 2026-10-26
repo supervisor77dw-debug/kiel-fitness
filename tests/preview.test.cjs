@@ -181,7 +181,8 @@ test("childcare pages use both approved responsive image sources", async () => {
  assert.match(childcare, /data-request-type="childcare_inquiry"/);
  assert.match(childcare, /name="privacyAccepted" value="true" required/);
  assert.match(childcare, /name="marketingConsent" value="true"/);
- assert.match(childcare, /Montag–Freitag[\s\S]*08:30–12:00 Uhr[\s\S]*15:00–19:00 Uhr/);
+ // AW-20261026-DK-CLAUDE-KIELS-WEBSITE-INHALTSKORREKTUR-001: Montag–Freitag nur nachmittags.
+ assert.match(childcare, /<h3>Montag–Freitag<\/h3><dl><dt>Nachmittags<\/dt><dd>15:00–19:00 Uhr<\/dd><\/dl>/);
  assert.match(childcare, /Samstag–Sonntag[\s\S]*08:30–12:00 Uhr/);
 });
 
