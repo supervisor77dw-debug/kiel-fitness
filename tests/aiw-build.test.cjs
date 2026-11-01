@@ -11,6 +11,8 @@ test('Vercel build packages the active AIW handler without HighLevel routes, cod
   execFileSync(process.execPath,[path.join(root,'tools','build-staging.cjs'),'--output',output]);
   const fn=path.join(output,'functions','api','contact.func');
   assert.equal(JSON.parse(fs.readFileSync(path.join(fn,'.vc-config.json'))).runtime,'nodejs22.x');
+  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(fn,'.vc-config.json'))).regions,['fra1']);
+  assert.deepEqual(JSON.parse(fs.readFileSync(path.join(root,'vercel.json'))).regions,['fra1']);
   assert.deepEqual(fs.readdirSync(path.join(output,'functions','api')),['contact.func']);
   assert.deepEqual(fs.readdirSync(path.join(fn,'lib')).sort(),['aiw-lead.js','contact.js']);
   assert.equal(typeof require(path.join(fn,'entry.cjs')),'function');

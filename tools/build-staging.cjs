@@ -51,7 +51,8 @@ const { MAX_BODY_BYTES } = require("./lib/contact");
 const { serveContact } = require("./contact-http.cjs");
 module.exports = (req, res) => serveContact(req, res, { handler, maxBytes: MAX_BODY_BYTES });
 `);
-fs.writeFileSync(path.join(contactFunctionRoot, ".vc-config.json"), JSON.stringify({ runtime: "nodejs22.x", handler: "entry.cjs", launcherType: "Nodejs", maxDuration: 15 }, null, 2));
+// Formulardaten nur in Frankfurt verarbeiten (Standard waere iad1/USA).
+fs.writeFileSync(path.join(contactFunctionRoot, ".vc-config.json"), JSON.stringify({ runtime: "nodejs22.x", handler: "entry.cjs", launcherType: "Nodejs", maxDuration: 15, regions: ["fra1"] }, null, 2));
 fs.writeFileSync(path.join(output, "config.json"), JSON.stringify({
  version: 3,
  routes: [
