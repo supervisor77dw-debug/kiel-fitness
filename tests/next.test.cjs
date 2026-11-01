@@ -81,16 +81,17 @@ test("legal pages and global footer use the unified accessible navigation and lo
 test("deployment builder reads server runtime configuration without embedding credentials", () => {
  const source = fs.readFileSync(path.join(root, "tools", "build-staging.cjs"), "utf8");
  assert.match(source, /fs\.writeFileSync\(path\.join\(contactFunctionRoot, "api", "contact\.js"\), handler\)/);
- assert.match(source, /highlevel-readiness\.func/);
- assert.match(source, /api\/highlevel-readiness/);
- assert.match(source, /launcherType: "Nodejs", shouldAddHelpers: true/);
- assert.match(source, /HIGHLEVEL_PRIVATE_TOKEN and HIGHLEVEL_LOCATION_ID at runtime/);
+ assert.doesNotMatch(source, /highlevel-readiness\.func|api\/highlevel-readiness/);
+ assert.match(source, /launcherType: "Nodejs"/);
+ assert.match(source, /AIW_LEAD_ENABLED, AIW_LEAD_ENDPOINT, AIW_LEAD_TOKEN and AIW_PRIVACY_NOTICE_VERSION required/);
  assert.doesNotMatch(source, /HIGHLEVEL_ENABLED:\s*["']false["']/);
  assert.doesNotMatch(source, /HIGHLEVEL_PRIVATE_TOKEN:\s*["'][^"']+["']/);
  assert.doesNotMatch(source, /HIGHLEVEL_LOCATION_ID:\s*["'][^"']+["']/);
  assert.match(source, /robots\.txt/);
  assert.match(source, /sitemap\.xml/);
- assert.doesNotMatch(source, /X-Robots-Tag|noindex, nofollow/);
+ // noindex nur hostgebunden (Vorschau/vercel.app), nie fuer die offizielle Domain
+ assert.equal((source.match(/X-Robots-Tag/g) || []).length, 1);
+ assert.match(source, /missing: \[\{ type: "host", value: "www\.kiel-fitness\.de" \}\], headers: \{ "X-Robots-Tag"/);
  assert.doesNotMatch(source, /--prod|HIGHLEVEL_WEBHOOK_URL:/);
 });
 test("fresh deployment artifact includes every local script and stylesheet referenced by Next pages", async () => {
@@ -101,7 +102,9 @@ test("fresh deployment artifact includes every local script and stylesheet refer
   assert.ok(fs.existsSync(path.join(staticRoot, "robots.txt")));
   assert.ok(fs.existsSync(path.join(staticRoot, "sitemap.xml")));
   const config = JSON.parse(fs.readFileSync(path.join(output, "config.json")));
-  assert.doesNotMatch(JSON.stringify(config), /noindex|nofollow/i);
+  const noindex = config.routes.filter(route => /noindex|nofollow/i.test(JSON.stringify(route)));
+  assert.equal(noindex.length, 1);
+  assert.deepEqual(noindex[0].missing, [{ type: "host", value: "www.kiel-fitness.de" }]);
   for (const file of fs.readdirSync(next).filter(name => name.endsWith(".html"))) {
    const html = fs.readFileSync(path.join(staticRoot, file), "utf8");
    for (const match of html.matchAll(/(?:src|href)="([^"]+\.(?:js|css))"/g)) {
@@ -626,5 +629,21 @@ test("Git-triggered Vercel builds use the Next output with fail-closed runtime c
  const builder = fs.readFileSync(path.join(root, "tools", "build-staging.cjs"), "utf8");
  assert.match(builder, /"site-versions", "02-next"/);
  assert.match(builder, /mode: "staging"/);
- assert.match(builder, /HIGHLEVEL_PRIVATE_TOKEN and HIGHLEVEL_LOCATION_ID at runtime/);
+ // AW-20261024-GE-CLAUDE-KIELS-AIW-LEAD-LIVE-INTEGRATION-009: Zielsystem ist das AIW-Lead-Management, kein HighLevel-Rueckfall.
+ assert.match(builder, /AIW_LEAD_ENABLED, AIW_LEAD_ENDPOINT, AIW_LEAD_TOKEN and AIW_PRIVACY_NOTICE_VERSION required; no HighLevel fallback/);
+ assert.doesNotMatch(builder, /highlevel\.js|highlevel-readiness|HIGHLEVEL_/i);
+});
+// AW-20261024-GE-CLAUDE-KIELS-AIW-LEAD-LIVE-INTEGRATION-009: strenge CSP (script-src 'self') ohne Inline-Skript oder -Handler.
+test("productive pages need no inline script or inline event handler", () => {
+ for (const file of fs.readdirSync(next).filter(name => name.endsWith(".html"))) {
+  const html = fs.readFileSync(path.join(next, file), "utf8");
+  assert.doesNotMatch(html, /<[a-z][^>]*\son[a-z]+\s*=/i, file);
+  for (const script of html.matchAll(/<script\b([^>]*)>([\s\S]*?)<\/script>/gi)) {
+   if (/type="application\/ld\+json"/.test(script[1])) continue;
+   assert.equal(script[2].trim(), "", `${file}: Inline-Skript`);
+   assert.match(script[1], /\bsrc="[^"]+\.js"/, file);
+  }
+  assert.match(html, /<script src="bootstrap\.js"><\/script>[\s\S]*<script src="script\.js" defer><\/script>/, file);
+ }
+ assert.match(fs.readFileSync(path.join(next, "bootstrap.js"), "utf8"), /classList\.remove\("prototype-js"\)/);
 });

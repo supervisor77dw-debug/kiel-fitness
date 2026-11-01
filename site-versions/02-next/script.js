@@ -425,9 +425,10 @@ if (contactForm) {
   }
   const fingerprint = JSON.stringify(payload);
   if (!pendingSubmission || pendingSubmission.fingerprint !== fingerprint) {
-   pendingSubmission = { fingerprint, id: crypto.randomUUID() };
+   pendingSubmission = { fingerprint, id: crypto.randomUUID(), submittedAt: new Date().toISOString() };
   }
   payload.submissionId = pendingSubmission.id;
+  payload.submittedAt = pendingSubmission.submittedAt;
   submit.disabled = true;
   contactForm.setAttribute("aria-busy", "true");
   status.textContent = "Deine Anfrage wird gepr\u00fcft.";
@@ -437,7 +438,7 @@ if (contactForm) {
   try {
    const response = await fetch(contactForm.action, {
     method: "POST", headers: { "Content-Type": "application/json", "Accept": "application/json" },
-    body: JSON.stringify(payload), signal: controller.signal
+    body: JSON.stringify(payload), signal: controller.signal, credentials: "same-origin", redirect: "error", cache: "no-store"
    });
    const result = await response.json();
    if (typeof result?.success !== "boolean" || typeof result.message !== "string" || !result.message.trim()) {

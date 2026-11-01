@@ -86,7 +86,6 @@
 
     payload.schemaVersion = Number(payload.schemaVersion);
     payload.callbackRequested = values.has("callbackRequested");
-    payload.submissionId = createSubmissionId();
     Object.assign(payload, getAttribution());
     return payload;
   }
@@ -97,6 +96,7 @@
     const callback = form.querySelector('input[name="callbackRequested"]');
     const phone = form.querySelector('input[name="phone"]');
     const initialButtonText = button ? button.textContent : "";
+    let pendingSubmission = null;
 
     if (callback && phone) {
       const syncCallbackRequirement = () => {
@@ -117,14 +117,21 @@
       }
       if (status) {
         status.hidden = false;
-        status.textContent = "Deine Eingaben werden geprüft. Diese lokale Vorschau versendet oder speichert keine Anfrage.";
+        status.textContent = "Deine Anfrage wird geprüft.";
       }
 
+      const controller = new AbortController(), timeout = setTimeout(() => controller.abort(), 15000);
       try {
+        const payload = formPayload(form), fingerprint = JSON.stringify(payload);
+        if (!pendingSubmission || pendingSubmission.fingerprint !== fingerprint) {
+          pendingSubmission = { fingerprint, id: createSubmissionId(), submittedAt: new Date().toISOString() };
+        }
+        payload.submissionId = pendingSubmission.id;
+        payload.submittedAt = pendingSubmission.submittedAt;
         const response = await fetch(form.action, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(formPayload(form))
+          body: JSON.stringify(payload), signal: controller.signal, credentials: "same-origin", redirect: "error", cache: "no-store"
         });
         let result;
         try {
@@ -136,6 +143,7 @@
           typeof result.message === "string" && result.message.trim();
         if (confirmed) {
           form.reset();
+          pendingSubmission = null;
           if (callback && phone) phone.required = callback.checked;
           if (status) status.textContent = result.message;
         } else if (status) {
@@ -150,6 +158,7 @@
           status.focus();
         }
       } finally {
+        clearTimeout(timeout);
         form.dataset.submitting = "false";
         if (button) {
           button.disabled = false;
@@ -168,7 +177,7 @@
         await navigator.clipboard.writeText(message);
         if (copyStatus) {
           copyStatus.hidden = false;
-          copyStatus.textContent = "Text und aktueller Seitenlink wurden kopiert. In der lokalen Vorschau ist der Link nicht öffentlich erreichbar.";
+          copyStatus.textContent = "Text und aktueller Seitenlink wurden kopiert.";
         }
       } catch (_error) {
         if (copyStatus) {
