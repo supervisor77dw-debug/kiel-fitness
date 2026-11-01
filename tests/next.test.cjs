@@ -153,7 +153,10 @@ test("privacy publication matches actual forms and avoids unverified legal claim
   "KIELS Fitness GmbH",
   "mail@kiel-fitness.de",
   "Vercel",
-  "HighLevel beziehungsweise LeadConnector",
+  "eigenen Kundenverwaltungssystem",
+  "Art. 6 Abs. 1 lit. b DSGVO",
+  "Cross Media",
+  "spätestens nach 7 Tagen",
   "UTM- oder Anzeigenparameter",
   "keine eigenen Cookies",
   "weder Local Storage noch Session Storage",
@@ -166,8 +169,11 @@ test("privacy publication matches actual forms and avoids unverified legal claim
   "EU-US Data Privacy Framework",
   "Standardvertragsklauseln",
   "Auftragsverarbeitungsvertrag abgeschlossen",
-  "Datenschutzerklärungs-Generator"
+  "Datenschutzerklärungs-Generator",
+  "HighLevel",
+  "LeadConnector"
  ]) assert.doesNotMatch(privacy, new RegExp(unsupported, "i"));
+ assert.match(privacy, /<!-- Hinweisversion: dsh-kiels-2026-11-01-1 \(Entwurf, fachliche Freigabe ausstehend\) -->/);
  assert.match(contact, /Bitte keine Gesundheitsdaten, Diagnosen oder InBody-Werte übermitteln\./);
  assert.match(employer, /Keine Gesundheitsdaten oder Kontaktdaten von Beschäftigten übermitteln\./);
  assert.match(referral, /Bitte keine Namen, Kontaktdaten oder Gesundheitsdaten anderer Personen angeben\./);
