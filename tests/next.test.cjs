@@ -157,6 +157,7 @@ test("privacy publication matches actual forms and avoids unverified legal claim
   "Art. 6 Abs. 1 lit. b DSGVO",
   "Cross Media",
   "spätestens nach 7 Tagen",
+  "täglich wechselnden, nicht zurückrechenbaren Kurzwert",
   "UTM- oder Anzeigenparameter",
   "keine eigenen Cookies",
   "weder Local Storage noch Session Storage",

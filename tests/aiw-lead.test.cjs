@@ -43,3 +43,28 @@ test('public form requires same-origin JSON, stable receipt fields and rejects h
  for(const [body,headers,status]of [[input(),{origin:'https://evil.invalid'},403],[input(),{origin:undefined},403],[input(),{'sec-fetch-site':'cross-site'},403],[input(),{'content-encoding':'gzip'},415],[Buffer.from([0xc3,0x28]),{},400],[{...input(),submittedAt:undefined},{},400],[{...input(),website:'bot'},{},400]])assert.equal((await request(body,headers)).code,status);
  assert.equal(calls,0);assert.equal((await request(input())).code,200);assert.equal(calls,1);
 });
+// A1 (AW-20261101-GE-CLAUDE-KIELS-WEBSITE-LEAD-GOLIVE-PRUEFUNG-001): Besucherkennung statt gemeinsamer Vercel-Ausgangs-IP
+const {besucherIp,besucherKennung}=require('../site-versions/02-next/lib/aiw-lead');
+test('visitor key: only Vercel-set header on Vercel, validated IP, daily HMAC, raw IP never sent',async()=>{
+ const req=h=>({headers:h});
+ assert.equal(besucherIp(req({'x-vercel-forwarded-for':'203.0.113.9'}),{}),null,'ausserhalb von Vercel kein Vertrauen');
+ assert.equal(besucherIp(req({'x-forwarded-for':'203.0.113.9'}),{VERCEL:'1'}),null,'nur x-vercel-forwarded-for');
+ assert.equal(besucherIp(req({'x-vercel-forwarded-for':'203.0.113.9, 10.0.0.1'}),{VERCEL:'1'}),'203.0.113.9');
+ assert.equal(besucherIp(req({'x-vercel-forwarded-for':'2001:db8::1'}),{VERCEL:'1'}),'2001:db8::1');
+ for(const bad of ['', 'evil', '999.1.1.1', '203.0.113.9<script>', 'a'.repeat(100)])assert.equal(besucherIp(req({'x-vercel-forwarded-for':bad}),{VERCEL:'1'}),null,bad);
+ const day=new Date('2026-11-01T10:00:00Z'),next=new Date('2026-11-02T10:00:00Z');
+ const k=besucherKennung('203.0.113.9',env.AIW_LEAD_TOKEN,day);
+ assert.match(k,/^v1\.[A-Za-z0-9_-]{43}$/);assert.equal(k,besucherKennung('203.0.113.9',env.AIW_LEAD_TOKEN,new Date('2026-11-01T23:59:00Z')));
+ assert.notEqual(k,besucherKennung('203.0.113.10',env.AIW_LEAD_TOKEN,day));assert.notEqual(k,besucherKennung('203.0.113.9',env.AIW_LEAD_TOKEN,next));
+ assert.equal(k.includes('203'),false);
+ const sent=[];const adapter=createAiwLeadAdapter({env,fetchImpl:async(_u,o)=>{sent.push(o);return new Response('{"accepted":true}',{status:201,headers:{'Content-Type':'application/json'}});}});
+ assert.equal((await adapter(lead(),{besucherIp:'203.0.113.9'})).status,200);
+ assert.match(sent[0].headers['X-AIW-Besucher'],/^v1\.[A-Za-z0-9_-]{43}$/);assert.equal(JSON.stringify(sent[0]).includes('203.0.113.9'),false);
+ await adapter(lead());assert.equal(sent[1].headers['X-AIW-Besucher'],undefined,'ohne IP kein Kopf');
+});
+test('handler passes only the Vercel-derived visitor IP to the adapter',async()=>{
+ const seen=[];const handler=createContactHandler({requireReceipt:true,env:{VERCEL:'1'},submitLead:async(_l,meta)=>{seen.push(meta);return{status:200,body:{success:true}};}});
+ const res={headers:{},setHeader(){},status(n){this.code=n;return this;},json(b){this.body=b;return this;}};
+ await handler({method:'POST',headers:{host:'site.example.invalid',origin:'https://site.example.invalid','content-type':'application/json','sec-fetch-site':'same-origin','x-vercel-forwarded-for':'198.51.100.4','x-forwarded-for':'1.2.3.4'},body:JSON.stringify(input())},res);
+ assert.equal(res.code,200);assert.deepEqual(seen,[{besucherIp:'198.51.100.4'}]);
+});

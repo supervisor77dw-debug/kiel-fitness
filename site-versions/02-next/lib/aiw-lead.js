@@ -1,4 +1,6 @@
 // Server-only. Never import into a frontend bundle or forward provider responses.
+const {createHmac}=require('node:crypto');
+const {isIP}=require('node:net');
 const TOPICS = { trial: 'trial', membership: 'membership', courses: 'classes', health: 'health', wellness: 'wellness', 'existing-membership': 'existing_membership', other: 'other' };
 const CONTEXT = ['requestType','sourcePage','companyName','location','employeeSize','existingOffer','campaignId','privacyAccepted',
  'leadSource','leadSourceDetail','utmSource','utmMedium','utmCampaign','utmContent','utmTerm','landingPage','referrer','gclid','fbclid'];
@@ -45,14 +47,28 @@ async function receipt(response) {
   return JSON.parse(new TextDecoder('utf8',{fatal:true}).decode(Buffer.concat(chunks)));
  }finally{await reader.cancel().catch(()=>{});reader.releaseLock();}
 }
+// A1: Besucherherkunft fuer die Mengenbegrenzung im CRM. Vertrauenswuerdig nur der von Vercel selbst gesetzte Kopf (VERCEL=1);
+// Client-Koepfe ausserhalb von Vercel werden ignoriert. Die IP verlaesst die Funktion nie, nur ein taeglich wechselnder HMAC-Kurzwert.
+function besucherIp(req,env=process.env) {
+ if(env.VERCEL!=='1')return null;
+ const raw=req?.headers?.['x-vercel-forwarded-for'];
+ const ip=typeof raw==='string'?raw.split(',')[0].trim():'';
+ return ip.length<=45&&isIP(ip)?ip:null;
+}
+function besucherKennung(ip,token,now=new Date()) {
+ const tagesSchluessel=createHmac('sha256',token).update('aiw-besucher-v1:'+now.toISOString().slice(0,10)).digest();
+ return 'v1.'+createHmac('sha256',tagesSchluessel).update(ip).digest('base64url');
+}
 function createAiwLeadAdapter({env=process.env,fetchImpl=globalThis.fetch,timeoutMs=8000}={}) {
  if(!Number.isInteger(timeoutMs)||timeoutMs<1||timeoutMs>10000)throw new Error('INVALID_TIMEOUT');
- return async lead=>{
+ return async (lead,{besucherIp:ip=null}={})=>{
   const config=configuration(env);if(!config)return result('delivery_not_configured');
   let body;try{body=JSON.stringify(mapLeadSubmission(lead,config));}catch(e){return result(e.message==='CONSENT_NOT_CONFIGURED'?'delivery_not_configured':'validation_error');}
   const controller=new AbortController(),timer=setTimeout(()=>controller.abort(),timeoutMs);
+  const headers={'Content-Type':'application/json','Accept':'application/json',Authorization:`Bearer ${config.token}`};
+  if(ip&&isIP(ip))headers['X-AIW-Besucher']=besucherKennung(ip,config.token);
   try {
-   const response=await fetchImpl(config.url,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json',Authorization:`Bearer ${config.token}`},
+   const response=await fetchImpl(config.url,{method:'POST',headers,
     body,redirect:'error',cache:'no-store',signal:controller.signal});
    if([200,201].includes(response.status)) {
     const confirmation=await receipt(response);
@@ -66,4 +82,4 @@ function createAiwLeadAdapter({env=process.env,fetchImpl=globalThis.fetch,timeou
   finally{clearTimeout(timer);}
  };
 }
-module.exports={createAiwLeadAdapter,mapLeadSubmission};
+module.exports={createAiwLeadAdapter,mapLeadSubmission,besucherIp,besucherKennung};

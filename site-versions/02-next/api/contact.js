@@ -1,7 +1,7 @@
 const { validateContact, MAX_BODY_BYTES } = require("../lib/contact");
-const { createAiwLeadAdapter } = require("../lib/aiw-lead");
+const { createAiwLeadAdapter, besucherIp } = require("../lib/aiw-lead");
 
-function createContactHandler({ submitLead, requireReceipt = submitLead === undefined } = {}) {
+function createContactHandler({ submitLead, requireReceipt = submitLead === undefined, env = process.env } = {}) {
  submitLead ??= createAiwLeadAdapter();
  return async function contact(req, res) {
  res.setHeader("Cache-Control", "no-store");
@@ -62,7 +62,7 @@ function createContactHandler({ submitLead, requireReceipt = submitLead === unde
    errors: result.errors
   });
  }
- const delivery = await submitLead({...result.lead, ...(requireReceipt ? {submittedAt:input.submittedAt} : {})});
+ const delivery = await submitLead({...result.lead, ...(requireReceipt ? {submittedAt:input.submittedAt} : {})}, { besucherIp: besucherIp(req, env) });
  return reply(delivery.status, delivery.body);
  };
 }
