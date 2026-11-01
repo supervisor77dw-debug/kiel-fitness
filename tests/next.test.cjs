@@ -163,18 +163,20 @@ test("privacy publication matches actual forms and avoids unverified legal claim
   "weder Local Storage noch Session Storage",
   "keine Webanalyse-Dienste, Marketingpixel",
   "Diese Dienste sind nicht in die Website eingebettet.",
-  "keine ausschließlich automatisierte Entscheidung"
+  "keine ausschließlich automatisierte Entscheidung",
+  // Beleg: Vercel DPA (Stand 17.03.2026) Schedule 3, SCC Modul 2 fuer Pro; Funktion in fra1 (dpl_7VZtG7TSP3oD5py9FkWE9fjfXqLV)
+  "EU-Standardvertragsklauseln vor (Art. 46 Abs. 2 lit. c DSGVO)",
+  "Rechenzentrum in Frankfurt am Main"
  ]) assert.match(privacy, new RegExp(text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
  for (const unsupported of [
   "DSGVO-konform",
   "EU-US Data Privacy Framework",
-  "Standardvertragsklauseln",
   "Auftragsverarbeitungsvertrag abgeschlossen",
   "Datenschutzerklärungs-Generator",
   "HighLevel",
   "LeadConnector"
  ]) assert.doesNotMatch(privacy, new RegExp(unsupported, "i"));
- assert.match(privacy, /<!-- Hinweisversion: dsh-kiels-2026-11-01-1 \(Entwurf, fachliche Freigabe ausstehend\) -->/);
+ assert.match(privacy, /<!-- Hinweisversion: dsh-kiels-2026-11-01-2 \(Entwurf, fachliche Freigabe ausstehend\) -->/);
  assert.match(contact, /Bitte keine Gesundheitsdaten, Diagnosen oder InBody-Werte übermitteln\./);
  assert.match(employer, /Keine Gesundheitsdaten oder Kontaktdaten von Beschäftigten übermitteln\./);
  assert.match(referral, /Bitte keine Namen, Kontaktdaten oder Gesundheitsdaten anderer Personen angeben\./);
