@@ -166,7 +166,9 @@ test("privacy publication matches actual forms and avoids unverified legal claim
   "keine ausschließlich automatisierte Entscheidung",
   // Beleg: Vercel DPA (Stand 17.03.2026) Schedule 3, SCC Modul 2 fuer Pro; Funktion in fra1 (dpl_7VZtG7TSP3oD5py9FkWE9fjfXqLV)
   "EU-Standardvertragsklauseln vor (Art. 46 Abs. 2 lit. c DSGVO)",
-  "Rechenzentrum in Frankfurt am Main"
+  "Rechenzentrum in Frankfurt am Main",
+  "Dieses Postfach und den zugehörigen Versand betreibt für uns der Dienstleister Cross Media",
+  "spätestens 30 Tage nach ihrer Löschung im laufenden System überschrieben"
  ]) assert.match(privacy, new RegExp(text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
  for (const unsupported of [
   "DSGVO-konform",
@@ -176,7 +178,7 @@ test("privacy publication matches actual forms and avoids unverified legal claim
   "HighLevel",
   "LeadConnector"
  ]) assert.doesNotMatch(privacy, new RegExp(unsupported, "i"));
- assert.match(privacy, /<!-- Hinweisversion: dsh-kiels-2026-11-01-2 \(Entwurf, fachliche Freigabe ausstehend\) -->/);
+ assert.match(privacy, /<!-- Hinweisversion: dsh-kiels-2026-11-01-3 \(Freigabekandidat, Freigabe ausstehend\) -->/);
  assert.match(contact, /Bitte keine Gesundheitsdaten, Diagnosen oder InBody-Werte übermitteln\./);
  assert.match(employer, /Keine Gesundheitsdaten oder Kontaktdaten von Beschäftigten übermitteln\./);
  assert.match(referral, /Bitte keine Namen, Kontaktdaten oder Gesundheitsdaten anderer Personen angeben\./);
