@@ -170,7 +170,8 @@ test("privacy publication matches actual forms and avoids unverified legal claim
   "Anfragen über die Website beantworten wir derzeit telefonisch",
   "Eine automatische Eingangsbestätigung per E-Mail versenden wir nicht",
   "löschen ältere Stände nach unserem Sicherungskonzept",
-  "spätestens 24 Monate nach dem letzten Kontakt"
+  "spätestens jedoch 24 Monate nach dem letzten Kontakt",
+  "löschen wir deine Daten unverzüglich, soweit keine gesetzlichen Pflichten entgegenstehen"
  ]) assert.match(privacy, new RegExp(text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
  for (const unsupported of [
   "DSGVO-konform",
@@ -186,7 +187,7 @@ test("privacy publication matches actual forms and avoids unverified legal claim
   "Cross Media",
   "kiels.info"
  ]) assert.doesNotMatch(privacy, new RegExp(unsupported, "i"));
- assert.match(privacy, /<!-- Hinweisversion: dsh-kiels-2026-11-02-2 \(Freigabekandidat, Freigabe ausstehend\) -->/);
+ assert.match(privacy, /<!-- Hinweisversion: dsh-kiels-2026-11-02-3 \(Freigabekandidat, Freigabe ausstehend\) -->/);
  assert.match(contact, /Bitte keine Gesundheitsdaten, Diagnosen oder InBody-Werte übermitteln\./);
  assert.match(employer, /Keine Gesundheitsdaten oder Kontaktdaten von Beschäftigten übermitteln\./);
  assert.match(referral, /Bitte keine Namen, Kontaktdaten oder Gesundheitsdaten anderer Personen angeben\./);
