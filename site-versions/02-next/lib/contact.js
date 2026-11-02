@@ -191,12 +191,12 @@ function validateFirmFitnessRequest(input) {
  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) errors.email = "Bitte gib eine gültige E-Mail-Adresse ein.";
  const callbackRequested = input.callbackRequested;
  if (typeof callbackRequested !== "boolean") errors.callbackRequested = "Bitte überprüfe den Rückrufwunsch.";
- if (phone) {
+ // Option T: Antworten derzeit nur telefonisch, daher Pflichtfeld.
+ if (!phone) errors.phone = "Bitte gib eine Telefonnummer an, damit wir dich zurückrufen können.";
+ else {
   const digits = phone.replace(/\D/g, "");
   const normalized = phone.startsWith("+") ? digits : phone.startsWith("00") ? digits.slice(2) : "49" + digits.replace(/^0/, "");
   if (!/^\+?[0-9 ()/.\-]+$/.test(phone) || digits.length < 6 || normalized.length > 15) errors.phone = "Bitte gib eine gültige Telefonnummer ein.";
- } else if (callbackRequested === true) {
-  errors.phone = "Für einen Rückruf gib bitte eine Telefonnummer an.";
  }
  const employeeSize = input.employeeSize ?? "";
  if (requestType === "employer_inquiry" && !["", "1-9", "10-49", "50-249", "250+"].includes(employeeSize)) {

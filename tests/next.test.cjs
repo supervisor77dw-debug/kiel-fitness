@@ -155,7 +155,6 @@ test("privacy publication matches actual forms and avoids unverified legal claim
   "Vercel",
   "eigenen Kundenverwaltungssystem",
   "Art. 6 Abs. 1 lit. b DSGVO",
-  "Cross Media",
   "spätestens nach 7 Tagen",
   "täglich wechselnden, nicht zurückrechenbaren Kurzwert",
   "UTM- oder Anzeigenparameter",
@@ -167,7 +166,9 @@ test("privacy publication matches actual forms and avoids unverified legal claim
   // Beleg: Vercel DPA (Stand 17.03.2026) Schedule 3, SCC Modul 2 fuer Pro; Funktion in fra1 (dpl_7VZtG7TSP3oD5py9FkWE9fjfXqLV)
   "EU-Standardvertragsklauseln vor (Art. 46 Abs. 2 lit. c DSGVO)",
   "Rechenzentrum in Frankfurt am Main",
-  "Dieses Postfach und den zugehörigen Versand betreibt für uns der Dienstleister Cross Media",
+  // Option T bis AVV Cross Media: telefonische Bearbeitung, keine Lead-Mails ueber kiels.info
+  "Anfragen über die Website beantworten wir derzeit telefonisch",
+  "Eine automatische Eingangsbestätigung per E-Mail versenden wir nicht",
   "löschen ältere Stände nach unserem Sicherungskonzept",
   "spätestens 24 Monate nach dem letzten Kontakt"
  ]) assert.match(privacy, new RegExp(text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
@@ -180,9 +181,12 @@ test("privacy publication matches actual forms and avoids unverified legal claim
   "LeadConnector",
   // keine unbelegten Fristen fuer Sicherungen (Synology NAS 1 unbefristet, DK §12.2)
   "Sicherungskopien werden höchstens",
-  "verschlüsselte Sicherungskopien"
+  "verschlüsselte Sicherungskopien",
+  // erst nach AVV wieder zulaessig (Option T)
+  "Cross Media",
+  "kiels.info"
  ]) assert.doesNotMatch(privacy, new RegExp(unsupported, "i"));
- assert.match(privacy, /<!-- Hinweisversion: dsh-kiels-2026-11-02-1 \(Freigabekandidat, Freigabe ausstehend\) -->/);
+ assert.match(privacy, /<!-- Hinweisversion: dsh-kiels-2026-11-02-2 \(Freigabekandidat, Freigabe ausstehend\) -->/);
  assert.match(contact, /Bitte keine Gesundheitsdaten, Diagnosen oder InBody-Werte übermitteln\./);
  assert.match(employer, /Keine Gesundheitsdaten oder Kontaktdaten von Beschäftigten übermitteln\./);
  assert.match(referral, /Bitte keine Namen, Kontaktdaten oder Gesundheitsdaten anderer Personen angeben\./);
