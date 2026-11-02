@@ -168,7 +168,8 @@ test("privacy publication matches actual forms and avoids unverified legal claim
   "EU-Standardvertragsklauseln vor (Art. 46 Abs. 2 lit. c DSGVO)",
   "Rechenzentrum in Frankfurt am Main",
   "Dieses Postfach und den zugehörigen Versand betreibt für uns der Dienstleister Cross Media",
-  "spätestens 30 Tage nach ihrer Löschung im laufenden System überschrieben"
+  "löschen ältere Stände nach unserem Sicherungskonzept",
+  "spätestens 24 Monate nach dem letzten Kontakt"
  ]) assert.match(privacy, new RegExp(text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&")));
  for (const unsupported of [
   "DSGVO-konform",
@@ -176,9 +177,12 @@ test("privacy publication matches actual forms and avoids unverified legal claim
   "Auftragsverarbeitungsvertrag abgeschlossen",
   "Datenschutzerklärungs-Generator",
   "HighLevel",
-  "LeadConnector"
+  "LeadConnector",
+  // keine unbelegten Fristen fuer Sicherungen (Synology NAS 1 unbefristet, DK §12.2)
+  "Sicherungskopien werden höchstens",
+  "verschlüsselte Sicherungskopien"
  ]) assert.doesNotMatch(privacy, new RegExp(unsupported, "i"));
- assert.match(privacy, /<!-- Hinweisversion: dsh-kiels-2026-11-01-3 \(Freigabekandidat, Freigabe ausstehend\) -->/);
+ assert.match(privacy, /<!-- Hinweisversion: dsh-kiels-2026-11-02-1 \(Freigabekandidat, Freigabe ausstehend\) -->/);
  assert.match(contact, /Bitte keine Gesundheitsdaten, Diagnosen oder InBody-Werte übermitteln\./);
  assert.match(employer, /Keine Gesundheitsdaten oder Kontaktdaten von Beschäftigten übermitteln\./);
  assert.match(referral, /Bitte keine Namen, Kontaktdaten oder Gesundheitsdaten anderer Personen angeben\./);
