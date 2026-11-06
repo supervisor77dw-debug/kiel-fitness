@@ -20,7 +20,7 @@ function configuration(env) {
  try {
   const url=new URL(env.AIW_LEAD_ENDPOINT);
   if(url.protocol!=='https:'||url.username||url.password||url.search||url.hash||url.pathname!=='/v1/website-submissions'||
-    url.port||url.hostname==='localhost'||url.hostname.endsWith('.localhost')||url.hostname.endsWith('.local')||/^[\d.]+$/.test(url.hostname)||url.hostname.includes(':')||!url.hostname.includes('.'))return null;
+    (url.port&&url.port!=='18444')||url.hostname==='localhost'||url.hostname.endsWith('.localhost')||url.hostname.endsWith('.local')||/^[\d.]+$/.test(url.hostname)||url.hostname.includes(':')||!url.hostname.includes('.'))return null;
   return {url:url.href,token:env.AIW_LEAD_TOKEN,privacyVersion:env.AIW_PRIVACY_NOTICE_VERSION,marketingVersion:env.AIW_MARKETING_NOTICE_VERSION};
  }catch{return null;}
 }

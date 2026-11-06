@@ -68,3 +68,10 @@ test('handler passes only the Vercel-derived visitor IP to the adapter',async()=
  await handler({method:'POST',headers:{host:'site.example.invalid',origin:'https://site.example.invalid','content-type':'application/json','sec-fetch-site':'same-origin','x-vercel-forwarded-for':'198.51.100.4','x-forwarded-for':'1.2.3.4'},body:JSON.stringify(input())},res);
  assert.equal(res.code,200);assert.deepEqual(seen,[{besucherIp:'198.51.100.4'}]);
 });
+test('endpoint port: only the approved ingress port 18444 is accepted, every other port fails closed',async()=>{
+ const ok={...env,AIW_LEAD_ENDPOINT:'https://leads.dubai2025.synology.me:18444/v1/website-submissions'};let url;
+ await createAiwLeadAdapter({env:ok,fetchImpl:async u=>{url=u;return new Response('{}',{status:500});}})(lead());
+ assert.equal(url,ok.AIW_LEAD_ENDPOINT);
+ for(const port of [443,8443,18443,18799]){let aufruf=0;const r=await createAiwLeadAdapter({env:{...env,AIW_LEAD_ENDPOINT:`https://leads.dubai2025.synology.me:${port}/v1/website-submissions`},fetchImpl:async()=>{aufruf++;}})(lead());
+  if(port!==443)assert.equal(r.body.code,'delivery_not_configured');if(port!==443)assert.equal(aufruf,0);}
+});
