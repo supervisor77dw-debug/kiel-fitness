@@ -504,16 +504,7 @@ if (contactForm) {
     }
   }
 
-  function seitennavigation() {
-    const nav = document.querySelector(".c-localnav"); if (!nav || !("IntersectionObserver" in window)) return;
-    const links = [...nav.querySelectorAll('.c-localnav-links a[href^="#"]')];
-    const ziele = links.map(a => document.querySelector(a.getAttribute("href"))).filter(Boolean);
-    const io = new IntersectionObserver(eintraege => {
-      for (const e of eintraege) if (e.isIntersecting) links.forEach(a => a.getAttribute("href") === "#" + e.target.id ? a.setAttribute("aria-current", "location") : a.removeAttribute("aria-current"));
-    }, { rootMargin: "-45% 0px -50% 0px" });
-    ziele.forEach(z => io.observe(z));
-  }
 
-  const start = () => { oeffnung(); seitennavigation(); };
+  const start = () => { oeffnung(); };
   document.readyState === "loading" ? document.addEventListener("DOMContentLoaded", start) : start();
 })();

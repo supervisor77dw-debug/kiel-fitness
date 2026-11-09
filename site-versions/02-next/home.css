@@ -696,13 +696,7 @@ a[href^="tel:"], a[href^="mailto:"], .privacy a, .legal-content a, .related a, .
   background: #122630;
   box-shadow: 0 22px 52px rgba(0,0,0,.48), 0 0 28px rgba(253,199,30,.06);
  }
- @supports (backdrop-filter: blur(1px)) {
-  .prototype-js [data-site-nav], .nav-enhanced [data-site-nav] {
-   background: rgba(12,31,41,.94);
-   backdrop-filter: blur(20px) saturate(130%);
-   -webkit-backdrop-filter: blur(20px) saturate(130%);
-  }
- }
+ /* Menuefeld deckend: verschachtelter backdrop-filter in der Kopfzeile liess Seiteninhalt durchscheinen */
  .nav-enhanced [data-site-nav].open { display: flex; }
  [data-site-nav] > a:not(.button) { justify-content: flex-start; min-height: 52px; padding-inline: 16px; border-radius: 12px; border-bottom: 1px solid rgba(255,255,255,.07); font-size: 15px; }
  [data-site-nav] > a[aria-current="page"] { border-color: rgba(253,199,30,.28); }
@@ -1205,16 +1199,7 @@ small, .hours-note, .tour-note, .image-label, .review-quote figcaption, .review-
 .v-status::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: var(--muted); }
 .v-status.offen::before { background: #4ade80; }
 
-/* Seitennavigation (C) – Startseite; ersetzt die Schnellweg-Chips aus B */
-.c-localnav { position: sticky; top: var(--header-offset, var(--header-height, 0px)); z-index: 9; background: rgba(7,23,32,.9); -webkit-backdrop-filter: saturate(160%) blur(14px); backdrop-filter: saturate(160%) blur(14px); border-block: 1px solid var(--line); }
-.c-localnav-inner { display: flex; align-items: center; gap: 20px; min-height: 56px; }
-.c-localnav-title { font-weight: 700; font-size: 16px; white-space: nowrap; }
-.c-localnav-links { display: flex; gap: 4px; overflow-x: auto; scrollbar-width: none; flex: 1; justify-content: flex-end; }
-.c-localnav-links::-webkit-scrollbar { display: none; }
-.c-localnav-links a { display: inline-flex; align-items: center; min-height: var(--d-ziel); padding: 0 12px; font-size: 15px; color: var(--muted); white-space: nowrap; border-radius: 999px; transition: color var(--d-dauer) var(--d-kurve), background-color var(--d-dauer) var(--d-kurve); }
-.c-localnav-links a:hover, .c-localnav-links a[aria-current] { color: var(--white); background: rgba(255,255,255,.08); }
-.c-localnav-cta { min-height: var(--d-ziel); padding: 8px 16px; font-size: 14px; }
-:target, [id] { scroll-margin-top: calc(var(--header-offset, 88px) + 64px); }   /* unter Kopfzeile und Seitennavigation */
+:target, [id] { scroll-margin-top: calc(var(--header-offset, 88px) + 16px); }   /* unter der Kopfzeile */
 
 /* Kursseite: vorhandene Kurswelten-Navigation klebt mit (C-Prinzip, vorhandene Komponente) */
 body[data-page="kurse"] .course-jumps-wrap { position: sticky; top: var(--header-offset, var(--header-height, 0px)); z-index: 8; width: 100%; padding-inline: max(20px, calc((100% - 1240px) / 2)); background: rgba(7,23,32,.92); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-block: 1px solid var(--line); }
@@ -1283,11 +1268,9 @@ body[data-page="index"] .hours .v-heute { color: var(--white); }
   body { font-size: 16px; } :root { --d-abschnitt: 56px; }
   .hero-b { padding-block: 20px 32px; }
   .hero-b-visual { order: -1; border-radius: 18px; }
-  .c-localnav-title, .c-localnav-cta { display: none; }   /* mobil steht Probetraining in der unteren Schnellkontakt-Leiste */
-  .c-localnav-links { justify-content: flex-start; }
   .goal-card, .goal-card:first-child { grid-column: span 6; }
   .usp-grid { grid-template-columns: 1fr 1fr; } .usp { padding: 16px; } .usp h3 { font-size: 17px; } .usp p { font-size: 14px; }
   .header-inner { min-height: 72px; }
   .tariff .price { font-size: 40px; }
 }
-@media (prefers-reduced-motion: reduce) { .goal-card, .c-localnav-links a { transition: none; } .goal-card:hover { transform: none; } }
+@media (prefers-reduced-motion: reduce) { .goal-card { transition: none; } .goal-card:hover { transform: none; } }
