@@ -166,9 +166,10 @@ test("privacy publication matches actual forms and avoids unverified legal claim
   // Beleg: Vercel DPA (Stand 17.03.2026) Schedule 3, SCC Modul 2 fuer Pro; Funktion in fra1 (dpl_7VZtG7TSP3oD5py9FkWE9fjfXqLV)
   "EU-Standardvertragsklauseln vor (Art. 46 Abs. 2 lit. c DSGVO)",
   "Rechenzentrum in Frankfurt am Main",
-  // Option T bis AVV Cross Media: telefonische Bearbeitung, keine Lead-Mails ueber kiels.info
-  "Anfragen über die Website beantworten wir derzeit telefonisch",
-  "Eine automatische Eingangsbestätigung per E-Mail versenden wir nicht",
+  // Eingangsbestaetigung ueber mail@kiels.info (Nutzerfreigabe 09.11.2026, Option T beendet; AVV Cross Media zugesagt, nicht abgeschlossen)
+  "senden wir dir eine automatische Eingangsbestätigung an die angegebene E-Mail-Adresse",
+  "enthält keine Werbung",
+  "über unser Postfach mail@kiels.info, das auf einem Mailserver unseres Dienstleisters Cross Media betrieben wird",
   "löschen ältere Stände nach unserem Sicherungskonzept",
   "spätestens jedoch 24 Monate nach dem letzten Kontakt",
   "löschen wir deine Daten unverzüglich, soweit keine gesetzlichen Pflichten entgegenstehen"
@@ -183,11 +184,11 @@ test("privacy publication matches actual forms and avoids unverified legal claim
   // keine unbelegten Fristen fuer Sicherungen (Synology NAS 1 unbefristet, DK §12.2)
   "Sicherungskopien werden höchstens",
   "verschlüsselte Sicherungskopien",
-  // erst nach AVV wieder zulaessig (Option T)
-  "Cross Media",
-  "kiels.info"
+  // keine Aussage zu einer noch nicht abgeschlossenen AVV mit Cross Media; Option-T-Satz entfernt
+  "Cross Media[^<]*Auftragsverarbeiter",
+  "Eine automatische Eingangsbestätigung per E-Mail versenden wir nicht"
  ]) assert.doesNotMatch(privacy, new RegExp(unsupported, "i"));
- assert.match(privacy, /<!-- Hinweisversion: dsh-kiels-2026-11-02-3 \(freigegeben\) -->/);
+ assert.match(privacy, /<!-- Hinweisversion: dsh-kiels-2026-11-09-1 \(freigegeben\) -->/);
  assert.match(contact, /Bitte keine Gesundheitsdaten, Diagnosen oder InBody-Werte übermitteln\./);
  assert.match(employer, /Keine Gesundheitsdaten oder Kontaktdaten von Beschäftigten übermitteln\./);
  assert.match(referral, /Bitte keine Namen, Kontaktdaten oder Gesundheitsdaten anderer Personen angeben\./);
